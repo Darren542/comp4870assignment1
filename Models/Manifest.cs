@@ -8,19 +8,16 @@ using Comp484Project.Models;
 
 namespace comp4870assignment1.Models;
 
-public class Vehicle
+public class Manifest
 {
     [Key]
-    public int VehicleId { get; set; }
-    public string? Model { get; set; }
-    public string? Make { get; set; }
-    public int? Year { get; set; }
-    public int? NumberOfSeats { get; set; }
-    public string? VehicleType { get; set; }
+    public int ManifestId { get; set; }
     [Required]
-    public string? MemberName { get; set; }
-    [ForeignKey("Member")]
+    public int MemberId { get; set; }
+    [ForeignKey("MemberId")]
     public Member? Member { get; set; }
+    public int? TripId { get; set; }
+    public string? Notes { get; set; }
     public DateTime? Created { get; set; }
     public DateTime? Modified { get; set; }
     public string? CreatedBy { get; set; }
