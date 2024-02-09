@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
-using Comp484Project.Models;
 
-namespace comp4870assignment1.Models;
+
+namespace ClassLibrary;
 
 public class Manifest
 {
@@ -16,7 +16,10 @@ public class Manifest
     public int MemberId { get; set; }
     [ForeignKey("MemberId")]
     public Member? Member { get; set; }
+    [Required]
     public int? TripId { get; set; }
+    [ForeignKey("TripId")]
+    public Trip? Trip { get; set; }
     public string? Notes { get; set; }
     public DateTime? Created { get; set; }
     public DateTime? Modified { get; set; }
