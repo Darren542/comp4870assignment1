@@ -5,24 +5,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-
-namespace ClassLibrary;
-
-public class Manifest
+namespace ClassLibrary.Models;
+public class Trip
 {
     [Key]
-    public int ManifestId { get; set; }
+    public int TripId { get; set; }
     [Required]
-    public int MemberId { get; set; }
-    [ForeignKey("MemberId")]
-    public Member? Member { get; set; }
-    [Required]
-    public int? TripId { get; set; }
-    [ForeignKey("TripId")]
-    public Trip? Trip { get; set; }
-    public string? Notes { get; set; }
+    public int VehicleId { get; set; }
+    public DateOnly? Date { get; set; }
+    public TimeOnly? Time { get; set; }
+    public string? DestinationAddress { get; set; }
+    public string? MeetingAddress { get; set; }
     public DateTime? Created { get; set; }
     public DateTime? Modified { get; set; }
     public string? CreatedBy { get; set; }
     public string? ModifiedBy { get; set; }
+
+    [ForeignKey("VehicleId")]
+    public Vehicle? Vehicle { get; set; }
 }
