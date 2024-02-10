@@ -1,9 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace ClassLibrary.Models;
 
-public class Member
+public class Member : IdentityUser
 {
+    public Member() : base() { }
+    
     [Key]
     public int MemberId { get; set; }
     public string? FirstName { get; set; }
