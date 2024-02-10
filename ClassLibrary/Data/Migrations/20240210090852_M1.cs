@@ -32,10 +32,8 @@ namespace ClassLibrary.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
-                    MemberId = table.Column<int>(type: "INTEGER", nullable: false),
                     FirstName = table.Column<string>(type: "TEXT", nullable: true),
                     LastName = table.Column<string>(type: "TEXT", nullable: true),
-                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Mobile = table.Column<string>(type: "TEXT", nullable: true),
                     Street = table.Column<string>(type: "TEXT", nullable: true),
                     City = table.Column<string>(type: "TEXT", nullable: true),
@@ -47,6 +45,7 @@ namespace ClassLibrary.Data.Migrations
                     ModifiedBy = table.Column<string>(type: "TEXT", nullable: true),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
                     PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
@@ -110,8 +109,8 @@ namespace ClassLibrary.Data.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
+                    ProviderKey = table.Column<string>(type: "TEXT", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "TEXT", nullable: true),
                     UserId = table.Column<string>(type: "TEXT", nullable: false)
                 },
@@ -155,8 +154,8 @@ namespace ClassLibrary.Data.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    LoginProvider = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
                     Value = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -181,11 +180,11 @@ namespace ClassLibrary.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "City", "ConcurrencyStamp", "Country", "Created", "CreatedBy", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "MemberId", "Mobile", "Modified", "ModifiedBy", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "PostalCode", "SecurityStamp", "Street", "TwoFactorEnabled", "UserName" },
+                columns: new[] { "Id", "AccessFailedCount", "City", "ConcurrencyStamp", "Country", "Created", "CreatedBy", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "Mobile", "Modified", "ModifiedBy", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "PostalCode", "SecurityStamp", "Street", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, null, "2a2235a4-2a4c-4626-bed4-2c878c604dbc", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "admin@example.com", true, "Admin", "User", false, null, 0, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "ADMIN@EXAMPLE.COM", "ADMIN@EXAMPLE.COM", "AQAAAAIAAYagAAAAEPnxZJcuGdwymaYDQEth2XOeRdOTR9hfZQIaQIckXbL7bUA4fxKNvWd24a4ZeUS8bQ==", null, false, null, "241bf83c-6d01-4ad0-bc54-05be3f237346", null, false, "admin@example.com" },
-                    { "2", 0, null, "8c18e752-537d-422a-9b7d-e57af4e5c8db", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "member@example.com", true, "Member", "User", false, null, 0, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "MEMBER@EXAMPLE.COM", "MEMBER@EXAMPLE.COM", "AQAAAAIAAYagAAAAEBgJ1I4SzCVP9j7l4BHKdsgkgoV1bCrvOk8s8Qo0ZmZ9Ln16UBwjpA/6aHPy2TiXCw==", null, false, null, "617a017c-e30d-4b0a-8ed1-8d7da63b4de0", null, false, "member@example.com" }
+                    { "1", 0, null, "8652763f-d984-4ed1-9d15-56f9d337e601", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "admin@example.com", true, "Admin", "User", false, null, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "ADMIN@EXAMPLE.COM", "ADMIN@EXAMPLE.COM", "AQAAAAIAAYagAAAAEN+u6s+gmwXLUn/2cqvudn+9BkJyfsUYX81gTS4t38gvGo4GmzGcR+97xENCWpGTiQ==", null, false, null, "4746cf1f-431d-4db8-acbd-4695c20b70e1", null, false, "admin@example.com" },
+                    { "2", 0, null, "c7e2f488-1970-4ef0-96bf-ea71c55cd006", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "member@example.com", true, "Member", "User", false, null, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "MEMBER@EXAMPLE.COM", "MEMBER@EXAMPLE.COM", "AQAAAAIAAYagAAAAEOelvluzsISs9wu40TtHnLYsuP2ySAJ1m6HDtCBz402C1nAlUNhLq4cJtICkmUtSTA==", null, false, null, "ca307d67-fa9f-4188-8c7b-0567c98ae835", null, false, "member@example.com" }
                 });
 
             migrationBuilder.InsertData(

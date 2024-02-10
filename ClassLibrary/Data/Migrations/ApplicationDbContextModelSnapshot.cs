@@ -60,9 +60,6 @@ namespace ClassLibrary.Data.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("MemberId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Mobile")
                         .HasColumnType("TEXT");
 
@@ -121,20 +118,19 @@ namespace ClassLibrary.Data.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2a2235a4-2a4c-4626-bed4-2c878c604dbc",
+                            ConcurrencyStamp = "8652763f-d984-4ed1-9d15-56f9d337e601",
                             Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
                             LastName = "User",
                             LockoutEnabled = false,
-                            MemberId = 0,
                             Modified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPnxZJcuGdwymaYDQEth2XOeRdOTR9hfZQIaQIckXbL7bUA4fxKNvWd24a4ZeUS8bQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEN+u6s+gmwXLUn/2cqvudn+9BkJyfsUYX81gTS4t38gvGo4GmzGcR+97xENCWpGTiQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "241bf83c-6d01-4ad0-bc54-05be3f237346",
+                            SecurityStamp = "4746cf1f-431d-4db8-acbd-4695c20b70e1",
                             TwoFactorEnabled = false,
                             UserName = "admin@example.com"
                         },
@@ -142,20 +138,19 @@ namespace ClassLibrary.Data.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8c18e752-537d-422a-9b7d-e57af4e5c8db",
+                            ConcurrencyStamp = "c7e2f488-1970-4ef0-96bf-ea71c55cd006",
                             Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "member@example.com",
                             EmailConfirmed = true,
                             FirstName = "Member",
                             LastName = "User",
                             LockoutEnabled = false,
-                            MemberId = 0,
                             Modified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             NormalizedEmail = "MEMBER@EXAMPLE.COM",
                             NormalizedUserName = "MEMBER@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBgJ1I4SzCVP9j7l4BHKdsgkgoV1bCrvOk8s8Qo0ZmZ9Ln16UBwjpA/6aHPy2TiXCw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOelvluzsISs9wu40TtHnLYsuP2ySAJ1m6HDtCBz402C1nAlUNhLq4cJtICkmUtSTA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "617a017c-e30d-4b0a-8ed1-8d7da63b4de0",
+                            SecurityStamp = "ca307d67-fa9f-4188-8c7b-0567c98ae835",
                             TwoFactorEnabled = false,
                             UserName = "member@example.com"
                         });
@@ -250,11 +245,9 @@ namespace ClassLibrary.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ProviderDisplayName")
@@ -304,11 +297,9 @@ namespace ClassLibrary.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Value")

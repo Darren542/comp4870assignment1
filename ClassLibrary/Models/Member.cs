@@ -7,11 +7,8 @@ public class Member : IdentityUser
 {
     public Member() : base() { }
     
-    [Key]
-    public int MemberId { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
-    public string? Email { get; set; }
     public string? Mobile { get; set; }
     public string? Street { get; set; }
     public string? City { get; set; }
