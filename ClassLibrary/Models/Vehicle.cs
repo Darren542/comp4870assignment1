@@ -17,8 +17,8 @@ public class Vehicle
     public int? NumberOfSeats { get; set; }
     public string? VehicleType { get; set; }
     [Required]
-    public string? MemberName { get; set; }
-    [ForeignKey("Member")]
+    public string? MemberId { get; set; }
+    [ForeignKey("Id")]
     public Member? Member { get; set; }
     public DateTime? Created { get; set; }
     public DateTime? Modified { get; set; }

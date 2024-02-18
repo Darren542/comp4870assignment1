@@ -17,6 +17,47 @@ namespace ClassLibrary.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
 
+            modelBuilder.Entity("ClassLibrary.Models.Manifest", b =>
+                {
+                    b.Property<int>("ManifestId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("MemberId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("Modified")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("TripId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ManifestId", "MemberId");
+
+                    b.HasIndex("MemberId");
+
+                    b.HasIndex("VehicleId");
+
+                    b.HasIndex("TripId", "VehicleId")
+                        .IsUnique();
+
+                    b.ToTable("Manifest", (string)null);
+                });
+
             modelBuilder.Entity("ClassLibrary.Models.Member", b =>
                 {
                     b.Property<string>("Id")
@@ -116,44 +157,150 @@ namespace ClassLibrary.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1",
+                            Id = "9563309a-24c2-4722-bedd-db924e3e72a0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8652763f-d984-4ed1-9d15-56f9d337e601",
+                            ConcurrencyStamp = "c9dc95eb-7bd7-44ab-bced-f81fe9a060cf",
                             Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "admin@example.com",
+                            Email = "a@a.a",
                             EmailConfirmed = true,
                             FirstName = "Admin",
                             LastName = "User",
                             LockoutEnabled = false,
                             Modified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            NormalizedEmail = "ADMIN@EXAMPLE.COM",
-                            NormalizedUserName = "ADMIN@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEN+u6s+gmwXLUn/2cqvudn+9BkJyfsUYX81gTS4t38gvGo4GmzGcR+97xENCWpGTiQ==",
+                            NormalizedEmail = "A@A.A",
+                            NormalizedUserName = "A@A.A",
+                            PasswordHash = "AQAAAAIAAYagAAAAEO2SCTQ2VOnQGX2f1AOmYm9ygeFscxBKZspZ/eOL+HK2GiGbDZ/xmV/pmhKE3eOscA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4746cf1f-431d-4db8-acbd-4695c20b70e1",
+                            SecurityStamp = "ae584a37-8631-459a-852c-51fb83c5f6e9",
                             TwoFactorEnabled = false,
-                            UserName = "admin@example.com"
+                            UserName = "a@a.a"
                         },
                         new
                         {
-                            Id = "2",
+                            Id = "dd266256-af3e-48fb-aaa1-e6d273e744ce",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c7e2f488-1970-4ef0-96bf-ea71c55cd006",
+                            ConcurrencyStamp = "9f457f21-215b-4bfa-ab99-f28725e599cc",
                             Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "member@example.com",
+                            Email = "o@o.o",
                             EmailConfirmed = true,
-                            FirstName = "Member",
+                            FirstName = "Owner",
                             LastName = "User",
                             LockoutEnabled = false,
                             Modified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            NormalizedEmail = "MEMBER@EXAMPLE.COM",
-                            NormalizedUserName = "MEMBER@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOelvluzsISs9wu40TtHnLYsuP2ySAJ1m6HDtCBz402C1nAlUNhLq4cJtICkmUtSTA==",
+                            NormalizedEmail = "O@O.O",
+                            NormalizedUserName = "O@O.O",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMp4CBe2HmPGXWQWGxwk1L2upScBnf5Fn3YEa9/wY7a2MY0q/pYKSdniQYIkcTiJvA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ca307d67-fa9f-4188-8c7b-0567c98ae835",
+                            SecurityStamp = "4cbc45ad-f541-4eb8-bdf1-f1d1aa8ab66e",
                             TwoFactorEnabled = false,
-                            UserName = "member@example.com"
+                            UserName = "o@o.o"
+                        },
+                        new
+                        {
+                            Id = "744abc6e-96e3-4b99-a0de-7572237f6727",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "40b42a73-8eef-4671-b027-7b89fcd686fe",
+                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "p@p.p",
+                            EmailConfirmed = true,
+                            FirstName = "Passenger",
+                            LastName = "User",
+                            LockoutEnabled = false,
+                            Modified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NormalizedEmail = "P@P.P",
+                            NormalizedUserName = "P@P.P",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPMI077ATM8Jiq2Q2enyDmegfXxUR63f6bkxbNFt/12ATrwvncnT4BDXQD6jjJXZMg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "5abfa6e7-444e-42e5-9c12-b235589d6988",
+                            TwoFactorEnabled = false,
+                            UserName = "p@p.p"
                         });
+                });
+
+            modelBuilder.Entity("ClassLibrary.Models.Trip", b =>
+                {
+                    b.Property<int>("TripId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateOnly?>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DestinationAddress")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MeetingAddress")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("Modified")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<TimeOnly?>("Time")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("TripId", "VehicleId");
+
+                    b.HasIndex("VehicleId");
+
+                    b.ToTable("Trip", (string)null);
+                });
+
+            modelBuilder.Entity("ClassLibrary.Models.Vehicle", b =>
+                {
+                    b.Property<int>("VehicleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Make")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MemberId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Model")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("Modified")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("NumberOfSeats")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("VehicleType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("Year")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("VehicleId");
+
+                    b.HasIndex("Id");
+
+                    b.ToTable("Vehicle", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -184,15 +331,18 @@ namespace ClassLibrary.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a1b2c3d4",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
+                            Id = "3437c90c-f1fe-4fb8-b5dd-433c451a4592",
+                            Name = "Admin"
                         },
                         new
                         {
-                            Id = "e5f6g7h8",
-                            Name = "Member",
-                            NormalizedName = "MEMBER"
+                            Id = "fdaf8fd1-5f40-4d24-a348-536e8d2b4091",
+                            Name = "Owner"
+                        },
+                        new
+                        {
+                            Id = "b3a805c2-c289-4ea5-a680-e5ce44472f73",
+                            Name = "Passenger"
                         });
                 });
 
@@ -281,13 +431,18 @@ namespace ClassLibrary.Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "1",
-                            RoleId = "a1b2c3d4"
+                            UserId = "9563309a-24c2-4722-bedd-db924e3e72a0",
+                            RoleId = "3437c90c-f1fe-4fb8-b5dd-433c451a4592"
                         },
                         new
                         {
-                            UserId = "2",
-                            RoleId = "e5f6g7h8"
+                            UserId = "dd266256-af3e-48fb-aaa1-e6d273e744ce",
+                            RoleId = "fdaf8fd1-5f40-4d24-a348-536e8d2b4091"
+                        },
+                        new
+                        {
+                            UserId = "744abc6e-96e3-4b99-a0de-7572237f6727",
+                            RoleId = "b3a805c2-c289-4ea5-a680-e5ce44472f73"
                         });
                 });
 
@@ -308,6 +463,53 @@ namespace ClassLibrary.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("ClassLibrary.Models.Manifest", b =>
+                {
+                    b.HasOne("ClassLibrary.Models.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClassLibrary.Models.Vehicle", "Vehicle")
+                        .WithMany()
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClassLibrary.Models.Trip", "Trip")
+                        .WithOne()
+                        .HasForeignKey("ClassLibrary.Models.Manifest", "TripId", "VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Member");
+
+                    b.Navigation("Trip");
+
+                    b.Navigation("Vehicle");
+                });
+
+            modelBuilder.Entity("ClassLibrary.Models.Trip", b =>
+                {
+                    b.HasOne("ClassLibrary.Models.Vehicle", "Vehicle")
+                        .WithMany()
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Vehicle");
+                });
+
+            modelBuilder.Entity("ClassLibrary.Models.Vehicle", b =>
+                {
+                    b.HasOne("ClassLibrary.Models.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("Id");
+
+                    b.Navigation("Member");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

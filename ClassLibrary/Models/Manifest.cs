@@ -13,13 +13,17 @@ public class Manifest
     [Key]
     public int ManifestId { get; set; }
     [Required]
-    public int MemberId { get; set; }
+    public string? MemberId { get; set; }
     [ForeignKey("MemberId")]
     public Member? Member { get; set; }
     [Required]
-    public int? TripId { get; set; }
+    public int TripId { get; set; }
     [ForeignKey("TripId")]
     public Trip? Trip { get; set; }
+    [Required]
+    public int VehicleId { get; set; }
+    [ForeignKey("VehicleId")]
+    public Vehicle? Vehicle { get; set; }
     public string? Notes { get; set; }
     public DateTime? Created { get; set; }
     public DateTime? Modified { get; set; }

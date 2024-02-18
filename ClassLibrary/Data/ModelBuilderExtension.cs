@@ -4,17 +4,19 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 
-namespace ClassLibrary;
+namespace ClassLibrary.Data;
 
 public static class ModelBuilderExtension
 {
     public static void Seed(this ModelBuilder modelBuilder)
     {
+        var pwd = "P@$$w0rd";
         // Seed default roles with explicit IDs
         var roles = new List<IdentityRole>
         {
-            new IdentityRole { Id = "a1b2c3d4", Name = "Admin", NormalizedName = "ADMIN"},
-            new IdentityRole { Id = "e5f6g7h8", Name = "Member", NormalizedName = "MEMBER"}
+            new IdentityRole("Admin"),
+            new IdentityRole("Owner"),
+            new IdentityRole("Passenger")
         };
 
         modelBuilder.Entity<IdentityRole>().HasData(roles);
@@ -24,40 +26,64 @@ public static class ModelBuilderExtension
         // Seed Members with static IDs
         var admin = new Member
         {
-            Id = "1", // Static Id for seeding purposes, we can change this if it becomes a problem
-            UserName = "admin@example.com",
-            Email = "admin@example.com",
+            UserName = "a@a.a",
+            Email = "a@a.a",
             FirstName = "Admin",
             LastName = "User",
             EmailConfirmed = true,
-            NormalizedUserName = "ADMIN@EXAMPLE.COM",
-            NormalizedEmail = "ADMIN@EXAMPLE.COM",
+            NormalizedUserName = "A@A.A",
+            NormalizedEmail = "A@A.A",
             SecurityStamp = Guid.NewGuid().ToString("D"),
         };
-        admin.PasswordHash = passwordHasher.HashPassword(admin, "AdminPassword123!");
+        admin.PasswordHash = passwordHasher.HashPassword(admin, pwd);
 
-        var member = new Member
+        var owner = new Member
         {
-            Id = "2", // Static Id for seeding purposes
-            UserName = "member@example.com",
-            Email = "member@example.com",
-            FirstName = "Member",
+            UserName = "o@o.o",
+            Email = "o@o.o",
+            FirstName = "Owner",
             LastName = "User",
             EmailConfirmed = true,
-            NormalizedUserName = "MEMBER@EXAMPLE.COM",
-            NormalizedEmail = "MEMBER@EXAMPLE.COM",
+            NormalizedUserName = "O@O.O",
+            NormalizedEmail = "O@O.O",
             SecurityStamp = Guid.NewGuid().ToString("D"),
         };
-        member.PasswordHash = passwordHasher.HashPassword(member, "MemberPassword123!");
+        owner.PasswordHash = passwordHasher.HashPassword(owner, pwd);
 
-        modelBuilder.Entity<Member>().HasData(admin, member);
+        var passenger = new Member
+        {
+            UserName = "p@p.p",
+            Email = "p@p.p",
+            FirstName = "Passenger",
+            LastName = "User",
+            EmailConfirmed = true,
+            NormalizedUserName = "P@P.P",
+            NormalizedEmail = "P@P.P",
+            SecurityStamp = Guid.NewGuid().ToString("D"),
+        };
+        passenger.PasswordHash = passwordHasher.HashPassword(passenger, pwd);
+
+        List<Member> users = new List<Member>() { admin, owner, passenger };
+
+        modelBuilder.Entity<Member>().HasData(users);
 
         // Seed UserRoles
-        var userRoles = new List<IdentityUserRole<string>>
-        {
-            new IdentityUserRole<string> { UserId = admin.Id, RoleId = "a1b2c3d4" }, // Assigning Admin role to admin user
-            new IdentityUserRole<string> { UserId = member.Id, RoleId = "e5f6g7h8" }  // Assigning Member role to member user
-        };
+        List<IdentityUserRole<string>> userRoles = new List<IdentityUserRole<string>>();
+        
+        userRoles.Add(new IdentityUserRole<string> {
+            UserId = users[0].Id,
+            RoleId = roles.First(q => q.Name == "Admin").Id
+        });
+
+        userRoles.Add(new IdentityUserRole<string> {
+            UserId = users[1].Id,
+            RoleId = roles.First(q => q.Name == "Owner").Id
+        });
+
+        userRoles.Add(new IdentityUserRole<string> {
+            UserId = users[2].Id,
+            RoleId = roles.First(q => q.Name == "Passenger").Id
+        });
 
         modelBuilder.Entity<IdentityUserRole<string>>().HasData(userRoles);
     }
