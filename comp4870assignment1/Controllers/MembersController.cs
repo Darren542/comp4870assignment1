@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ClassLibrary.Data;
 using ClassLibrary.Models;
+using Microsoft.AspNetCore.Authorization;
 
-namespace assignment1.Controllers
-{
+namespace assignment1.Controllers;
+
+    [Authorize(Roles = "Admin")]
     public class MembersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -154,4 +156,3 @@ namespace assignment1.Controllers
             return _context.Members.Any(e => e.Id == id);
         }
     }
-}
