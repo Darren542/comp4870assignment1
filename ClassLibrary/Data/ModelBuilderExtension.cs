@@ -86,5 +86,158 @@ public static class ModelBuilderExtension
         });
 
         modelBuilder.Entity<IdentityUserRole<string>>().HasData(userRoles);
+
+        //Look through users list and get their user.Id and make it into a new list
+        List<string> userIds = users.Select(q => q.Id).ToList();
+
+        // Seed Vehicles
+        modelBuilder.Entity<Vehicle>().HasData(
+            GetVehicles(userIds)
+        );
+
+        // Seed Trips
+        modelBuilder.Entity<Trip>().HasData(
+            GetTrips(userIds)
+        );
+
+        // Seed Manifests
+        modelBuilder.Entity<Manifest>().HasData(
+            GetManifests(userIds)
+        );
+    }
+
+    public static List<Vehicle> GetVehicles(List<string> userIds) {
+        var ownerId = userIds[1];
+        
+        List<Vehicle> vehicles = new List<Vehicle>() {
+            new Vehicle {
+                VehicleId = 1,
+                Model = "Model 3",
+                Make = "Tesla",
+                Year = 2021,
+                NumberOfSeats = 5,
+                VehicleType = "Electric",
+                MemberId = ownerId,
+                Created = DateTime.Now,
+                Modified = DateTime.Now,
+                CreatedBy = ownerId,
+                ModifiedBy = ownerId
+            },
+            new Vehicle {
+                VehicleId = 2,
+                Model = "Model S",
+                Make = "Tesla",
+                Year = 2021,
+                NumberOfSeats = 5,
+                VehicleType = "Electric",
+                MemberId = ownerId,
+                Created = DateTime.Now,
+                Modified = DateTime.Now,
+                CreatedBy = ownerId,
+                ModifiedBy = ownerId
+            },
+            new Vehicle {
+                VehicleId = 3,
+                Model = "Model X",
+                Make = "Tesla",
+                Year = 2021,
+                NumberOfSeats = 5,
+                VehicleType = "Electric",
+                MemberId = ownerId,
+                Created = DateTime.Now,
+                Modified = DateTime.Now,
+                CreatedBy = ownerId,
+                ModifiedBy = ownerId
+            }
+        };
+
+        return vehicles;
+    }
+
+    public static List<Trip> GetTrips(List<string> userIds) {
+        var ownerId = userIds[1];
+
+        List<Trip> trips = new List<Trip>() {
+            new Trip {
+                TripId = 1,
+                VehicleId = 1,
+                Date = new DateOnly(2021, 12, 25),
+                Time = new TimeOnly(12, 0, 0),
+                DestinationAddress = "123 Main St, Anytown, USA",
+                MeetingAddress = "456 Elm St, Anytown, USA",
+                Created = DateTime.Now,
+                Modified = DateTime.Now,
+                CreatedBy = ownerId,
+                ModifiedBy = ownerId
+            },
+            new Trip {
+                TripId = 2,
+                VehicleId = 2,
+                Date = new DateOnly(2022, 1, 12),
+                Time = new TimeOnly(14, 30, 0),
+                DestinationAddress = "321 Knight St, Anytown, USA",
+                MeetingAddress = "789 Cambie St, Anytown, USA",
+                Created = DateTime.Now,
+                Modified = DateTime.Now,
+                CreatedBy = ownerId,
+                ModifiedBy = ownerId
+            },
+            new Trip {
+                TripId = 3,
+                VehicleId = 3,
+                Date = new DateOnly(2022, 1, 24),
+                Time = new TimeOnly(8, 0, 0),
+                DestinationAddress = "8 Moody St, Anyville, USA",
+                MeetingAddress = "99 Hastings St, Anytown, USA",
+                Created = DateTime.Now,
+                Modified = DateTime.Now,
+                CreatedBy = ownerId,
+                ModifiedBy = ownerId
+            }
+        };
+
+        return trips;
+    }
+    
+    public static List<Manifest> GetManifests(List<string> userIds) {
+        var ownerId = userIds[1];
+
+        List<Manifest> manifests = new List<Manifest>() {
+            new Manifest {
+                ManifestId = 1,
+                MemberId = userIds[2],
+                TripId = 1,
+                VehicleId = 1,
+                Notes = "I'm driving",
+                Created = DateTime.Now,
+                Modified = DateTime.Now,
+                CreatedBy = ownerId,
+                ModifiedBy = ownerId
+            },
+            new Manifest {
+                ManifestId = 2,
+                MemberId = userIds[0],
+                TripId = 2,
+                VehicleId = 2,
+                Notes = "I'm driving",
+                Created = DateTime.Now,
+                Modified = DateTime.Now,
+                CreatedBy = ownerId,
+                ModifiedBy = ownerId
+            },
+            new Manifest {
+                ManifestId = 3,
+                MemberId = userIds[2],
+                TripId = 3,
+                VehicleId = 3,
+                Notes = "I'm driving",
+                Created = DateTime.Now,
+                Modified = DateTime.Now,
+                CreatedBy = ownerId,
+                ModifiedBy = ownerId
+            }
+        };
+
+        return manifests;
     }
 }
