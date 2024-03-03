@@ -1,10 +1,10 @@
 @model IEnumerable<ClassLibrary.Models.Trip>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "All Trips";
 }
 
-<h1>Index</h1>
+<h1>@ViewData["Title"]</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -70,7 +70,7 @@
                 @Html.DisplayFor(modelItem => item.ModifiedBy)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Vehicle.MemberId)
+                @Html.DisplayFor(modelItem => item.Vehicle.VehicleId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.TripId">Edit</a> |

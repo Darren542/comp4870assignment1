@@ -1,10 +1,10 @@
 @model IEnumerable<ClassLibrary.Models.Manifest>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "All Manifests";
 }
 
-<h1>Index</h1>
+<h1>@ViewData["Title"]</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -42,14 +42,16 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            @* <td>
                 @Html.DisplayFor(modelItem => item.Member.Id)
-            </td>
+            </td> *@
+            <td>
+                @Html.DisplayFor(modelItem => item.Member.UserName)
             <td>
                 @Html.DisplayFor(modelItem => item.Trip.TripId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Vehicle.MemberId)
+                @Html.DisplayFor(modelItem => item.Vehicle.VehicleId)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Notes)
