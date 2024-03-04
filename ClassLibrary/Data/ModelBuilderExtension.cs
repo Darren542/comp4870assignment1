@@ -10,24 +10,71 @@ public static class ModelBuilderExtension
 {
     public static void Seed(this ModelBuilder modelBuilder)
     {
+        var pwd = "P@$$w0rd";
+        var passwordHasher = new PasswordHasher<Member>();
+        var user1 = new Member
+        {
+            UserName = "b@b.b",
+            Email = "b@b.b",
+            FirstName = "Test",
+            LastName = "User1",
+            EmailConfirmed = true,
+            NormalizedUserName = "B@B.B",
+            NormalizedEmail = "B@B.B",
+            SecurityStamp = Guid.NewGuid().ToString("D"),
+        };
+        user1.PasswordHash = passwordHasher.HashPassword(user1, pwd);
+
+        var user2 = new Member
+        {
+            UserName = "c@c.c",
+            Email = "c@c.c",
+            FirstName = "Test",
+            LastName = "Owner",
+            EmailConfirmed = true,
+            NormalizedUserName = "C@C.C",
+            NormalizedEmail = "C@C.C",
+            SecurityStamp = Guid.NewGuid().ToString("D"),
+        };
+        user2.PasswordHash = passwordHasher.HashPassword(user2, pwd);
+
+        var user3 = new Member
+        {
+            UserName = "d@d.d",
+            Email = "d@d.d",
+            FirstName = "Test",
+            LastName = "Passenger",
+            EmailConfirmed = true,
+            NormalizedUserName = "D@D.D",
+            NormalizedEmail = "D@D.D",
+            SecurityStamp = Guid.NewGuid().ToString("D"),
+        };
+        user3.PasswordHash = passwordHasher.HashPassword(user3, pwd);
+
+        List<Member> users = new List<Member>() { user1, user2, user3 };
+
+        modelBuilder.Entity<Member>().HasData(users);
+
+        List<string> userIds = users.Select(q => q.Id).ToList();
+
         // Seed Vehicles
         modelBuilder.Entity<Vehicle>().HasData(
-            GetVehicles()
+            GetVehicles(userIds)
         );
 
         // Seed Trips
         modelBuilder.Entity<Trip>().HasData(
-            GetTrips()
+            GetTrips(userIds)
         );
 
         // Seed Manifests
         modelBuilder.Entity<Manifest>().HasData(
-            GetManifests()
+            GetManifests(userIds)
         );
     }
 
-    public static List<Vehicle> GetVehicles() {
-        var ownerId = "ffc343dc-373e-42d6-9460-4a8c2c8b8275";
+    public static List<Vehicle> GetVehicles(List<string> userIds) {
+        var ownerId = userIds[1];
         
         List<Vehicle> vehicles = new List<Vehicle>() {
             new Vehicle {
@@ -74,8 +121,8 @@ public static class ModelBuilderExtension
         return vehicles;
     }
 
-    public static List<Trip> GetTrips() {
-        var ownerId = "ffc343dc-373e-42d6-9460-4a8c2c8b8275";
+    public static List<Trip> GetTrips(List<string> userIds) {
+        var ownerId = userIds[1];
 
         List<Trip> trips = new List<Trip>() {
             new Trip {
@@ -119,13 +166,13 @@ public static class ModelBuilderExtension
         return trips;
     }
     
-    public static List<Manifest> GetManifests() {
-        var ownerId = "ffc343dc-373e-42d6-9460-4a8c2c8b8275";
+    public static List<Manifest> GetManifests(List<string> userIds) {
+        var ownerId = userIds[1];
 
         List<Manifest> manifests = new List<Manifest>() {
             new Manifest {
                 ManifestId = 1,
-                MemberId = "36204d2a-d455-4eaf-9613-46826bba2a3b",
+                MemberId = userIds[2],
                 TripId = 1,
                 VehicleId = 1,
                 Notes = "I'm driving",
@@ -136,7 +183,7 @@ public static class ModelBuilderExtension
             },
             new Manifest {
                 ManifestId = 2,
-                MemberId = "f824f67c-1b68-4c00-b8b8-289de93f2d79",
+                MemberId = userIds[0],
                 TripId = 2,
                 VehicleId = 2,
                 Notes = "I'm driving",
@@ -147,7 +194,7 @@ public static class ModelBuilderExtension
             },
             new Manifest {
                 ManifestId = 3,
-                MemberId = "36204d2a-d455-4eaf-9613-46826bba2a3b",
+                MemberId = userIds[2],
                 TripId = 3,
                 VehicleId = 3,
                 Notes = "I'm driving",

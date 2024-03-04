@@ -66,7 +66,7 @@ namespace ClassLibrary.Data
             }
         }
 
-        if (await userManager.FindByNameAsync("mm@mm.mm") == null) {
+        if (await userManager.FindByNameAsync("p@p.p") == null) {
             var passenger = new Member
             {
                 UserName = "p@p.p",
@@ -83,35 +83,26 @@ namespace ClassLibrary.Data
             if (result.Succeeded) {
                 await userManager.AddPasswordAsync(passenger, password4all);
                 await userManager.AddToRoleAsync(passenger, passengerRole);
-                
-                // add data to the database
-                var vehicles = ModelBuilderExtension.GetVehicles();
-                foreach (var vehicle in vehicles) {
-                    vehicle.MemberId = passenger.Id;
-                    vehicle.CreatedBy = passenger.Id;
-                    vehicle.ModifiedBy = passenger.Id;
-                }
-                context.Vehicles.AddRange(vehicles);
-
-                var trips = ModelBuilderExtension.GetTrips();
-                foreach (var trip in trips) {
-                    trip.CreatedBy = passenger.Id;
-                    trip.ModifiedBy = passenger.Id;
-                }
-                context.Trips.AddRange(trips);
-
-                var manifests = ModelBuilderExtension.GetManifests();
-                foreach (var manifest in manifests) {
-                    manifest.MemberId = passenger.Id;
-                    manifest.CreatedBy = passenger.Id;
-                    manifest.ModifiedBy = passenger.Id;
-                }
-                context.Manifests.AddRange(manifests);
-                context.SaveChanges();
             }
         }
 
+        // find by name "b@b.b" and assign it an admin role
+        var user1 = await userManager.FindByNameAsync("b@b.b");
+        if (user1 != null) {
+            await userManager.AddToRoleAsync(user1, adminRole);
+        }
 
+        // find by name "c@c.c" and assign it an owner role
+        var user2 = await userManager.FindByNameAsync("c@c.c");
+        if (user2 != null) {
+            await userManager.AddToRoleAsync(user2, ownerRole);
+        }
+
+        // find by name "d@d.d" and assign it a passenger role
+        var user3 = await userManager.FindByNameAsync("d@d.d");
+        if (user3 != null) {
+            await userManager.AddToRoleAsync(user3, passengerRole);
+        }
     }
 }
 }
