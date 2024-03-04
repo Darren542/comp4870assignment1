@@ -10,104 +10,24 @@ public static class ModelBuilderExtension
 {
     public static void Seed(this ModelBuilder modelBuilder)
     {
-        var pwd = "P@$$w0rd";
-        // Seed default roles with explicit IDs
-        var roles = new List<IdentityRole>
-        {
-            new IdentityRole("Admin"),
-            new IdentityRole("Owner"),
-            new IdentityRole("Passenger")
-        };
-
-        modelBuilder.Entity<IdentityRole>().HasData(roles);
-
-        var passwordHasher = new PasswordHasher<Member>();
-
-        // Seed Members with static IDs
-        var admin = new Member
-        {
-            UserName = "a@a.a",
-            Email = "a@a.a",
-            FirstName = "Admin",
-            LastName = "User",
-            EmailConfirmed = true,
-            NormalizedUserName = "A@A.A",
-            NormalizedEmail = "A@A.A",
-            SecurityStamp = Guid.NewGuid().ToString("D"),
-        };
-        admin.PasswordHash = passwordHasher.HashPassword(admin, pwd);
-
-        var owner = new Member
-        {
-            UserName = "o@o.o",
-            Email = "o@o.o",
-            FirstName = "Owner",
-            LastName = "User",
-            EmailConfirmed = true,
-            NormalizedUserName = "O@O.O",
-            NormalizedEmail = "O@O.O",
-            SecurityStamp = Guid.NewGuid().ToString("D"),
-        };
-        owner.PasswordHash = passwordHasher.HashPassword(owner, pwd);
-
-        var passenger = new Member
-        {
-            UserName = "p@p.p",
-            Email = "p@p.p",
-            FirstName = "Passenger",
-            LastName = "User",
-            EmailConfirmed = true,
-            NormalizedUserName = "P@P.P",
-            NormalizedEmail = "P@P.P",
-            SecurityStamp = Guid.NewGuid().ToString("D"),
-        };
-        passenger.PasswordHash = passwordHasher.HashPassword(passenger, pwd);
-
-        List<Member> users = new List<Member>() { admin, owner, passenger };
-
-        modelBuilder.Entity<Member>().HasData(users);
-
-        // Seed UserRoles
-        List<IdentityUserRole<string>> userRoles = new List<IdentityUserRole<string>>();
-        
-        userRoles.Add(new IdentityUserRole<string> {
-            UserId = users[0].Id,
-            RoleId = roles.First(q => q.Name == "Admin").Id
-        });
-
-        userRoles.Add(new IdentityUserRole<string> {
-            UserId = users[1].Id,
-            RoleId = roles.First(q => q.Name == "Owner").Id
-        });
-
-        userRoles.Add(new IdentityUserRole<string> {
-            UserId = users[2].Id,
-            RoleId = roles.First(q => q.Name == "Passenger").Id
-        });
-
-        modelBuilder.Entity<IdentityUserRole<string>>().HasData(userRoles);
-
-        //Look through users list and get their user.Id and make it into a new list
-        List<string> userIds = users.Select(q => q.Id).ToList();
-
         // Seed Vehicles
         modelBuilder.Entity<Vehicle>().HasData(
-            GetVehicles(userIds)
+            GetVehicles()
         );
 
         // Seed Trips
         modelBuilder.Entity<Trip>().HasData(
-            GetTrips(userIds)
+            GetTrips()
         );
 
         // Seed Manifests
         modelBuilder.Entity<Manifest>().HasData(
-            GetManifests(userIds)
+            GetManifests()
         );
     }
 
-    public static List<Vehicle> GetVehicles(List<string> userIds) {
-        var ownerId = userIds[1];
+    public static List<Vehicle> GetVehicles() {
+        var ownerId = "ffc343dc-373e-42d6-9460-4a8c2c8b8275";
         
         List<Vehicle> vehicles = new List<Vehicle>() {
             new Vehicle {
@@ -154,8 +74,8 @@ public static class ModelBuilderExtension
         return vehicles;
     }
 
-    public static List<Trip> GetTrips(List<string> userIds) {
-        var ownerId = userIds[1];
+    public static List<Trip> GetTrips() {
+        var ownerId = "ffc343dc-373e-42d6-9460-4a8c2c8b8275";
 
         List<Trip> trips = new List<Trip>() {
             new Trip {
@@ -199,13 +119,13 @@ public static class ModelBuilderExtension
         return trips;
     }
     
-    public static List<Manifest> GetManifests(List<string> userIds) {
-        var ownerId = userIds[1];
+    public static List<Manifest> GetManifests() {
+        var ownerId = "ffc343dc-373e-42d6-9460-4a8c2c8b8275";
 
         List<Manifest> manifests = new List<Manifest>() {
             new Manifest {
                 ManifestId = 1,
-                MemberId = userIds[2],
+                MemberId = "36204d2a-d455-4eaf-9613-46826bba2a3b",
                 TripId = 1,
                 VehicleId = 1,
                 Notes = "I'm driving",
@@ -216,7 +136,7 @@ public static class ModelBuilderExtension
             },
             new Manifest {
                 ManifestId = 2,
-                MemberId = userIds[0],
+                MemberId = "f824f67c-1b68-4c00-b8b8-289de93f2d79",
                 TripId = 2,
                 VehicleId = 2,
                 Notes = "I'm driving",
@@ -227,7 +147,7 @@ public static class ModelBuilderExtension
             },
             new Manifest {
                 ManifestId = 3,
-                MemberId = userIds[2],
+                MemberId = "36204d2a-d455-4eaf-9613-46826bba2a3b",
                 TripId = 3,
                 VehicleId = 3,
                 Notes = "I'm driving",

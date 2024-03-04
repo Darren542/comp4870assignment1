@@ -3,6 +3,7 @@ using System;
 using ClassLibrary.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClassLibrary.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240304005807_M1")]
+    partial class M1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
@@ -56,44 +59,6 @@ namespace ClassLibrary.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Manifest", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            ManifestId = 1,
-                            MemberId = "36204d2a-d455-4eaf-9613-46826bba2a3b",
-                            Created = new DateTime(2024, 3, 3, 17, 12, 18, 574, DateTimeKind.Local).AddTicks(5381),
-                            CreatedBy = "ffc343dc-373e-42d6-9460-4a8c2c8b8275",
-                            Modified = new DateTime(2024, 3, 3, 17, 12, 18, 574, DateTimeKind.Local).AddTicks(5384),
-                            ModifiedBy = "ffc343dc-373e-42d6-9460-4a8c2c8b8275",
-                            Notes = "I'm driving",
-                            TripId = 1,
-                            VehicleId = 1
-                        },
-                        new
-                        {
-                            ManifestId = 2,
-                            MemberId = "f824f67c-1b68-4c00-b8b8-289de93f2d79",
-                            Created = new DateTime(2024, 3, 3, 17, 12, 18, 574, DateTimeKind.Local).AddTicks(5388),
-                            CreatedBy = "ffc343dc-373e-42d6-9460-4a8c2c8b8275",
-                            Modified = new DateTime(2024, 3, 3, 17, 12, 18, 574, DateTimeKind.Local).AddTicks(5389),
-                            ModifiedBy = "ffc343dc-373e-42d6-9460-4a8c2c8b8275",
-                            Notes = "I'm driving",
-                            TripId = 2,
-                            VehicleId = 2
-                        },
-                        new
-                        {
-                            ManifestId = 3,
-                            MemberId = "36204d2a-d455-4eaf-9613-46826bba2a3b",
-                            Created = new DateTime(2024, 3, 3, 17, 12, 18, 574, DateTimeKind.Local).AddTicks(5392),
-                            CreatedBy = "ffc343dc-373e-42d6-9460-4a8c2c8b8275",
-                            Modified = new DateTime(2024, 3, 3, 17, 12, 18, 574, DateTimeKind.Local).AddTicks(5393),
-                            ModifiedBy = "ffc343dc-373e-42d6-9460-4a8c2c8b8275",
-                            Notes = "I'm driving",
-                            TripId = 3,
-                            VehicleId = 3
-                        });
                 });
 
             modelBuilder.Entity("ClassLibrary.Models.Member", b =>
@@ -230,47 +195,6 @@ namespace ClassLibrary.Data.Migrations
                     b.HasIndex("VehicleId");
 
                     b.ToTable("Trip", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            TripId = 1,
-                            VehicleId = 1,
-                            Created = new DateTime(2024, 3, 3, 17, 12, 18, 574, DateTimeKind.Local).AddTicks(5340),
-                            CreatedBy = "ffc343dc-373e-42d6-9460-4a8c2c8b8275",
-                            Date = new DateOnly(2021, 12, 25),
-                            DestinationAddress = "123 Main St, Anytown, USA",
-                            MeetingAddress = "456 Elm St, Anytown, USA",
-                            Modified = new DateTime(2024, 3, 3, 17, 12, 18, 574, DateTimeKind.Local).AddTicks(5342),
-                            ModifiedBy = "ffc343dc-373e-42d6-9460-4a8c2c8b8275",
-                            Time = new TimeOnly(12, 0, 0)
-                        },
-                        new
-                        {
-                            TripId = 2,
-                            VehicleId = 2,
-                            Created = new DateTime(2024, 3, 3, 17, 12, 18, 574, DateTimeKind.Local).AddTicks(5346),
-                            CreatedBy = "ffc343dc-373e-42d6-9460-4a8c2c8b8275",
-                            Date = new DateOnly(2022, 1, 12),
-                            DestinationAddress = "321 Knight St, Anytown, USA",
-                            MeetingAddress = "789 Cambie St, Anytown, USA",
-                            Modified = new DateTime(2024, 3, 3, 17, 12, 18, 574, DateTimeKind.Local).AddTicks(5348),
-                            ModifiedBy = "ffc343dc-373e-42d6-9460-4a8c2c8b8275",
-                            Time = new TimeOnly(14, 30, 0)
-                        },
-                        new
-                        {
-                            TripId = 3,
-                            VehicleId = 3,
-                            Created = new DateTime(2024, 3, 3, 17, 12, 18, 574, DateTimeKind.Local).AddTicks(5351),
-                            CreatedBy = "ffc343dc-373e-42d6-9460-4a8c2c8b8275",
-                            Date = new DateOnly(2022, 1, 24),
-                            DestinationAddress = "8 Moody St, Anyville, USA",
-                            MeetingAddress = "99 Hastings St, Anytown, USA",
-                            Modified = new DateTime(2024, 3, 3, 17, 12, 18, 574, DateTimeKind.Local).AddTicks(5352),
-                            ModifiedBy = "ffc343dc-373e-42d6-9460-4a8c2c8b8275",
-                            Time = new TimeOnly(8, 0, 0)
-                        });
                 });
 
             modelBuilder.Entity("ClassLibrary.Models.Vehicle", b =>
@@ -318,50 +242,6 @@ namespace ClassLibrary.Data.Migrations
                     b.HasIndex("Id");
 
                     b.ToTable("Vehicle", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            VehicleId = 1,
-                            Created = new DateTime(2024, 3, 3, 17, 12, 18, 574, DateTimeKind.Local).AddTicks(5224),
-                            CreatedBy = "ffc343dc-373e-42d6-9460-4a8c2c8b8275",
-                            Make = "Tesla",
-                            MemberId = "ffc343dc-373e-42d6-9460-4a8c2c8b8275",
-                            Model = "Model 3",
-                            Modified = new DateTime(2024, 3, 3, 17, 12, 18, 574, DateTimeKind.Local).AddTicks(5283),
-                            ModifiedBy = "ffc343dc-373e-42d6-9460-4a8c2c8b8275",
-                            NumberOfSeats = 5,
-                            VehicleType = "Electric",
-                            Year = 2021
-                        },
-                        new
-                        {
-                            VehicleId = 2,
-                            Created = new DateTime(2024, 3, 3, 17, 12, 18, 574, DateTimeKind.Local).AddTicks(5289),
-                            CreatedBy = "ffc343dc-373e-42d6-9460-4a8c2c8b8275",
-                            Make = "Tesla",
-                            MemberId = "ffc343dc-373e-42d6-9460-4a8c2c8b8275",
-                            Model = "Model S",
-                            Modified = new DateTime(2024, 3, 3, 17, 12, 18, 574, DateTimeKind.Local).AddTicks(5290),
-                            ModifiedBy = "ffc343dc-373e-42d6-9460-4a8c2c8b8275",
-                            NumberOfSeats = 5,
-                            VehicleType = "Electric",
-                            Year = 2021
-                        },
-                        new
-                        {
-                            VehicleId = 3,
-                            Created = new DateTime(2024, 3, 3, 17, 12, 18, 574, DateTimeKind.Local).AddTicks(5293),
-                            CreatedBy = "ffc343dc-373e-42d6-9460-4a8c2c8b8275",
-                            Make = "Tesla",
-                            MemberId = "ffc343dc-373e-42d6-9460-4a8c2c8b8275",
-                            Model = "Model X",
-                            Modified = new DateTime(2024, 3, 3, 17, 12, 18, 574, DateTimeKind.Local).AddTicks(5294),
-                            ModifiedBy = "ffc343dc-373e-42d6-9460-4a8c2c8b8275",
-                            NumberOfSeats = 5,
-                            VehicleType = "Electric",
-                            Year = 2021
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

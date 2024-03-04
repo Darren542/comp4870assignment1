@@ -9,16 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
-// builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-// builder.Services.AddDefaultIdentity<Member>(options => options.SignIn.RequireConfirmedAccount = true)
-//     .AddEntityFrameworkStores<ApplicationDbContext>();
-// builder.Services.AddControllersWithViews();
-
-builder.Services.AddIdentity<Member, IdentityRole>(options => {
+builder.Services.AddIdentity<Member, IdentityRole>(
+options => {
     options.Stores.MaxLengthForKeys = 128;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
+.AddRoles<IdentityRole>()
 .AddDefaultUI()
 .AddDefaultTokenProviders();
 
@@ -47,5 +44,17 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+using (var scope = app.Services.CreateScope()) {
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<ApplicationDbContext>();    
+    context.Database.Migrate();
+
+    var userMgr = services.GetRequiredService<UserManager<Member>>();  
+    var roleMgr = services.GetRequiredService<RoleManager<IdentityRole>>();  
+
+    IdentitySeedData.Initialize(context, userMgr, roleMgr).Wait();
+}
 
 app.Run();
