@@ -66,7 +66,7 @@ namespace ClassLibrary.Data
             }
         }
 
-        if (await userManager.FindByNameAsync("mm@mm.mm") == null) {
+        if (await userManager.FindByNameAsync("p@p.p") == null) {
             var passenger = new Member
             {
                 UserName = "p@p.p",
