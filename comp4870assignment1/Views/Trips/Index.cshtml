@@ -70,7 +70,7 @@
                 @Html.DisplayFor(modelItem => item.ModifiedBy)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Vehicle.VehicleId)
+                @Html.DisplayFor(modelItem => item.Vehicle!.VehicleId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.TripId">Edit</a> |
