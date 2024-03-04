@@ -23,10 +23,10 @@ jobs:
           include-prerelease: true
 
       - name: Build
-        run: dotnet build ./comp4870assignment1/comp4870assignment1.csproj --configuration Release
+        run: dotnet build ./comp4870assignment1/assignment1.csproj --configuration Release
       
       - name: Publish
-        run: dotnet publish ./comp4870assignment1/comp4870assignment1.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish ./comp4870assignment1/assignment1.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
