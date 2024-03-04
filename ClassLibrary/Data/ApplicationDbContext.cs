@@ -38,6 +38,6 @@ public class ApplicationDbContext : IdentityDbContext<Member, IdentityRole, stri
             .HasForeignKey<Manifest>(m => new { m.TripId, m.VehicleId });
         builder.Entity<Manifest>().ToTable("Manifest");
 
-        // builder.Seed();
+        builder.Seed();
     }
 }
