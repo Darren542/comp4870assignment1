@@ -51,7 +51,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'comp4870assignment1'
+          app-name: 'COMP4870-Assignment1'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3F4153EC7A4E4DF588C6E8C4EBE4B1FE }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_442DA39D2EF544C18D293EB9928B2C6B }}
           package: .
