@@ -83,8 +83,35 @@ namespace ClassLibrary.Data
             if (result.Succeeded) {
                 await userManager.AddPasswordAsync(passenger, password4all);
                 await userManager.AddToRoleAsync(passenger, passengerRole);
+                
+                // add data to the database
+                var vehicles = ModelBuilderExtension.GetVehicles();
+                foreach (var vehicle in vehicles) {
+                    vehicle.MemberId = passenger.Id;
+                    vehicle.CreatedBy = passenger.Id;
+                    vehicle.ModifiedBy = passenger.Id;
+                }
+                context.Vehicles.AddRange(vehicles);
+
+                var trips = ModelBuilderExtension.GetTrips();
+                foreach (var trip in trips) {
+                    trip.CreatedBy = passenger.Id;
+                    trip.ModifiedBy = passenger.Id;
+                }
+                context.Trips.AddRange(trips);
+
+                var manifests = ModelBuilderExtension.GetManifests();
+                foreach (var manifest in manifests) {
+                    manifest.MemberId = passenger.Id;
+                    manifest.CreatedBy = passenger.Id;
+                    manifest.ModifiedBy = passenger.Id;
+                }
+                context.Manifests.AddRange(manifests);
+                context.SaveChanges();
             }
         }
+
+
     }
 }
 }
