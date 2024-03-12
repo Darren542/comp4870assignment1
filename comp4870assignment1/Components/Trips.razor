@@ -1,0 +1,56 @@
+@page "/tripsPage"
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext _context
+@inject NavigationManager NavigationManager
+
+<PageTitle>All Trips</PageTitle>
+
+<h1>All Trips</h1>
+
+<a class="btn btn-primary" href="Trips/Create">Create</a>
+
+@if (trips == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Destination Address</th>
+                <th>Meeting Address</th>
+                <th>Vehicle ID</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in trips)
+        {
+            <tr>
+                <td>@item.Date</td>
+                <td>@item.Time</td>
+                <td>@item.DestinationAddress</td>
+                <td>@item.MeetingAddress</td>
+                <td>@item.VehicleId</td>
+                <td>
+                    <a class="btn btn-primary" href="Trips/Edit/@item.TripId">Edit</a>
+                    <a class="btn btn-primary" href="Trips/Details/@item.TripId">Details</a>
+                    <a class="btn btn-danger" href="Trips/Delete/@item.TripId">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Trip>? trips;
+
+    protected override async Task OnInitializedAsync()
+    {
+        trips = await _context.Trips.Include(t => t.Vehicle).ToListAsync();
+    }
+}

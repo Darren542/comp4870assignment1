@@ -1,59 +1,8 @@
 @model IEnumerable<ClassLibrary.Models.Trip>
+@using assignment1.Components
 
 @{
     ViewData["Title"] = "All Trips";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Time)
-            </th>
-            <th>
-                Destination Address
-            </th>
-            <th>
-                Meeting Address
-            </th>
-            <th>
-                Vehicle ID
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Time)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DestinationAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MeetingAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Vehicle!.VehicleId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.TripId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TripId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TripId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<component type="typeof(Trips)" render-mode="ServerPrerendered" />

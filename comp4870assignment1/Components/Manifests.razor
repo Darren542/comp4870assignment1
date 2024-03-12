@@ -1,0 +1,57 @@
+@page "/manifestsPage"
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext _context
+@inject NavigationManager NavigationManager
+<PageTitle>All Manifests</PageTitle>
+
+<h1>All Manifests</h1>
+
+<a class="btn btn-primary" href="Manifests/Create">Create</a>
+
+@if (manifests == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Member Email</th>
+                <th>Trip ID</th>
+                <th>Vehicle ID</th>
+                <th>Notes</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in manifests)
+            {
+                <tr>
+                    <td>@item.Member?.UserName</td>
+                    <td>@item.TripId</td>
+                    <td>@item.VehicleId</td>
+                    <td>@item.Notes</td>
+                    <td>
+                        <a class="btn btn-primary" href="Manifests/Edit/@item.ManifestId">Edit</a>
+                        <a class="btn btn-primary" href="Manifests/Details/@item.ManifestId">Details</a>
+                        <a class="btn btn-primary" href="Manifests/Delete/@item.ManifestId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Manifest>? manifests;
+
+    protected override async Task OnInitializedAsync()
+    {
+        manifests = await _context.Manifests
+                                   .Include(m => m.Member)
+                                   .Include(m => m.Trip)
+                                   .Include(m => m.Vehicle)
+                                   .ToListAsync();
+    }
+}

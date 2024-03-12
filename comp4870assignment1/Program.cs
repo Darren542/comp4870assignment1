@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ClassLibrary.Data;
 using ClassLibrary.Models;
+using assignment1.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,17 @@ options => {
 .AddRoles<IdentityRole>()
 .AddDefaultUI()
 .AddDefaultTokenProviders();
+
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
+
+builder.Services
+.AddRazorComponents()
+.AddInteractiveServerComponents()
+.AddCircuitOptions(options => options.DetailedErrors = true);
+
+builder.Services.AddQuickGridEntityFrameworkAdapter();
 
 var app = builder.Build();
 
@@ -38,12 +50,17 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAntiforgery();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+app.MapRazorComponents<App>()
+.AddInteractiveServerRenderMode();
 
 using (var scope = app.Services.CreateScope()) {
     var services = scope.ServiceProvider;

@@ -1,0 +1,62 @@
+@page "/membersPage"
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext _context
+@inject NavigationManager NavigationManager
+
+<PageTitle>All Members</PageTitle>
+
+<h1>All Members</h1>
+
+<a class="btn btn-primary" href="Members/Create">Create</a>
+
+@if (members == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Street</th>
+                <th>City</th>
+                <th>Postal Code</th>
+                <th>Country</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in members)
+        {
+            <tr>
+                <td>@item.FirstName</td>
+                <td>@item.LastName</td>
+                <td>@item.Email</td>
+                <td>@item.Mobile</td>
+                <td>@item.Street</td>
+                <td>@item.City</td>
+                <td>@item.PostalCode</td>
+                <td>@item.Country</td>
+                <td>
+                    <a class="btn btn-primary" href="Members/Edit/@item.Id">Edit</a>
+                    <a class="btn btn-primary" href="Members/Details/@item.Id">Details</a>
+                    <a class="btn btn-danger" href="Members/Delete/@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Member>? members;
+
+    protected override async Task OnInitializedAsync()
+    {
+        members = await _context.Members.ToListAsync();
+    }
+}
