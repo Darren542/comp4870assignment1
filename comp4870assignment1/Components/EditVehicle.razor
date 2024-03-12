@@ -1,6 +1,9 @@
-﻿@page "/vehicle-edit"
+﻿@page "/vehicle/editPage"
+@rendermode InteractiveServer
 @using ClassLibrary.Models
 @inject ApplicationDbContext _context
+@inject VehicleService _vehicleService
+@inject NavigationManager _navigationManager
 
 <PageTitle>Edit Vehicle</PageTitle>
 
@@ -14,64 +17,68 @@ else
         <DataAnnotationsValidator />
         <ValidationSummary />
 
-        <input type="hidden" bind="@vehicle.VehicleId" />
+        <input type="hidden" @bind="@vehicle.VehicleId" />
 
         <div class="form-group">
             <label for="Model">Model</label>
-            <InputText id="Model" @bind-Value="vehicle.Model" class="form-control" />
+            <InputText id="Model" @bind-Value="@vehicle.Model" class="form-control" />
             <ValidationMessage For="@(() => vehicle.Model)" />
         </div>
 
         <div class="form-group">
             <label for="Make">Make</label>
-            <InputText id="Make" @bind-Value="vehicle.Make" class="form-control" />
+            <InputText id="Make" @bind-Value="@vehicle.Make" class="form-control" />
             <ValidationMessage For="@(() => vehicle.Make)" />
         </div>
 
         <div class="form-group">
             <label for="Year">Year</label>
-            <InputNumber id="Year" @bind-Value="vehicle.Year" class="form-control" />
+            <InputNumber id="Year" @bind-Value="@vehicle.Year" class="form-control" />
             <ValidationMessage For="@(() => vehicle.Year)" />
         </div>
 
         <div class="form-group">
             <label for="NumberOfSeats">Number of Seats</label>
-            <InputNumber id="NumberOfSeats" @bind-Value="vehicle.NumberOfSeats" class="form-control" />
+            <InputNumber id="NumberOfSeats" @bind-Value="@vehicle.NumberOfSeats" class="form-control" />
             <ValidationMessage For="@(() => vehicle.NumberOfSeats)" />
         </div>
 
         <div class="form-group">
             <label for="VehicleType">Vehicle Type</label>
-            <InputText id="VehicleType" @bind-Value="vehicle.VehicleType" class="form-control" />
+            <InputText id="VehicleType" @bind-Value="@vehicle.VehicleType" class="form-control" />
             <ValidationMessage For="@(() => vehicle.VehicleType)" />
         </div>
 
         <div class="form-group">
             <label for="MemberId">Member ID</label>
-            <InputText id="MemberId" @bind-Value="vehicle.MemberId" class="form-control" />
+            <InputText id="MemberId" @bind-Value="@vehicle.MemberId" class="form-control" />
             <ValidationMessage For="@(() => vehicle.MemberId)" />
         </div>
 
         <button type="submit" class="btn btn-primary">Save</button>
     </EditForm>
 
-    <a href="/vehicles" class="btn btn-secondary">Back to List</a>
+    <a href="/Vehicles/" class="btn btn-secondary">Back to List</a>
 }
 
 @code {
     [Parameter]
-    public int VehicleId { get; set; }
+    public int vehicleId { get; set; }
 
-    private Vehicle vehicle;
-
-    protected override async Task OnInitializedAsync()
-    {
-        vehicle = await _context.Vehicles.FindAsync(VehicleId);
-    }
+    private Vehicle vehicle = new Vehicle();
 
     private async Task HandleValidSubmit()
     {
-        _context.Vehicles.Update(vehicle);
-        await _context.SaveChangesAsync();
+        await _vehicleService.UpdateVehicleAsync(vehicle.VehicleId, vehicle);
+        _navigationManager.NavigateTo("/Vehicles");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        vehicle = await _vehicleService.GetVehicleAsync(vehicleId);
+        if(vehicle == null)
+        {
+            vehicle = new Vehicle();
+        }
     }
 }

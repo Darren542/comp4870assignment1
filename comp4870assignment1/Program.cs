@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ClassLibrary.Data;
 using ClassLibrary.Models;
 using assignment1.Components;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,14 +21,21 @@ options => {
 .AddDefaultUI()
 .AddDefaultTokenProviders();
 
-builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
-
 builder.Services
 .AddRazorComponents()
 .AddInteractiveServerComponents()
 .AddCircuitOptions(options => options.DetailedErrors = true);
+
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+
+
+builder.Services.AddRazorPages()
+    .AddJsonOptions(options =>
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+builder.Services.AddServerSideBlazor();
+builder.Services.AddScoped<VehicleService>();
 
 builder.Services.AddQuickGridEntityFrameworkAdapter();
 
@@ -50,8 +58,6 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAntiforgery();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(
@@ -59,6 +65,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
+app.UseAntiforgery();
 app.MapRazorComponents<App>()
 .AddInteractiveServerRenderMode();
 
