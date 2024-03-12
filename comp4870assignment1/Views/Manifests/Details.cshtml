@@ -1,7 +1,7 @@
 @model ClassLibrary.Models.Manifest
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Manifest Details";
 }
 
 <h1>Details</h1>
@@ -11,19 +11,19 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Member)
+            Member ID
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Member!.Id)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Trip)
+            Trip ID
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Trip!.TripId)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Vehicle)
+            Vehicle ID
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Vehicle!.MemberId)

@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace assignment1.Controllers;
 
-    [Authorize(Roles = "Admin, Owner, Passenger")]
+    [Authorize(Roles = "Admin, Owner")]
     public class TripsController : Controller
     {
         private readonly ApplicationDbContext _context;
