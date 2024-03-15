@@ -33,9 +33,9 @@ else
                     <td>@item.VehicleId</td>
                     <td>@item.Notes</td>
                     <td>
-                        <a class="btn btn-primary" href="Manifests/Edit/@item.ManifestId">Edit</a>
+                        <a class="btn btn-primary" href="Manifests/Edit/@item.ManifestId/@item.MemberId">Edit</a>
                         <a class="btn btn-primary" href="Manifests/Details/@item.ManifestId">Details</a>
-                        <a class="btn btn-primary" href="Manifests/Delete/@item.ManifestId">Delete</a>
+                        <a class="btn btn-primary" href="Manifests/Delete/@item.ManifestId/@item.MemberId">Delete</a>
                     </td>
                 </tr>
             }

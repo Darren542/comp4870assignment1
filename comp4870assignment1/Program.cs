@@ -61,6 +61,24 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
+    name: "manifests_edit",
+    pattern: "Manifests/Edit/{manifestId:int}/{memberId:guid}",
+    defaults: new { controller = "Manifests", action = "Edit" });
+app.MapControllerRoute(
+    name: "manifests_delete",
+    pattern: "Manifests/Delete/{manifestId:int}/{memberId:guid}",
+    defaults: new { controller = "Manifests", action = "Delete" });
+
+app.MapControllerRoute(
+    name: "trips_edit",
+    pattern: "Trips/Edit/{tripId:int}/{vehicleId:int}",
+    defaults: new { controller = "Trips", action = "Edit" });
+app.MapControllerRoute(
+    name: "trips_delete",
+    pattern: "Trips/Delete/{tripId:int}/{vehicleId:int}",
+    defaults: new { controller = "Trips", action = "Delete" });
+
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();

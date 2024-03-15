@@ -72,14 +72,15 @@ namespace assignment1.Controllers;
         }
 
         // GET: Trips/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? tripId, int? vehicleId)
         {
-            if (id == null)
+            if (tripId == null || vehicleId == null)
             {
                 return NotFound();
             }
 
-            var trip = await _context.Trips.FindAsync(id);
+            var trip = await _context.Trips
+                .FirstOrDefaultAsync(m => m.TripId == tripId && m.VehicleId == vehicleId);
             if (trip == null)
             {
                 return NotFound();
@@ -93,9 +94,9 @@ namespace assignment1.Controllers;
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TripId,VehicleId,Date,Time,DestinationAddress,MeetingAddress,Created,Modified,CreatedBy,ModifiedBy")] Trip trip)
+        public async Task<IActionResult> Edit(int tripId, int vehicleId, [Bind("TripId,VehicleId,Date,Time,DestinationAddress,MeetingAddress,Created,Modified,CreatedBy,ModifiedBy")] Trip trip)
         {
-            if (id != trip.TripId)
+            if (tripId != trip.TripId || vehicleId != trip.VehicleId)
             {
                 return NotFound();
             }
@@ -109,7 +110,7 @@ namespace assignment1.Controllers;
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TripExists(trip.TripId))
+                    if (!TripExists(trip.TripId, trip.VehicleId))
                     {
                         return NotFound();
                     }
@@ -125,16 +126,15 @@ namespace assignment1.Controllers;
         }
 
         // GET: Trips/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? tripId, int? vehicleId)
         {
-            if (id == null)
+            if (tripId == null || vehicleId == null)
             {
                 return NotFound();
             }
 
             var trip = await _context.Trips
-                .Include(t => t.Vehicle)
-                .FirstOrDefaultAsync(m => m.TripId == id);
+                .FirstOrDefaultAsync(m => m.TripId == tripId && m.VehicleId == vehicleId);
             if (trip == null)
             {
                 return NotFound();
@@ -146,20 +146,21 @@ namespace assignment1.Controllers;
         // POST: Trips/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int tripId, int vehicleId)
         {
-            var trip = await _context.Trips.FindAsync(id);
+            var trip = await _context.Trips
+                .FirstOrDefaultAsync(m => m.TripId == tripId && m.VehicleId == vehicleId);
             if (trip != null)
             {
                 _context.Trips.Remove(trip);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TripExists(int id)
+        private bool TripExists(int tripId, int vehicleId)
         {
-            return _context.Trips.Any(e => e.TripId == id);
+            return _context.Trips.Any(e => e.TripId == tripId && e.VehicleId == vehicleId);
         }
     }

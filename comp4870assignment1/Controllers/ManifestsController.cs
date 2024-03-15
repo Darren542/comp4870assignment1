@@ -78,14 +78,15 @@ namespace assignment1.Controllers;
         }
 
         // GET: Manifests/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? manifestId, string? memberId)
         {
-            if (id == null)
+            if (manifestId == null || memberId == null)
             {
                 return NotFound();
             }
 
-            var manifest = await _context.Manifests.FindAsync(id);
+            var manifest = await _context.Manifests
+                .FirstOrDefaultAsync(m => m.ManifestId == manifestId && m.MemberId == memberId);
             if (manifest == null)
             {
                 return NotFound();
@@ -101,9 +102,9 @@ namespace assignment1.Controllers;
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ManifestId,MemberId,TripId,VehicleId,Notes,Created,Modified,CreatedBy,ModifiedBy")] Manifest manifest)
+        public async Task<IActionResult> Edit(int manifestId, string memberId, [Bind("ManifestId,MemberId,TripId,VehicleId,Notes,Created,Modified,CreatedBy,ModifiedBy")] Manifest manifest)
         {
-            if (id != manifest.ManifestId)
+            if (manifestId != manifest.ManifestId || memberId != manifest.MemberId)
             {
                 return NotFound();
             }
@@ -117,7 +118,7 @@ namespace assignment1.Controllers;
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ManifestExists(manifest.ManifestId))
+                    if (!ManifestExists(manifest.ManifestId, manifest.MemberId))
                     {
                         return NotFound();
                     }
@@ -135,9 +136,9 @@ namespace assignment1.Controllers;
         }
 
         // GET: Manifests/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? manifestId, string memberId)
         {
-            if (id == null)
+            if (manifestId == null || memberId == null)
             {
                 return NotFound();
             }
@@ -146,7 +147,7 @@ namespace assignment1.Controllers;
                 .Include(m => m.Member)
                 .Include(m => m.Trip)
                 .Include(m => m.Vehicle)
-                .FirstOrDefaultAsync(m => m.ManifestId == id);
+                .FirstOrDefaultAsync(m => m.ManifestId == manifestId && m.MemberId == memberId);
             if (manifest == null)
             {
                 return NotFound();
@@ -158,20 +159,21 @@ namespace assignment1.Controllers;
         // POST: Manifests/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int manifestId, string memberId)
         {
-            var manifest = await _context.Manifests.FindAsync(id);
+            var manifest = await _context.Manifests
+                .FirstOrDefaultAsync(m => m.ManifestId == manifestId && m.MemberId == memberId);
             if (manifest != null)
             {
                 _context.Manifests.Remove(manifest);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-        private bool ManifestExists(int id)
+        
+        private bool ManifestExists(int manifestId, string memberId)
         {
-            return _context.Manifests.Any(e => e.ManifestId == id);
+            return _context.Manifests.Any(e => e.ManifestId == manifestId && e.MemberId == memberId);
         }
     }
