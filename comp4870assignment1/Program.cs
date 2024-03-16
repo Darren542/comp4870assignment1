@@ -36,6 +36,7 @@ builder.Services.AddRazorPages()
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<VehicleService>();
+builder.Services.AddScoped<ManifestService>();
 
 builder.Services.AddQuickGridEntityFrameworkAdapter();
 

@@ -1,13 +1,13 @@
-@page "/vehicle/deletePage"
+@page "/manifest/deletePage"
 @rendermode InteractiveServer
 @using ClassLibrary.Models
 @inject ApplicationDbContext _context
-@inject VehicleService _vehicleService
+@inject ManifestService _manifestService
 @inject NavigationManager _navigationManager
 
 <PageTitle>Edit Vehicle</PageTitle>
 
-@if (vehicle == null)
+@if (manifest == null)
 {
     <p>Loading...</p>
 }
@@ -17,97 +17,89 @@ else
 
     <h3>Are you sure you want to delete this?</h3>
     <div>
-        <h4>Vehicle</h4>
+        <h4>Manifest</h4>
         <hr />
         <dl class="row">
-            <dt class = "col-sm-2">
-                Model
-            </dt>
-            <dd class = "col-sm-10">
-                @vehicle.Model
-            </dd>
-            <dt class = "col-sm-2">
-                Make
-            </dt>
-            <dd class = "col-sm-10">
-                @vehicle.Make
-            </dd>
-            <dt class = "col-sm-2">
-                Year
-            </dt>
-            <dd class = "col-sm-10">
-                @vehicle.Year
-            </dd>
-            <dt class = "col-sm-2">
-                Number of Seats
-            </dt>
-            <dd class = "col-sm-10">
-                @vehicle.NumberOfSeats
-            </dd>
-            <dt class = "col-sm-2">
-                Vehicle Type
-            </dt>
-            <dd class = "col-sm-10">
-                @vehicle.VehicleType
-            </dd>
             <dt class = "col-sm-2">
                 Member ID
             </dt>
             <dd class = "col-sm-10">
-                @vehicle.MemberId
+                @manifest.MemberId
+            </dd>
+            <dt class = "col-sm-2">
+                Trip ID
+            </dt>
+            <dd class = "col-sm-10">
+                @manifest.TripId
+            </dd>
+            <dt class = "col-sm-2">
+                Vehicle ID
+            </dt>
+            <dd class = "col-sm-10">
+                @manifest.VehicleId
+            </dd>
+            <dt class = "col-sm-2">
+                Notes
+            </dt>
+            <dd class = "col-sm-10">
+                @manifest.Notes
             </dd>
             <dt class = "col-sm-2">
                 Date Created
             </dt>
             <dd class = "col-sm-10">
-                @vehicle.Created
+                @manifest.Created
             </dd>
             <dt class = "col-sm-2">
                 Date Modified
             </dt>
             <dd class = "col-sm-10">
-                @vehicle.Modified
+                @manifest.Modified
             </dd>
             <dt class = "col-sm-2">
                 Created By
             </dt>
             <dd class = "col-sm-10">
-                @vehicle.CreatedBy
+                @manifest.CreatedBy
             </dd>
             <dt class = "col-sm-2">
                 Modified By
             </dt>
             <dd class = "col-sm-10">
-                @vehicle.ModifiedBy
+                @manifest.ModifiedBy
             </dd>
         </dl>
     
-        <EditForm Model="@vehicle" OnValidSubmit="HandleValidSubmit">
-            <input type="hidden" @bind="vehicle.VehicleId" />
+        <EditForm Model="@manifest" OnValidSubmit="HandleValidSubmit">
+            <input type="hidden" @bind="manifest.ManifestId" />
+            <input type="hidden" @bind="manifest.MemberId" />
             <button type="submit" class="btn btn-danger">Delete</button>
-            <a href="/Vehicles" class="btn btn-secondary">Back to List</a>
+            <a href="/Manifests" class="btn btn-secondary">Back to List</a>
         </EditForm>
     </div>
 }
 
 @code {
     [Parameter]
-    public int vehicleId { get; set; }
+    public int ManifestId { get; set; }
 
-    private Vehicle vehicle = new Vehicle();
+    [Parameter]
+    public string MemberId { get; set; }
+
+    private Manifest manifest = new Manifest();
 
     private async Task HandleValidSubmit()
     {
-        await _vehicleService.DeleteVehicleAsync(vehicle.VehicleId);
-        _navigationManager.NavigateTo("/Vehicles");
+        await _manifestService.DeleteManifestAsync(manifest.ManifestId, manifest.MemberId);
+        _navigationManager.NavigateTo("/Manifests");
     }
 
     protected override async Task OnInitializedAsync()
     {
-        vehicle = await _vehicleService.GetVehicleAsync(vehicleId);
-        if(vehicle == null)
+        manifest = await _manifestService.GetManifestAsync(ManifestId, MemberId);
+        if(manifest == null)
         {
-            vehicle = new Vehicle();
+            manifest = new Manifest();
         }
     }
 }
