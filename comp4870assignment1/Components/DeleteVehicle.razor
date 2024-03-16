@@ -1,0 +1,110 @@
+@page "/vehicle/deletePage"
+@rendermode InteractiveServer
+@using ClassLibrary.Models
+@inject ApplicationDbContext _context
+@inject VehicleService _vehicleService
+@inject NavigationManager _navigationManager
+
+<PageTitle>Edit Vehicle</PageTitle>
+
+@if (vehicle == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div>
+        <h4>Vehicle</h4>
+        <hr />
+        <dl class="row">
+            <dt class = "col-sm-2">
+                Model
+            </dt>
+            <dd class = "col-sm-10">
+                @vehicle.Model
+            </dd>
+            <dt class = "col-sm-2">
+                Make
+            </dt>
+            <dd class = "col-sm-10">
+                @vehicle.Make
+            </dd>
+            <dt class = "col-sm-2">
+                Year
+            </dt>
+            <dd class = "col-sm-10">
+                @vehicle.Year
+            </dd>
+            <dt class = "col-sm-2">
+                Number of Seats
+            </dt>
+            <dd class = "col-sm-10">
+                @vehicle.NumberOfSeats
+            </dd>
+            <dt class = "col-sm-2">
+                Vehicle Type
+            </dt>
+            <dd class = "col-sm-10">
+                @vehicle.VehicleType
+            </dd>
+            <dt class = "col-sm-2">
+                Member ID
+            </dt>
+            <dd class = "col-sm-10">
+                @vehicle.MemberId
+            </dd>
+            <dt class = "col-sm-2">
+                Date Created
+            </dt>
+            <dd class = "col-sm-10">
+                @vehicle.Created
+            </dd>
+            <dt class = "col-sm-2">
+                Date Modified
+            </dt>
+            <dd class = "col-sm-10">
+                @vehicle.Modified
+            </dd>
+            <dt class = "col-sm-2">
+                Created By
+            </dt>
+            <dd class = "col-sm-10">
+                @vehicle.CreatedBy
+            </dd>
+            <dt class = "col-sm-2">
+                Modified By
+            </dt>
+            <dd class = "col-sm-10">
+                @vehicle.ModifiedBy
+            </dd>
+        </dl>
+    
+        <EditForm Model="@vehicle" OnValidSubmit="HandleValidSubmit">
+            <input type="hidden" @bind="vehicle.VehicleId" />
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a href="/Vehicles" class="btn btn-secondary">Back to List</a>
+        </EditForm>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int vehicleId { get; set; }
+
+    private Vehicle vehicle = new Vehicle();
+
+    private async Task HandleValidSubmit()
+    {
+        await _vehicleService.DeleteVehicleAsync(vehicle.VehicleId);
+        _navigationManager.NavigateTo("/Vehicles");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        vehicle = await _vehicleService.GetVehicleAsync(vehicleId);
+        if(vehicle == null)
+        {
+            vehicle = new Vehicle();
+        }
+    }
+}

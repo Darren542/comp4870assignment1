@@ -54,7 +54,7 @@ namespace assignment1.Controllers;
         {
             ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Id");
             ViewData["TripId"] = new SelectList(_context.Trips, "TripId", "TripId");
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "MemberId");
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "VehicleId");
             return View();
         }
 
@@ -73,7 +73,7 @@ namespace assignment1.Controllers;
             }
             ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Id", manifest.MemberId);
             ViewData["TripId"] = new SelectList(_context.Trips, "TripId", "TripId", manifest.TripId);
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "MemberId", manifest.VehicleId);
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "VehicleId", manifest.VehicleId);
             return View(manifest);
         }
 
@@ -93,7 +93,7 @@ namespace assignment1.Controllers;
             }
             ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Id", manifest.MemberId);
             ViewData["TripId"] = new SelectList(_context.Trips, "TripId", "TripId", manifest.TripId);
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "MemberId", manifest.VehicleId);
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "VehicleId", manifest.VehicleId);
             return View(manifest);
         }
 
@@ -131,7 +131,7 @@ namespace assignment1.Controllers;
             }
             ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Id", manifest.MemberId);
             ViewData["TripId"] = new SelectList(_context.Trips, "TripId", "TripId", manifest.TripId);
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "MemberId", manifest.VehicleId);
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "VehicleId", manifest.VehicleId);
             return View(manifest);
         }
 

@@ -18,6 +18,7 @@ else
     <table class="table">
         <thead>
             <tr>
+                <th>Vehicle ID</th>
                 <th>Model</th>
                 <th>Make</th>
                 <th>Year</th>
@@ -31,6 +32,7 @@ else
         @foreach (var item in vehicles)
         {
             <tr>
+                <td>@item.VehicleId</td>
                 <td>@item.Model</td>
                 <td>@item.Make</td>
                 <td>@item.Year</td>
