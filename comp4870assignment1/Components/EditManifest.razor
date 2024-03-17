@@ -1,0 +1,88 @@
+﻿@page "/manifest/editPage"
+@using ClassLibrary.Models
+@rendermode InteractiveServer
+@inject ManifestService _manifestService
+@inject NavigationManager _navigationManager
+@inject MemberService _memberService
+@inject TripService _tripService
+@inject VehicleService _vehicleService
+
+<PageTitle>Edit Manifest</PageTitle>
+
+@if (manifest == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <EditForm Model="@manifest" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <input type="hidden" @bind="@manifest.ManifestId" />
+        <input type="hidden" @bind="@manifest.MemberId" />
+
+        <div class="form-group">
+            <label for="MemberId">Member ID</label>
+            <InputSelect id="MemberId" @bind-Value="manifest.MemberId" class="form-control">
+                @foreach (var member in members)
+                {
+                    <option value="@member.Id">@member.FirstName @member.LastName</option>
+                }
+            </InputSelect>
+        </div>
+        <div class="form-group">
+            <label for="TripId">Trip ID</label>
+            <InputSelect id="TripId" @bind-Value="manifest.TripId" class="form-control">
+                @foreach (var trip in trips)
+                {
+                    <option value="@trip.TripId">@trip.TripId - @trip.DestinationAddress</option>
+                }
+            </InputSelect>
+        </div>
+        <div class="form-group">
+            <label for="VehicleId">Vehicle ID</label>
+            <InputSelect id="VehicleId" @bind-Value="manifest.VehicleId" class="form-control">
+                @foreach (var vehicle in vehicles)
+                {
+                    <option value="@vehicle.VehicleId">@vehicle.Make @vehicle.Model</option>
+                }
+            </InputSelect>
+        </div>
+        <div class="form-group">
+            <label for="Notes">Notes</label>
+            <InputTextArea id="Notes" @bind-Value="manifest.Notes" class="form-control" />
+        </div>
+        
+        <button type="submit" class="btn btn-success">Update</button>
+    </EditForm>
+}
+
+
+@code {
+    [Parameter]
+    public int ManifestId { get; set; }
+
+    [Parameter]
+    public string MemberId { get; set; }
+
+    private Manifest manifest;
+    private List<Member> members = new List<Member>();
+    private List<Trip> trips = new List<Trip>();
+    private List<Vehicle> vehicles = new List<Vehicle>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        manifest = await _manifestService.GetManifestAsync(ManifestId, MemberId);
+        members = await _memberService.GetMembersAsync();
+        trips = await _tripService.GetTripsAsync();
+        vehicles = await _vehicleService.GetVehiclesAsync();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await _manifestService.UpdateManifestAsync(manifest.ManifestId, manifest.MemberId, manifest);
+        _navigationManager.NavigateTo("/Manifests");
+    }
+}
+

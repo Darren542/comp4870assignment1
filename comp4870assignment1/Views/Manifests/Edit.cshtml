@@ -4,7 +4,9 @@
     ViewData["Title"] = "Edit Manifest";
 }
 
-<h1>Edit</h1>
+<component type="typeof(EditManifest)" render-mode="ServerPrerendered" param-ManifestId="@Model.ManifestId" param-MemberId="@Model.MemberId" />
+
+@* <h1>Edit</h1>
 
 <h4>Manifest</h4>
 <hr />
@@ -58,8 +60,8 @@
 
 <div>
     <a asp-action="Index">Back to List</a>
-</div>
+</div> *@
 
-@section Scripts {
+@* @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+} *@

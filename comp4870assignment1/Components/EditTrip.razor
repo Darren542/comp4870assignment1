@@ -1,0 +1,103 @@
+﻿@page "/trip/edit/{TripId}"
+@using ClassLibrary.Models
+@inject TripService _tripService
+@inject NavigationManager _navigationManager
+@inject VehicleService _vehicleService
+
+<PageTitle>Edit Trip</PageTitle>
+
+@if (trip == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <EditForm Model="@trip" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <input type="hidden" @bind="@trip.TripId" />
+        
+        <div class="form-group">
+            <label for="VehicleId">Vehicle</label>
+            <InputSelect id="VehicleId" @bind-Value="trip.VehicleId" class="form-control">
+                @foreach (var vehicle in vehicles)
+                {
+                    <option value="@vehicle.VehicleId">@vehicle.Make @vehicle.Model</option>
+                }
+            </InputSelect>
+        </div>
+
+        <div class="form-group">
+            <label for="Date">Date</label>
+            <InputDate id="Date" @bind-Value="trip.Date" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label for="Time">Time</label>
+            <InputText id="Time" @bind-Value="timeString" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label for="DestinationAddress">Destination Address</label>
+            <InputText id="DestinationAddress" @bind-Value="trip.DestinationAddress" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label for="MeetingAddress">Meeting Address</label>
+            <InputText id="MeetingAddress" @bind-Value="trip.MeetingAddress" class="form-control" />
+        </div>
+
+        <!-- Skipping Created, Modified, CreatedBy, and ModifiedBy for direct editing as it's typically managed by the system -->
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </EditForm>
+
+    <button class="btn btn-secondary" @onclick="Cancel">Back to List</button>
+}
+
+@code {
+    [Parameter]
+    public int TripId { get; set; }
+    [Parameter]
+    public int VehicleId { get; set; }
+
+    private Trip trip;
+    private List<Vehicle> vehicles = new List<Vehicle>();
+    private string timeString
+    {
+        get => trip.Time?.ToString("HH:mm") ?? string.Empty;
+        set
+        {
+            if (TimeOnly.TryParse(value, out var time))
+            {
+                trip.Time = time;
+            }
+            else
+            {
+                trip.Time = null;
+            }
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        trip = await _tripService.GetTripAsync(TripId, VehicleId);
+        vehicles = await _vehicleService.GetVehiclesAsync();
+        if (trip == null)
+        {
+            _navigationManager.NavigateTo("/trips");
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await _tripService.UpdateTripAsync(trip.TripId, trip);
+        _navigationManager.NavigateTo("/trips");
+    }
+
+    private void Cancel()
+    {
+        _navigationManager.NavigateTo("/trips");
+    }
+}

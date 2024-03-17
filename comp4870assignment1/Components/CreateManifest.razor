@@ -1,0 +1,69 @@
+﻿@page "/manifest-create"
+@using ClassLibrary.Models
+@inject ManifestService _manifestService
+@inject NavigationManager _navigationManager
+@inject MemberService _memberService
+@inject TripService _tripService
+@inject VehicleService _vehicleService
+
+<PageTitle>Create Manifest</PageTitle>
+
+<EditForm Model="@manifest" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="MemberId">Member ID</label>
+        <InputSelect id="MemberId" @bind-Value="manifest.MemberId" class="form-control">
+            @foreach (var member in members)
+            {
+                <option value="@member.Id">@member.FirstName @member.LastName</option>
+            }
+        </InputSelect>
+    </div>
+    <div class="form-group">
+        <label for="TripId">Trip ID</label>
+        <InputSelect id="TripId" @bind-Value="manifest.TripId" class="form-control">
+            @foreach (var trip in trips)
+            {
+                <option value="@trip.TripId">@trip.TripId - @trip.DestinationAddress</option>
+            }
+        </InputSelect>
+    </div>
+    <div class="form-group">
+        <label for="VehicleId">Vehicle ID</label>
+        <InputSelect id="VehicleId" @bind-Value="manifest.VehicleId" class="form-control">
+            @foreach (var vehicle in vehicles)
+            {
+                <option value="@vehicle.VehicleId">@vehicle.Make @vehicle.Model</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div class="form-group">
+        <label for="Notes">Notes</label>
+        <InputTextArea id="Notes" @bind-Value="manifest.Notes" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</EditForm>
+
+@code {
+    private Manifest manifest = new Manifest();
+    private List<Member> members = new List<Member>();
+    private List<Trip> trips = new List<Trip>();
+    private List<Vehicle> vehicles = new List<Vehicle>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        members = await _memberService.GetMembersAsync();
+        trips = await _tripService.GetTripsAsync();
+        vehicles = await _vehicleService.GetVehiclesAsync();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await _manifestService.AddManifestAsync(manifest);
+        _navigationManager.NavigateTo("/manifests");
+    }
+}

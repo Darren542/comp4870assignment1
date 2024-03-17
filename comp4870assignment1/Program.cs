@@ -37,6 +37,8 @@ builder.Services.AddRazorPages()
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<VehicleService>();
 builder.Services.AddScoped<ManifestService>();
+builder.Services.AddScoped<TripService>();
+builder.Services.AddScoped<MemberService>();
 
 builder.Services.AddQuickGridEntityFrameworkAdapter();
 
