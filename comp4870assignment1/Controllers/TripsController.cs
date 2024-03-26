@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ClassLibrary.Data;
 using ClassLibrary.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace assignment1.Controllers;
 
@@ -16,9 +17,14 @@ namespace assignment1.Controllers;
     {
         private readonly ApplicationDbContext _context;
 
-        public TripsController(ApplicationDbContext context)
+        private readonly UserManager<Member> _userManager;
+
+
+        public TripsController(ApplicationDbContext context, UserManager<Member> userManager)
         {
             _context = context;
+            _userManager = userManager;
+
         }
 
         // GET: Trips
@@ -61,11 +67,24 @@ namespace assignment1.Controllers;
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("VehicleId,Date,Time,DestinationAddress,MeetingAddress,Created,Modified,CreatedBy,ModifiedBy")] Trip trip)
+        public async Task<IActionResult> Create([Bind("VehicleId,Date,Time,DestinationAddress,MeetingAddress")] Trip trip)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(trip);
+                string? userId = _userManager.GetUserId(User);
+                Trip newTrip = new()
+                {
+                    VehicleId = trip.VehicleId,
+                    Date = trip.Date,
+                    Time = trip.Time,
+                    DestinationAddress = trip.DestinationAddress,
+                    MeetingAddress = trip.MeetingAddress,
+                    Created = DateTime.Now,
+                    Modified = DateTime.Now,
+                    CreatedBy = userId,
+                    ModifiedBy = userId
+                };
+                _context.Add(newTrip);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -148,20 +167,20 @@ namespace assignment1.Controllers;
         }
 
         // POST: Trips/Delete/5
-        // [HttpPost, ActionName("Delete")]
-        // [ValidateAntiForgeryToken]
-        // public async Task<IActionResult> DeleteConfirmed(int tripId)
-        // {
-        //     var trip = await _context.Trips
-        //         .FirstOrDefaultAsync(m => m.TripId == tripId);
-        //     if (trip != null)
-        //     {
-        //         _context.Trips.Remove(trip);
-        //         await _context.SaveChangesAsync();
-        //     }
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int tripId)
+        {
+            var trip = await _context.Trips
+                .FirstOrDefaultAsync(m => m.TripId == tripId);
+            if (trip != null)
+            {
+                _context.Trips.Remove(trip);
+                await _context.SaveChangesAsync();
+            }
 
-        //     return RedirectToAction(nameof(Index));
-        // }
+            return RedirectToAction(nameof(Index));
+        }
 
         private bool TripExists(int tripId)
         {

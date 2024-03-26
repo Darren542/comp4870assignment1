@@ -62,7 +62,7 @@
             @Html.DisplayNameFor(model => model.Vehicle)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Vehicle!.MemberId)
+            @Html.DisplayFor(model => model.Vehicle!.VehicleId): @Html.DisplayFor(model => model.Vehicle!.Make) @Html.DisplayFor(model => model.Vehicle!.Model)
         </dd>
     </dl>
 </div>
