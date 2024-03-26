@@ -18,6 +18,8 @@ else
                 <th>Manifest ID</th>
                 <th>Member Email</th>
                 <th>Trip ID</th>
+                <th>Trip Meeting Address</th>
+                <th>Trip Destination Address</th>
                 <th>Notes</th>
                 <th>Actions</th>
             </tr>
@@ -29,6 +31,8 @@ else
                     <td>@item.ManifestId</td>
                     <td>@item.Member?.UserName</td>
                     <td>@item.TripId</td>
+                    <td>@item.Trip?.MeetingAddress</td>
+                    <td>@item.Trip?.DestinationAddress</td>
                     <td>@item.Notes</td>
                     <td>
                         <a class="btn btn-primary" href="Manifests/Edit/@item.ManifestId/@item.MemberId">Edit</a>
