@@ -143,7 +143,9 @@ public class ManifestsController : Controller
             return NotFound();
         }
         ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Id", manifest.MemberId);
-        ViewData["TripId"] = new SelectList(_context.Trips, "TripId", "TripId", manifest.TripId);
+        ViewData["TripId"] = new SelectList(_context.Trips
+                .Select(t => new { t.TripId, Description = "[" + t.TripId + "] Destination: " + t.DestinationAddress }), 
+                "TripId", "Description");
         return View(manifest);
     }
 
