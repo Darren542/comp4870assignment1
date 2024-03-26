@@ -1,5 +1,6 @@
 @page "/vehicles/createPage"
 @using ClassLibrary.Models
+@using Microsoft.EntityFrameworkCore
 @inject ApplicationDbContext _context
 @inject NavigationManager NavigationManager
 
@@ -40,8 +41,13 @@
     </div>
 
     <div class="form-group">
-        <label for="MemberId">Member ID</label>
-        <InputText id="MemberId" @bind-Value="vehicle.MemberId" class="form-control" />
+        <label for="MemberId">Vehicle Owner</label>
+        <InputSelect id="MemberId" @bind-Value="vehicle.MemberId" class="form-control">
+            @foreach (var member in members)
+            {
+                <option value="@member.Id">@member.FirstName @member.LastName</option>
+            }
+        </InputSelect>
         <ValidationMessage For="@(() => vehicle.MemberId)" class="text-danger" />
     </div>
 
@@ -54,6 +60,11 @@
 
 @code {
     private Vehicle vehicle = new Vehicle();
+    private List<Member> members;
+    protected override async Task OnInitializedAsync()
+    {
+        members = await _context.Members.ToListAsync();
+    }
 
     private async Task HandleValidSubmit()
     {
