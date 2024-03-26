@@ -86,6 +86,22 @@ namespace assignment1.Controllers;
                 };
                 _context.Add(newTrip);
                 await _context.SaveChangesAsync();
+
+                //Add new Trip to Manifest
+                Manifest newManifest = new()
+                {
+                    ManifestId = _context.Manifests
+                      .DefaultIfEmpty()
+                      .Max(m => (int?)m.ManifestId) + 1 ?? 1,
+                    MemberId = userId,
+                    TripId = newTrip.TripId,
+                    Created = DateTime.Now,
+                    Modified = DateTime.Now,
+                    CreatedBy = userId,
+                    ModifiedBy = userId
+                };
+                _context.Add(newManifest);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "VehicleId", trip.VehicleId);

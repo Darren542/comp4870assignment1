@@ -75,7 +75,7 @@ public class ManifestsController : Controller
         Table table = new Table(UnitValue.CreatePercentArray(new float[] { 3, 3, 3, 3, 4 })).UseAllAvailableWidth();
 
         // Adding column headers
-        string[] headers = { "Manifest ID", "Member", "Trip", "Vehicle", "Notes" };
+        string[] headers = { "Manifest ID", "Member", "Trip", "Notes" };
         foreach (var header in headers)
         {
             table.AddHeaderCell(new Cell().Add(new Paragraph(header).SetBold()));
@@ -85,7 +85,6 @@ public class ManifestsController : Controller
         var manifests = await _context.Manifests
             .Include(m => m.Member)
             .Include(m => m.Trip)
-            .Include(m => m.Vehicle)
             .ToListAsync();
 
         // Adding data to the table
@@ -94,7 +93,6 @@ public class ManifestsController : Controller
             table.AddCell(new Cell().Add(new Paragraph(manifest.ManifestId.ToString())));
             table.AddCell(new Cell().Add(new Paragraph(manifest.Member?.UserName ?? "N/A")));
             table.AddCell(new Cell().Add(new Paragraph(manifest.Trip?.DestinationAddress ?? "N/A")));
-            table.AddCell(new Cell().Add(new Paragraph(manifest.Vehicle?.Model ?? "N/A")));
             table.AddCell(new Cell().Add(new Paragraph(manifest.Notes ?? "No notes")));
         }
 
@@ -106,7 +104,7 @@ public class ManifestsController : Controller
     // GET: Manifests
     public async Task<IActionResult> Index()
     {
-        var applicationDbContext = _context.Manifests.Include(m => m.Member).Include(m => m.Trip).Include(m => m.Vehicle);
+        var applicationDbContext = _context.Manifests.Include(m => m.Member).Include(m => m.Trip);
         return View(await applicationDbContext.ToListAsync());
     }
 
@@ -121,41 +119,12 @@ public class ManifestsController : Controller
         var manifest = await _context.Manifests
             .Include(m => m.Member)
             .Include(m => m.Trip)
-            .Include(m => m.Vehicle)
             .FirstOrDefaultAsync(m => m.ManifestId == id);
         if (manifest == null)
         {
             return NotFound();
         }
 
-        return View(manifest);
-    }
-
-    // GET: Manifests/Create
-    public IActionResult Create()
-    {
-        ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Id");
-        ViewData["TripId"] = new SelectList(_context.Trips, "TripId", "TripId");
-        ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "VehicleId");
-        return View();
-    }
-
-    // POST: Manifests/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("ManifestId,MemberId,TripId,VehicleId,Notes,Created,Modified,CreatedBy,ModifiedBy")] Manifest manifest)
-    {
-        if (ModelState.IsValid)
-        {
-            _context.Add(manifest);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-        ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Id", manifest.MemberId);
-        ViewData["TripId"] = new SelectList(_context.Trips, "TripId", "TripId", manifest.TripId);
-        ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "VehicleId", manifest.VehicleId);
         return View(manifest);
     }
 
@@ -175,7 +144,6 @@ public class ManifestsController : Controller
         }
         ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Id", manifest.MemberId);
         ViewData["TripId"] = new SelectList(_context.Trips, "TripId", "TripId", manifest.TripId);
-        ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "VehicleId", manifest.VehicleId);
         return View(manifest);
     }
 
@@ -213,7 +181,6 @@ public class ManifestsController : Controller
         }
         ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Id", manifest.MemberId);
         ViewData["TripId"] = new SelectList(_context.Trips, "TripId", "TripId", manifest.TripId);
-        ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "VehicleId", manifest.VehicleId);
         return View(manifest);
     }
 
@@ -228,7 +195,6 @@ public class ManifestsController : Controller
         var manifest = await _context.Manifests
             .Include(m => m.Member)
             .Include(m => m.Trip)
-            .Include(m => m.Vehicle)
             .FirstOrDefaultAsync(m => m.ManifestId == manifestId && m.MemberId == memberId);
         if (manifest == null)
         {

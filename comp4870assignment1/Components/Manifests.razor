@@ -6,8 +6,6 @@
 
 <h1>All Manifests</h1>
 
-<a class="btn btn-primary" href="Manifests/Create">Create</a>
-
 @if (manifests == null)
 {
     <p><em>Loading...</em></p>
@@ -19,7 +17,6 @@ else
             <tr>
                 <th>Member Email</th>
                 <th>Trip ID</th>
-                <th>Vehicle ID</th>
                 <th>Notes</th>
                 <th>Actions</th>
             </tr>
@@ -30,7 +27,6 @@ else
                 <tr>
                     <td>@item.Member?.UserName</td>
                     <td>@item.TripId</td>
-                    <td>@item.VehicleId</td>
                     <td>@item.Notes</td>
                     <td>
                         <a class="btn btn-primary" href="Manifests/Edit/@item.ManifestId/@item.MemberId">Edit</a>
@@ -51,7 +47,6 @@ else
         manifests = await _context.Manifests
                                    .Include(m => m.Member)
                                    .Include(m => m.Trip)
-                                   .Include(m => m.Vehicle)
                                    .ToListAsync();
     }
 }

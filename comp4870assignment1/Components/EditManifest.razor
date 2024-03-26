@@ -41,15 +41,6 @@ else
             </InputSelect>
         </div>
         <div class="form-group">
-            <label for="VehicleId">Vehicle ID</label>
-            <InputSelect id="VehicleId" @bind-Value="manifest.VehicleId" class="form-control">
-                @foreach (var vehicle in vehicles)
-                {
-                    <option value="@vehicle.VehicleId">@vehicle.Make @vehicle.Model</option>
-                }
-            </InputSelect>
-        </div>
-        <div class="form-group">
             <label for="Notes">Notes</label>
             <InputTextArea id="Notes" @bind-Value="manifest.Notes" class="form-control" />
         </div>
@@ -69,14 +60,12 @@ else
     private Manifest manifest;
     private List<Member> members = new List<Member>();
     private List<Trip> trips = new List<Trip>();
-    private List<Vehicle> vehicles = new List<Vehicle>();
 
     protected override async Task OnInitializedAsync()
     {
         manifest = await _manifestService.GetManifestAsync(ManifestId, MemberId);
         members = await _memberService.GetMembersAsync();
         trips = await _tripService.GetTripsAsync();
-        vehicles = await _vehicleService.GetVehiclesAsync();
     }
 
     private async Task HandleValidSubmit()

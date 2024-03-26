@@ -44,7 +44,6 @@ public class ManifestService
 
         existingManifest.MemberId = manifest.MemberId;
         existingManifest.TripId = manifest.TripId;
-        existingManifest.VehicleId = manifest.VehicleId;
         existingManifest.Notes = manifest.Notes;
         existingManifest.Created = manifest.Created;
         existingManifest.Modified = manifest.Modified;
