@@ -82,7 +82,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        trip = await _tripService.GetTripAsync(TripId, VehicleId);
+        trip = await _tripService.GetTripAsync(TripId);
         vehicles = await _vehicleService.GetVehiclesAsync();
         if (trip == null)
         {

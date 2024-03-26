@@ -19,9 +19,9 @@ public class TripService
         return await _context.Trips.Include(t => t.Vehicle).ToListAsync();
     }
 
-    public async Task<Trip> GetTripAsync(int id, int VehicleId)
+    public async Task<Trip> GetTripAsync(int id)
     {
-        return await _context.Trips.FindAsync(id, VehicleId);
+        return await _context.Trips.FindAsync(id);
     }
 
     public async Task<Trip> AddTripAsync(Trip trip)
@@ -54,9 +54,9 @@ public class TripService
         return existingTrip;
     }
 
-    public async Task<Trip> DeleteTripAsync(int id, int VehicleId)
+    public async Task<Trip> DeleteTripAsync(int id)
     {
-        var trip = await _context.Trips.FindAsync(id, VehicleId);
+        var trip = await _context.Trips.FindAsync(id);
         if (trip != null)
         {
             _context.Trips.Remove(trip);
