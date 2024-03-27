@@ -24,7 +24,7 @@ else
                 <th>Year</th>
                 <th>Number of Seats</th>
                 <th>Vehicle Type</th>
-                <th>Member ID</th>
+                <th>Owner</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -38,7 +38,7 @@ else
                 <td>@item.Year</td>
                 <td>@item.NumberOfSeats</td>
                 <td>@item.VehicleType</td>
-                <td>@item.MemberId</td>
+                <td>@(item.Member?.Email ?? "No email")</td>
                 <td>
                     <a class="btn btn-primary" href="Vehicles/Edit/@item.VehicleId">Edit</a>
                     <a class="btn btn-primary" href="Vehicles/Details/@item.VehicleId">Details</a>
@@ -56,5 +56,8 @@ else
     protected override async Task OnInitializedAsync()
     {
         vehicles = await _context.Vehicles.ToListAsync();
+        vehicles.ForEach(v => { v.Member = _context.Members.FirstOrDefault(m => m.Id == v.MemberId); 
+        if (v.Member == null) Console.WriteLine("Member is null");}
+        );
     }
 }
