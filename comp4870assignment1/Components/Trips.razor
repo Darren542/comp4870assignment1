@@ -23,6 +23,7 @@ else
                 <th>Destination Address</th>
                 <th>Meeting Address</th>
                 <th>Vehicle ID</th>
+                <th>Vehicle</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -35,6 +36,7 @@ else
                 <td>@item.DestinationAddress</td>
                 <td>@item.MeetingAddress</td>
                 <td>@item.VehicleId</td>
+                <td>@item.Vehicle?.Make @item.Vehicle?.Model</td>
                 <td>
                     <a class="btn btn-primary" href="Trips/Edit/@item.TripId/@item.VehicleId">Edit</a>
                     <a class="btn btn-primary" href="Trips/Details/@item.TripId">Details</a>
