@@ -57,7 +57,7 @@ namespace assignment1.Controllers;
         public IActionResult Create()
         {
             ViewData["VehicleId"] = new SelectList(_context.Vehicles
-                .Select(v => new { v.VehicleId, Description = v.Make + " " + v.Model }), 
+                .Select(v => new { v.VehicleId, Description ="[" + v.VehicleId + "] " + v.Make + " " + v.Model }), 
                 "VehicleId", "Description");
             return View();
         }

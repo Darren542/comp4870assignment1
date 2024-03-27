@@ -28,7 +28,7 @@ public class Vehicle
     [Required]
     [Display(Name = "Owner")]
     public string? MemberId { get; set; }
-    [ForeignKey("Id")]
+    [ForeignKey("MemberId")]
     public Member? Member { get; set; }
     public DateTime? Created { get; set; }
     public DateTime? Modified { get; set; }

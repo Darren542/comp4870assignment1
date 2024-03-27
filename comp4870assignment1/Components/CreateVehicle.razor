@@ -45,7 +45,7 @@
         <InputSelect id="MemberId" @bind-Value="vehicle.MemberId" class="form-control">
             @foreach (var member in members)
             {
-                <option value="@member.Id">@member.FirstName @member.LastName</option>
+                <option value="@member.Id">@member.FirstName @member.LastName [@member.Email]</option>
             }
         </InputSelect>
         <ValidationMessage For="@(() => vehicle.MemberId)" class="text-danger" />

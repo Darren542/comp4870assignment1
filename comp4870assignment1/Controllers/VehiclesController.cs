@@ -81,8 +81,8 @@ namespace assignment1.Controllers;
                 return NotFound();
             }
             ViewData["MemberId"] = new SelectList(_context.Members
-            .Select(m => new { m.Id, m.UserName }), 
-            "Id", "UserName"); 
+            .Select(m => new { m.Id, Description = m.FirstName + " " + m.LastName + " [" + m.Email + "]" }), 
+            "Id", "Description"); 
             return View(vehicle);
         }
 
@@ -119,8 +119,8 @@ namespace assignment1.Controllers;
                 return RedirectToAction(nameof(Index));
             }
             ViewData["MemberId"] = new SelectList(_context.Members
-            .Select(m => new { m.Id, m.UserName }), 
-            "Id", "UserName"); 
+            .Select(m => new { m.Id, Description = m.FirstName + " " + m.LastName + " [" + m.Email + "]" }), 
+            "Id", "Description"); 
             return View(vehicle);
         }
 
