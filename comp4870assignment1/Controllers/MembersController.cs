@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using ClassLibrary.Data;
 using ClassLibrary.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace assignment1.Controllers;
 
@@ -89,17 +91,35 @@ namespace assignment1.Controllers;
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("FirstName,LastName,Mobile,Street,City,PostalCode,Country,Created,Modified,CreatedBy,ModifiedBy,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] Member member)
-        {
-            if (id != member.Id)
+        {   
+            if (!await ValidateEmail(member))
+            {
+                return View(member);
+            }
+            var memberToUpdate = await _context.Members.FindAsync(id);
+            if (memberToUpdate == null)
             {
                 return NotFound();
             }
-
+            
             if (ModelState.IsValid)
             {
+                memberToUpdate.FirstName = member.FirstName;
+                memberToUpdate.LastName = member.LastName;
+                memberToUpdate.Mobile = member.Mobile;
+                memberToUpdate.Street = member.Street;
+                memberToUpdate.City = member.City;
+                memberToUpdate.PostalCode = member.PostalCode;
+                memberToUpdate.Country = member.Country;
+                memberToUpdate.Modified = DateTime.Now;
+                memberToUpdate.ModifiedBy = User.Identity!.Name;
+                memberToUpdate.UserName = member.Email;
+                memberToUpdate.Email = member.Email;
+                memberToUpdate.NormalizedEmail = member.Email!.ToUpper();
+                memberToUpdate.NormalizedUserName = member.Email.ToUpper();
                 try
                 {
-                    _context.Update(member);
+                    _context.Update(memberToUpdate);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -115,7 +135,27 @@ namespace assignment1.Controllers;
                 }
                 return RedirectToAction(nameof(Index));
             }
+            
             return View(member);
+        }
+
+        private async Task<bool> ValidateEmail(Member member)
+        {
+            if (string.IsNullOrEmpty(member.Email))
+            {
+                ModelState.AddModelError("Email", "Email is required.");
+                return false;
+            } else {
+                // Check if email is already in use by another member, not including the current member
+                var memberWithEmail = await _context.Members.FirstOrDefaultAsync(m => m.Email == member.Email && m.Id != member.Id);
+                if (memberWithEmail != null)
+                {
+                    ModelState.AddModelError("Email", "Email is already in use.");
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         // GET: Members/Delete/5
