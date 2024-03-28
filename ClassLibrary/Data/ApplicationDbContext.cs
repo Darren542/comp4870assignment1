@@ -26,16 +26,15 @@ public class ApplicationDbContext : IdentityDbContext<Member, IdentityRole, stri
 
         builder.Entity<Vehicle>().ToTable("Vehicle");
 
-        builder.Entity<Trip>()
-            .HasKey(t => new { t.TripId, t.VehicleId });
+        // builder.Entity<Trip>()
+        //     .HasKey(t => new { t.TripId, t.VehicleId });
         builder.Entity<Trip>().ToTable("Trip");
         
         builder.Entity<Manifest>()
             .HasKey(e => new { e.ManifestId, e.MemberId });
-        builder.Entity<Manifest>()
-            .HasOne(m => m.Trip)
-            .WithOne()
-            .HasForeignKey<Manifest>(m => new { m.TripId, m.VehicleId });
+        // builder.Entity<Manifest>()
+        //     .HasOne(m => m.Trip)
+        //     .WithOne();
         builder.Entity<Manifest>().ToTable("Manifest");
 
         builder.Seed();

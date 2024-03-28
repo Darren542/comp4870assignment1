@@ -4,4 +4,38 @@
     ViewData["Title"] = "Create Trip";
 }
 
-<component type="typeof(CreateTrip)" render-mode="ServerPrerendered" />
+@* <component type="typeof(CreateTrip)" render-mode="ServerPrerendered" /> *@
+
+<h1>Create Trip</h1>
+
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="VehicleId" class="control-label">Vehicle</label>
+        <select asp-for="VehicleId" class ="form-control" asp-items="ViewBag.VehicleId"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="Date" class="control-label">Date</label>
+        <input asp-for="Date" type="date" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Time" class="control-label">Time (HH:mm)</label>
+        <input asp-for="Time" type="time" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="DestinationAddress" class="control-label">Destination Address</label>
+        <input asp-for="DestinationAddress" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="MeetingAddress" class="control-label">Meeting Address</label>
+        <input asp-for="MeetingAddress" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
+
+<div>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

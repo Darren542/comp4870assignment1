@@ -50,7 +50,9 @@ namespace assignment1.Controllers;
         // GET: Trips/Create
         public IActionResult Create()
         {
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "MemberId");
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles
+                .Select(v => new { v.VehicleId, Description = v.Make + " " + v.Model }), 
+                "VehicleId", "Description");
             return View();
         }
 
@@ -59,7 +61,7 @@ namespace assignment1.Controllers;
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TripId,VehicleId,Date,Time,DestinationAddress,MeetingAddress,Created,Modified,CreatedBy,ModifiedBy")] Trip trip)
+        public async Task<IActionResult> Create([Bind("VehicleId,Date,Time,DestinationAddress,MeetingAddress,Created,Modified,CreatedBy,ModifiedBy")] Trip trip)
         {
             if (ModelState.IsValid)
             {
@@ -67,7 +69,7 @@ namespace assignment1.Controllers;
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "MemberId", trip.VehicleId);
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "VehicleId", trip.VehicleId);
             return View(trip);
         }
 
@@ -85,7 +87,9 @@ namespace assignment1.Controllers;
             {
                 return NotFound();
             }
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "MemberId", trip.VehicleId);
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles
+                .Select(v => new { v.VehicleId, Description = v.Make + " " + v.Model }), 
+                "VehicleId", "Description");
             return View(trip);
         }
 
@@ -110,7 +114,7 @@ namespace assignment1.Controllers;
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TripExists(trip.TripId, trip.VehicleId))
+                    if (!TripExists(trip.TripId))
                     {
                         return NotFound();
                     }
@@ -121,20 +125,20 @@ namespace assignment1.Controllers;
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "MemberId", trip.VehicleId);
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "VehicleId", trip.VehicleId);
             return View(trip);
         }
 
         // GET: Trips/Delete/5
-        public async Task<IActionResult> Delete(int? tripId, int? vehicleId)
+        public async Task<IActionResult> Delete(int? tripId)
         {
-            if (tripId == null || vehicleId == null)
+            if (tripId == null)
             {
                 return NotFound();
             }
 
             var trip = await _context.Trips
-                .FirstOrDefaultAsync(m => m.TripId == tripId && m.VehicleId == vehicleId);
+                .FirstOrDefaultAsync(m => m.TripId == tripId);
             if (trip == null)
             {
                 return NotFound();
@@ -144,23 +148,23 @@ namespace assignment1.Controllers;
         }
 
         // POST: Trips/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int tripId, int vehicleId)
-        {
-            var trip = await _context.Trips
-                .FirstOrDefaultAsync(m => m.TripId == tripId && m.VehicleId == vehicleId);
-            if (trip != null)
-            {
-                _context.Trips.Remove(trip);
-                await _context.SaveChangesAsync();
-            }
+        // [HttpPost, ActionName("Delete")]
+        // [ValidateAntiForgeryToken]
+        // public async Task<IActionResult> DeleteConfirmed(int tripId)
+        // {
+        //     var trip = await _context.Trips
+        //         .FirstOrDefaultAsync(m => m.TripId == tripId);
+        //     if (trip != null)
+        //     {
+        //         _context.Trips.Remove(trip);
+        //         await _context.SaveChangesAsync();
+        //     }
 
-            return RedirectToAction(nameof(Index));
-        }
+        //     return RedirectToAction(nameof(Index));
+        // }
 
-        private bool TripExists(int tripId, int vehicleId)
+        private bool TripExists(int tripId)
         {
-            return _context.Trips.Any(e => e.TripId == tripId && e.VehicleId == vehicleId);
+            return _context.Trips.Any(e => e.TripId == tripId);
         }
     }
