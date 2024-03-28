@@ -55,11 +55,11 @@ public class ManifestService
         return existingManifest;
     }
 
-     public async Task<Manifest> DeleteManifestAsync(int manifestId, string memberId)
-     {
-          var manifest = _context.Manifests.FirstOrDefault(x => x.ManifestId == manifestId && x.MemberId == memberId);
-          _context.Manifests.Remove(manifest);
-          await _context.SaveChangesAsync();
-          return manifest;
-     }
+    public async Task<Manifest> DeleteManifestAsync(int manifestId, string memberId)
+    {
+        var manifest = _context.Manifests.FirstOrDefault(x => x.ManifestId == manifestId && x.MemberId == memberId);
+        _context.Manifests.Remove(manifest);
+        await _context.SaveChangesAsync();
+        return manifest;
+    }
 }
