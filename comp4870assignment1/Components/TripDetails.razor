@@ -1,0 +1,41 @@
+@page "/tripdetails/{Id}"
+@using ClassLibrary.Models
+@inject TripService _tripService
+
+<h3>Trip Details</h3>
+
+@if (trip == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div>
+        <h4>Trip</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">Date</dt>
+            <dd class="col-sm-10">@trip.Date</dd>
+            <dt class="col-sm-2">Time</dt>
+            <dd class="col-sm-10">@trip.Time</dd>
+            <dt class="col-sm-2">Vehicle</dt>
+            <dd class="col-sm-10">@trip.Vehicle!.VehicleId: @trip.Vehicle!.Make @trip.Vehicle!.Model</dd>
+            <dt class="col-sm-2">Destination Address</dt>
+            <dd class="col-sm-10">@trip.DestinationAddress</dd>
+            <dt class="col-sm-2">Meeting Address</dt>
+            <dd class="col-sm-10">@trip.MeetingAddress</dd>
+        </dl>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int TripId { get; set; }
+
+    Trip trip;
+
+    protected override async Task OnInitializedAsync()
+    {
+        trip = await _tripService.GetTripAsync(TripId);
+    }
+}

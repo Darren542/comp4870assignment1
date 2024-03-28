@@ -4,69 +4,19 @@
     ViewData["Title"] = "Trip Details";
 }
 
-<h1>Details</h1>
+<component type="typeof(TripDetails)" render-mode="ServerPrerendered" param-TripId="Model.TripId" />
 
-<div>
-    <h4>Trip</h4>
+<dl class="row">
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Date)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Time)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Time)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DestinationAddress)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DestinationAddress)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MeetingAddress)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MeetingAddress)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Modified)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Modified)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedBy)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ModifiedBy)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ModifiedBy)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Vehicle)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Vehicle!.VehicleId): @Html.DisplayFor(model => model.Vehicle!.Make) @Html.DisplayFor(model => model.Vehicle!.Model)
-        </dd>
-    </dl>
-</div>
+    <dt class="col-sm-2">Created</dt>
+    <dd class="col-sm-10">@Model.Created</dd>
+    <dt class="col-sm-2">Modified</dt>
+    <dd class="col-sm-10">@Model.Modified</dd>
+    <dt class="col-sm-2">Created By</dt>
+    <dd class="col-sm-10">@Model.CreatedBy</dd>
+    <dt class="col-sm-2">Modified By</dt>
+    <dd class="col-sm-10">@Model.ModifiedBy</dd>
+</dl>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
     <a asp-action="Index">Back to List</a>
 </div>
