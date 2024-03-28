@@ -2,6 +2,8 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using assignment1.Models;
 using Microsoft.AspNetCore.Authorization;
+using ClassLibrary.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace assignment1.Controllers;
 
@@ -9,15 +11,26 @@ namespace assignment1.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly ApplicationDbContext _context;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
     {
         _logger = logger;
+        _context = context;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> IndexAsync()
     {
-        return View();
+        //Get current Date as DateOnly
+        DateOnly date = DateOnly.FromDateTime(DateTime.Now);
+        var applicationDbContext = _context.Trips.Where(t => t.Date >= date).Include(t => t.Vehicle);
+        return View(await applicationDbContext.ToListAsync());
+    }
+
+    public IActionResult Search(DateOnly date)
+    {
+        var trips = _context.Trips.Where(t => t.Date == date).Include(t => t.Vehicle).ToList();
+        return PartialView("_SearchResults", trips);
     }
 
     [Authorize(Roles = "Admin, Owner")]

@@ -2,11 +2,61 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1>Assignment 1</h1>
-    <br/>
-    <h2>Darren Luck</h2>
-    <h2>Lester Shun</h2>
-    <h2>Ozan Yurtisigi</h2>
-    <h2>Khanh Linh Nguyen</h2>
+<form id="searchForm">
+    <div class="form-group">
+        <label for="date">Date</label>
+        <input type="date" id="date" name="date" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+<div id="results">
+    <table class="table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Destination Address</th>
+            <th>Meeting Address</th>
+            <th>Vehicle ID</th>
+            <th>Vehicle</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var trip in Model)
+    {
+        <tr>
+            <td>@trip.Date</td>
+            <td>@trip.Time</td>
+            <td>@trip.DestinationAddress</td>
+            <td>@trip.MeetingAddress</td>
+            <td>@trip.VehicleId</td>
+            <td>@trip.Vehicle?.Make @trip.Vehicle?.Model</td>
+        </tr>
+    }
+    </tbody>
+</table>
 </div>
+
+<div class="text-center">
+    <h5>Assignment 2 by: Darren Luck, Lester Shun, Ozan Yurtisigi, Khanh Linh Nguyen</h5>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#searchForm').on('submit', function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: '@Url.Action("Search", "Home")',
+                    data: $(this).serialize(),
+                    success: function (data) {
+                        $('#results').html(data);
+                    }
+                });
+            });
+        });
+    </script>
+}
