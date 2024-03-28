@@ -20,7 +20,7 @@ public class MemberService
         return await _context.Members.ToListAsync();
     }
 
-    public async Task<Member> GetMemberAsync(string id)
+    public async Task<Member?> GetMemberAsync(string id)
     {
         return await _context.Members.FindAsync(id);
     }
@@ -32,7 +32,7 @@ public class MemberService
         return member;
     }
 
-    public async Task<Member> UpdateMemberAsync(string id, Member member)
+    public async Task<Member?> UpdateMemberAsync(string id, Member member)
     {
         var existingMember = await _context.Members.FindAsync(id);
         if (existingMember == null)
@@ -58,7 +58,7 @@ public class MemberService
         return existingMember;
     }
 
-    public async Task<Member> DeleteMemberAsync(string id)
+    public async Task<Member?> DeleteMemberAsync(string id)
     {
         var member = await _context.Members.FindAsync(id);
         if (member != null)

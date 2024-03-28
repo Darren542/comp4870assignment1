@@ -21,7 +21,7 @@ public class ManifestService
         return await _context.Manifests.ToListAsync();
     }
 
-    public async Task<Manifest> GetManifestAsync(int manifestId, string memberId)
+    public async Task<Manifest?> GetManifestAsync(int manifestId, string memberId)
     {
         return await _context.Manifests.FindAsync(manifestId, memberId);
     }
@@ -33,7 +33,7 @@ public class ManifestService
         return manifest;
     }
 
-    public async Task<Manifest> UpdateManifestAsync(int manifestId, string memberId, Manifest manifest)
+    public async Task<Manifest?> UpdateManifestAsync(int manifestId, string memberId, Manifest manifest)
     {
         var existingManifest = await _context.Manifests.FindAsync(manifestId, memberId);
 
@@ -55,11 +55,15 @@ public class ManifestService
         return existingManifest;
     }
 
-     public async Task<Manifest> DeleteManifestAsync(int manifestId, string memberId)
-     {
-          var manifest = _context.Manifests.FirstOrDefault(x => x.ManifestId == manifestId && x.MemberId == memberId);
-          _context.Manifests.Remove(manifest);
-          await _context.SaveChangesAsync();
-          return manifest;
-     }
+    public async Task<Manifest?> DeleteManifestAsync(int manifestId, string memberId)
+    {
+        var manifest = _context.Manifests.FirstOrDefault(x => x.ManifestId == manifestId && x.MemberId == memberId);
+        if (manifest == null)
+        {
+            return null;
+        }
+        _context.Manifests.Remove(manifest);
+        await _context.SaveChangesAsync();
+        return manifest;
+    }
 }

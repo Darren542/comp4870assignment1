@@ -32,10 +32,14 @@ else
     [Parameter]
     public int TripId { get; set; }
 
-    Trip trip;
+    Trip trip = new Trip();
 
     protected override async Task OnInitializedAsync()
     {
-        trip = await _tripService.GetTripAsync(TripId);
+        var foundtrip = await _tripService.GetTripAsync(TripId);
+        if (foundtrip != null)
+        {
+            trip = foundtrip;
+        }
     }
 }
