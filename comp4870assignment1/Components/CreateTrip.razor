@@ -1,0 +1,79 @@
+﻿@page "/trips/createPage"
+@using ClassLibrary.Models
+@inject TripService _tripService
+@inject VehicleService _vehicleService
+@inject NavigationManager _navigationManager
+
+<PageTitle>Create Trip</PageTitle>
+
+<EditForm Model="@trip" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="VehicleId">Vehicle</label>
+        <InputSelect id="VehicleId" @bind-Value="trip.VehicleId" class="form-control">
+            @foreach (var vehicle in vehicles)
+            {
+                <option value="@vehicle.VehicleId">@vehicle.Make @vehicle.Model</option>
+            }
+        </InputSelect>
+    </div>
+    <div class="form-group">
+        <label for="Date">Date</label>
+        <InputDate id="Date" @bind-Value="trip.Date" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="Time">Time (HH:mm)</label>
+        <InputText id="Time" @bind-Value="timeString" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="DestinationAddress">Destination Address</label>
+        <InputText id="DestinationAddress" @bind-Value="trip.DestinationAddress" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="MeetingAddress">Meeting Address</label>
+        <InputText id="MeetingAddress" @bind-Value="trip.MeetingAddress" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</EditForm>
+
+<div>
+    <button class="btn btn-secondary" @onclick="GoBack">Back to List</button>
+</div>
+
+@code {
+    private Trip trip = new Trip();
+    private List<Vehicle> vehicles = new List<Vehicle>();
+    private string timeString
+    {
+        get => trip.Time?.ToString("HH:mm") ?? string.Empty;
+        set
+        {
+            if (TimeOnly.TryParse(value, out var time))
+            {
+                trip.Time = time;
+            }
+            else
+            {
+                trip.Time = null;
+            }
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        vehicles = await _vehicleService.GetVehiclesAsync();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await _tripService.AddTripAsync(trip);
+        _navigationManager.NavigateTo("/trips");
+    }
+
+    private void GoBack()
+    {
+        _navigationManager.NavigateTo("/trips");
+    }
+}

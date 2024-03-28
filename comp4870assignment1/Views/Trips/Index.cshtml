@@ -1,83 +1,8 @@
 @model IEnumerable<ClassLibrary.Models.Trip>
+@using assignment1.Components
 
 @{
     ViewData["Title"] = "All Trips";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Time)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DestinationAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MeetingAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Modified)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModifiedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vehicle)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Time)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DestinationAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MeetingAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Modified)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Vehicle!.VehicleId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.TripId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TripId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TripId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<component type="typeof(Trips)" render-mode="ServerPrerendered" />

@@ -20,13 +20,10 @@ public class Manifest
     public int TripId { get; set; }
     [ForeignKey("TripId")]
     public Trip? Trip { get; set; }
-    [Required]
-    public int VehicleId { get; set; }
-    [ForeignKey("VehicleId")]
-    public Vehicle? Vehicle { get; set; }
     public string? Notes { get; set; }
     public DateTime? Created { get; set; }
     public DateTime? Modified { get; set; }
     public string? CreatedBy { get; set; }
     public string? ModifiedBy { get; set; }
 }
+

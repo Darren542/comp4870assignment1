@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClassLibrary.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240304043428_M1")]
+    [Migration("20240326075838_M1")]
     partial class M1
     {
         /// <inheritdoc />
@@ -46,17 +46,11 @@ namespace ClassLibrary.Data.Migrations
                     b.Property<int>("TripId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("VehicleId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("ManifestId", "MemberId");
 
                     b.HasIndex("MemberId");
 
-                    b.HasIndex("VehicleId");
-
-                    b.HasIndex("TripId", "VehicleId")
-                        .IsUnique();
+                    b.HasIndex("TripId");
 
                     b.ToTable("Manifest", (string)null);
 
@@ -64,38 +58,35 @@ namespace ClassLibrary.Data.Migrations
                         new
                         {
                             ManifestId = 1,
-                            MemberId = "f9626b59-93cd-42f9-bb65-f3d7e752108b",
-                            Created = new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7428),
-                            CreatedBy = "14424a4c-b48c-47ca-99f2-d6c0601dec2c",
-                            Modified = new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7429),
-                            ModifiedBy = "14424a4c-b48c-47ca-99f2-d6c0601dec2c",
+                            MemberId = "6c136e26-2431-4b04-acb7-6d354abe5e8e",
+                            Created = new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7235),
+                            CreatedBy = "b874ec6d-884c-4694-b092-66a03029e8c7",
+                            Modified = new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7238),
+                            ModifiedBy = "b874ec6d-884c-4694-b092-66a03029e8c7",
                             Notes = "I'm driving",
-                            TripId = 1,
-                            VehicleId = 1
+                            TripId = 1
                         },
                         new
                         {
                             ManifestId = 2,
-                            MemberId = "f7f77300-444d-459d-abd5-740ac20c885d",
-                            Created = new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7433),
-                            CreatedBy = "14424a4c-b48c-47ca-99f2-d6c0601dec2c",
-                            Modified = new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7434),
-                            ModifiedBy = "14424a4c-b48c-47ca-99f2-d6c0601dec2c",
+                            MemberId = "dbe2cc4b-27c2-44aa-af5d-a4289cefaef3",
+                            Created = new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7251),
+                            CreatedBy = "b874ec6d-884c-4694-b092-66a03029e8c7",
+                            Modified = new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7268),
+                            ModifiedBy = "b874ec6d-884c-4694-b092-66a03029e8c7",
                             Notes = "I'm driving",
-                            TripId = 2,
-                            VehicleId = 2
+                            TripId = 2
                         },
                         new
                         {
                             ManifestId = 3,
-                            MemberId = "f9626b59-93cd-42f9-bb65-f3d7e752108b",
-                            Created = new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7436),
-                            CreatedBy = "14424a4c-b48c-47ca-99f2-d6c0601dec2c",
-                            Modified = new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7438),
-                            ModifiedBy = "14424a4c-b48c-47ca-99f2-d6c0601dec2c",
+                            MemberId = "6c136e26-2431-4b04-acb7-6d354abe5e8e",
+                            Created = new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7272),
+                            CreatedBy = "b874ec6d-884c-4694-b092-66a03029e8c7",
+                            Modified = new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7275),
+                            ModifiedBy = "b874ec6d-884c-4694-b092-66a03029e8c7",
                             Notes = "I'm driving",
-                            TripId = 3,
-                            VehicleId = 3
+                            TripId = 3
                         });
                 });
 
@@ -198,9 +189,9 @@ namespace ClassLibrary.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f7f77300-444d-459d-abd5-740ac20c885d",
+                            Id = "dbe2cc4b-27c2-44aa-af5d-a4289cefaef3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "925e47ad-8c1d-4308-b3fd-bff387d564b7",
+                            ConcurrencyStamp = "ab95c4e4-8fb9-499a-ad4e-10425fb3690e",
                             Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "b@b.b",
                             EmailConfirmed = true,
@@ -210,17 +201,17 @@ namespace ClassLibrary.Data.Migrations
                             Modified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             NormalizedEmail = "B@B.B",
                             NormalizedUserName = "B@B.B",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJ4sHiGdiJ7M+ehitwf2V0e6vxtyfkGUYSO7aoM54lZLla7a31Gj/QJkKG6b44lxpw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJA76L/+8NIJvQcHVofMRPjUJ+hhM4kUUkJ0btPrjK33PlGDXpQpQSoq+xWrIrSeIQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "72f74bf2-01f8-476c-b1f2-7e790db8a89a",
+                            SecurityStamp = "76f9d4fc-fe84-4b9a-93eb-b1fbd2c271ad",
                             TwoFactorEnabled = false,
                             UserName = "b@b.b"
                         },
                         new
                         {
-                            Id = "14424a4c-b48c-47ca-99f2-d6c0601dec2c",
+                            Id = "b874ec6d-884c-4694-b092-66a03029e8c7",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e2644847-9fc0-4056-af8e-5476c2ecaf75",
+                            ConcurrencyStamp = "36ce9530-e315-4061-8991-e4d006751d0a",
                             Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "c@c.c",
                             EmailConfirmed = true,
@@ -230,17 +221,17 @@ namespace ClassLibrary.Data.Migrations
                             Modified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             NormalizedEmail = "C@C.C",
                             NormalizedUserName = "C@C.C",
-                            PasswordHash = "AQAAAAIAAYagAAAAENLj3GWn3ysyxJnjbLyX+ztaG1ZBR76+8c4QZ1zcBzerEzIWl04TBe/LT8J0+FEycw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFTLVHN7e+7yL2jWoRoi7hsqq81Xf2xp1QUqhDzsG4r0NtB48WNwfWLT3xM+7nafQw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "df080fdf-4789-447d-ac21-8a470e98a7a9",
+                            SecurityStamp = "0c157a1a-3242-4091-8d94-0a57c5cae89f",
                             TwoFactorEnabled = false,
                             UserName = "c@c.c"
                         },
                         new
                         {
-                            Id = "f9626b59-93cd-42f9-bb65-f3d7e752108b",
+                            Id = "6c136e26-2431-4b04-acb7-6d354abe5e8e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "161a534f-560f-425e-a141-1d9e9011fbaa",
+                            ConcurrencyStamp = "14fdb97c-da13-44f8-b752-8b052d5fa4b8",
                             Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "d@d.d",
                             EmailConfirmed = true,
@@ -250,9 +241,9 @@ namespace ClassLibrary.Data.Migrations
                             Modified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             NormalizedEmail = "D@D.D",
                             NormalizedUserName = "D@D.D",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGhgSNE6nXxJbDJyketY5j4qBLpl45G2q85sF1u6iht8jEQ1bPxpI/hRKyf9Eayheg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMsZZwM1d545OEz6ZweOoSEmLmBpljFa0OXmRLPo42ms10FTQ0dC2bjMmVMPpFeFIQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "63116cb3-fa6f-4f44-a044-f758ff17fbd6",
+                            SecurityStamp = "680e0775-d00e-48d0-9726-042a296ad4ab",
                             TwoFactorEnabled = false,
                             UserName = "d@d.d"
                         });
@@ -261,9 +252,7 @@ namespace ClassLibrary.Data.Migrations
             modelBuilder.Entity("ClassLibrary.Models.Trip", b =>
                 {
                     b.Property<int>("TripId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("VehicleId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime?>("Created")
@@ -290,7 +279,10 @@ namespace ClassLibrary.Data.Migrations
                     b.Property<TimeOnly?>("Time")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("TripId", "VehicleId");
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("TripId");
 
                     b.HasIndex("VehicleId");
 
@@ -300,41 +292,41 @@ namespace ClassLibrary.Data.Migrations
                         new
                         {
                             TripId = 1,
-                            VehicleId = 1,
-                            Created = new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7380),
-                            CreatedBy = "14424a4c-b48c-47ca-99f2-d6c0601dec2c",
+                            Created = new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7117),
+                            CreatedBy = "b874ec6d-884c-4694-b092-66a03029e8c7",
                             Date = new DateOnly(2021, 12, 25),
                             DestinationAddress = "123 Main St, Anytown, USA",
                             MeetingAddress = "456 Elm St, Anytown, USA",
-                            Modified = new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7382),
-                            ModifiedBy = "14424a4c-b48c-47ca-99f2-d6c0601dec2c",
-                            Time = new TimeOnly(12, 0, 0)
+                            Modified = new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7121),
+                            ModifiedBy = "b874ec6d-884c-4694-b092-66a03029e8c7",
+                            Time = new TimeOnly(12, 0, 0),
+                            VehicleId = 1
                         },
                         new
                         {
                             TripId = 2,
-                            VehicleId = 2,
-                            Created = new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7387),
-                            CreatedBy = "14424a4c-b48c-47ca-99f2-d6c0601dec2c",
+                            Created = new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7136),
+                            CreatedBy = "b874ec6d-884c-4694-b092-66a03029e8c7",
                             Date = new DateOnly(2022, 1, 12),
                             DestinationAddress = "321 Knight St, Anytown, USA",
                             MeetingAddress = "789 Cambie St, Anytown, USA",
-                            Modified = new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7388),
-                            ModifiedBy = "14424a4c-b48c-47ca-99f2-d6c0601dec2c",
-                            Time = new TimeOnly(14, 30, 0)
+                            Modified = new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7139),
+                            ModifiedBy = "b874ec6d-884c-4694-b092-66a03029e8c7",
+                            Time = new TimeOnly(14, 30, 0),
+                            VehicleId = 2
                         },
                         new
                         {
                             TripId = 3,
-                            VehicleId = 3,
-                            Created = new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7391),
-                            CreatedBy = "14424a4c-b48c-47ca-99f2-d6c0601dec2c",
+                            Created = new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7152),
+                            CreatedBy = "b874ec6d-884c-4694-b092-66a03029e8c7",
                             Date = new DateOnly(2022, 1, 24),
                             DestinationAddress = "8 Moody St, Anyville, USA",
                             MeetingAddress = "99 Hastings St, Anytown, USA",
-                            Modified = new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7392),
-                            ModifiedBy = "14424a4c-b48c-47ca-99f2-d6c0601dec2c",
-                            Time = new TimeOnly(8, 0, 0)
+                            Modified = new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7155),
+                            ModifiedBy = "b874ec6d-884c-4694-b092-66a03029e8c7",
+                            Time = new TimeOnly(8, 0, 0),
+                            VehicleId = 3
                         });
                 });
 
@@ -388,13 +380,13 @@ namespace ClassLibrary.Data.Migrations
                         new
                         {
                             VehicleId = 1,
-                            Created = new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7190),
-                            CreatedBy = "14424a4c-b48c-47ca-99f2-d6c0601dec2c",
+                            Created = new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(6885),
+                            CreatedBy = "b874ec6d-884c-4694-b092-66a03029e8c7",
                             Make = "Tesla",
-                            MemberId = "14424a4c-b48c-47ca-99f2-d6c0601dec2c",
+                            MemberId = "b874ec6d-884c-4694-b092-66a03029e8c7",
                             Model = "Model 3",
-                            Modified = new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7253),
-                            ModifiedBy = "14424a4c-b48c-47ca-99f2-d6c0601dec2c",
+                            Modified = new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(6966),
+                            ModifiedBy = "b874ec6d-884c-4694-b092-66a03029e8c7",
                             NumberOfSeats = 5,
                             VehicleType = "Electric",
                             Year = 2021
@@ -402,13 +394,13 @@ namespace ClassLibrary.Data.Migrations
                         new
                         {
                             VehicleId = 2,
-                            Created = new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7258),
-                            CreatedBy = "14424a4c-b48c-47ca-99f2-d6c0601dec2c",
+                            Created = new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(6982),
+                            CreatedBy = "b874ec6d-884c-4694-b092-66a03029e8c7",
                             Make = "Tesla",
-                            MemberId = "14424a4c-b48c-47ca-99f2-d6c0601dec2c",
+                            MemberId = "b874ec6d-884c-4694-b092-66a03029e8c7",
                             Model = "Model S",
-                            Modified = new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7259),
-                            ModifiedBy = "14424a4c-b48c-47ca-99f2-d6c0601dec2c",
+                            Modified = new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(6985),
+                            ModifiedBy = "b874ec6d-884c-4694-b092-66a03029e8c7",
                             NumberOfSeats = 5,
                             VehicleType = "Electric",
                             Year = 2021
@@ -416,13 +408,13 @@ namespace ClassLibrary.Data.Migrations
                         new
                         {
                             VehicleId = 3,
-                            Created = new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7262),
-                            CreatedBy = "14424a4c-b48c-47ca-99f2-d6c0601dec2c",
+                            Created = new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(6991),
+                            CreatedBy = "b874ec6d-884c-4694-b092-66a03029e8c7",
                             Make = "Tesla",
-                            MemberId = "14424a4c-b48c-47ca-99f2-d6c0601dec2c",
+                            MemberId = "b874ec6d-884c-4694-b092-66a03029e8c7",
                             Model = "Model X",
-                            Modified = new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7263),
-                            ModifiedBy = "14424a4c-b48c-47ca-99f2-d6c0601dec2c",
+                            Modified = new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7000),
+                            ModifiedBy = "b874ec6d-884c-4694-b092-66a03029e8c7",
                             NumberOfSeats = 5,
                             VehicleType = "Electric",
                             Year = 2021
@@ -565,23 +557,15 @@ namespace ClassLibrary.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ClassLibrary.Models.Vehicle", "Vehicle")
-                        .WithMany()
-                        .HasForeignKey("VehicleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ClassLibrary.Models.Trip", "Trip")
-                        .WithOne()
-                        .HasForeignKey("ClassLibrary.Models.Manifest", "TripId", "VehicleId")
+                        .WithMany()
+                        .HasForeignKey("TripId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Member");
 
                     b.Navigation("Trip");
-
-                    b.Navigation("Vehicle");
                 });
 
             modelBuilder.Entity("ClassLibrary.Models.Trip", b =>

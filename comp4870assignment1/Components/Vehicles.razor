@@ -1,0 +1,60 @@
+@page "/vehiclesPage"
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext _context
+@inject NavigationManager NavigationManager
+
+<PageTitle>All Vehicles</PageTitle>
+
+<h1>All Vehicles</h1>
+
+<a class="btn btn-primary" href="Vehicles/Create">Create</a>
+
+@if (vehicles == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Vehicle ID</th>
+                <th>Model</th>
+                <th>Make</th>
+                <th>Year</th>
+                <th>Number of Seats</th>
+                <th>Vehicle Type</th>
+                <th>Vehicle Owner</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in vehicles)
+        {
+            <tr>
+                <td>@item.VehicleId</td>
+                <td>@item.Model</td>
+                <td>@item.Make</td>
+                <td>@item.Year</td>
+                <td>@item.NumberOfSeats</td>
+                <td>@item.VehicleType</td>
+                <td>@item.Member?.FirstName @item.Member?.LastName [@item.Member?.Email]</td>
+                <td>
+                    <a class="btn btn-primary" href="Vehicles/Edit/@item.VehicleId">Edit</a>
+                    <a class="btn btn-primary" href="Vehicles/Details/@item.VehicleId">Details</a>
+                    <a class="btn btn-danger" href="Vehicles/Delete/@item.VehicleId">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Vehicle>? vehicles;
+
+    protected override async Task OnInitializedAsync()
+    {
+        vehicles = await _context.Vehicles.Include(v => v.Member).ToListAsync();
+    }
+}

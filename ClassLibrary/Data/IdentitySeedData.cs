@@ -1,9 +1,9 @@
 using ClassLibrary.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace ClassLibrary.Data
-{
-    public static class IdentitySeedData {
+namespace ClassLibrary.Data;
+
+public static class IdentitySeedData {
     public static async Task Initialize(ApplicationDbContext context,
         UserManager<Member> userManager,
         RoleManager<IdentityRole> roleManager) {
@@ -33,6 +33,11 @@ namespace ClassLibrary.Data
                 Email = "a@a.a",
                 FirstName = "Admin",
                 LastName = "User",
+                Mobile = "1234567890",
+                Street = "1234 Main St",
+                City = "Anytown",
+                PostalCode = "12345",
+                Country = "USA",
                 EmailConfirmed = true,
                 NormalizedUserName = "A@A.A",
                 NormalizedEmail = "A@A.A",
@@ -53,6 +58,11 @@ namespace ClassLibrary.Data
                 Email = "o@o.o",
                 FirstName = "Owner",
                 LastName = "User",
+                Mobile = "1234567890",
+                Street = "1234 Main St",
+                City = "Anytown",
+                PostalCode = "12345",
+                Country = "USA",
                 EmailConfirmed = true,
                 NormalizedUserName = "O@O.O",
                 NormalizedEmail = "O@O.O",
@@ -73,6 +83,11 @@ namespace ClassLibrary.Data
                 Email = "p@p.p",
                 FirstName = "Passenger",
                 LastName = "User",
+                Mobile = "1234567890",
+                Street = "1234 Main St",
+                City = "Anytown",
+                PostalCode = "12345",
+                Country = "USA",
                 EmailConfirmed = true,
                 NormalizedUserName = "P@P.P",
                 NormalizedEmail = "P@P.P",
@@ -84,25 +99,48 @@ namespace ClassLibrary.Data
                 await userManager.AddPasswordAsync(passenger, password4all);
                 await userManager.AddToRoleAsync(passenger, passengerRole);
             }
+        } 
+
+        var adminUser = await userManager.FindByNameAsync("b@b.b");
+        if (adminUser != null && adminUser.Mobile == null) {
+            adminUser.Mobile = "1234567890";
+            adminUser.Street = "1234 Main St";
+            adminUser.City = "Anytown";
+            adminUser.PostalCode = "12345";
+            adminUser.Country = "USA";
+            var result = await userManager.UpdateAsync(adminUser);
+            if (result.Succeeded) {
+                await userManager.AddPasswordAsync(adminUser, password4all);
+                await userManager.AddToRoleAsync(adminUser, adminRole);
+            }
         }
 
-        // find by name "b@b.b" and assign it an admin role
-        var user1 = await userManager.FindByNameAsync("b@b.b");
-        if (user1 != null) {
-            await userManager.AddToRoleAsync(user1, adminRole);
+        var ownerUser = await userManager.FindByNameAsync("c@c.c");
+        if (ownerUser != null && ownerUser.Mobile == null) {
+            ownerUser.Mobile = "1234567890";
+            ownerUser.Street = "1234 Main St";
+            ownerUser.City = "Anytown";
+            ownerUser.PostalCode = "12345";
+            ownerUser.Country = "USA";
+            var result = await userManager.UpdateAsync(ownerUser);
+            if (result.Succeeded) {
+                await userManager.AddPasswordAsync(ownerUser, password4all);
+                await userManager.AddToRoleAsync(ownerUser, ownerRole);
+            }
         }
 
-        // find by name "c@c.c" and assign it an owner role
-        var user2 = await userManager.FindByNameAsync("c@c.c");
-        if (user2 != null) {
-            await userManager.AddToRoleAsync(user2, ownerRole);
-        }
-
-        // find by name "d@d.d" and assign it a passenger role
-        var user3 = await userManager.FindByNameAsync("d@d.d");
-        if (user3 != null) {
-            await userManager.AddToRoleAsync(user3, passengerRole);
+        var passengerUser = await userManager.FindByNameAsync("d@d.d");
+        if (passengerUser != null && passengerUser.Mobile == null) {
+            passengerUser.Mobile = "1234567890";
+            passengerUser.Street = "1234 Main St";
+            passengerUser.City = "Anytown";
+            passengerUser.PostalCode = "12345";
+            passengerUser.Country = "USA";
+            var result = await userManager.UpdateAsync(passengerUser);
+            if (result.Succeeded) {
+                await userManager.AddPasswordAsync(passengerUser, password4all);
+                await userManager.AddToRoleAsync(passengerUser, passengerRole);
+            }
         }
     }
-}
 }

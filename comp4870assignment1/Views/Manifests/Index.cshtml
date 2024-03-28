@@ -1,79 +1,9 @@
 @model IEnumerable<ClassLibrary.Models.Manifest>
+@using assignment1.Components
 
 @{
     ViewData["Title"] = "All Manifests";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Member)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Trip)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vehicle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Modified)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModifiedBy)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            @* <td>
-                @Html.DisplayFor(modelItem => item.Member.Id)
-            </td> *@
-            <td>
-                @Html.DisplayFor(modelItem => item.Member!.UserName)
-            <td>
-                @Html.DisplayFor(modelItem => item.Trip!.TripId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Vehicle!.VehicleId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Modified)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedBy)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ManifestId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ManifestId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ManifestId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<component type="typeof(Manifests)" render-mode="ServerPrerendered" />
+<a asp-action="GeneratePDFReport" asp-controller="Manifests">Generate PDF Report</a>

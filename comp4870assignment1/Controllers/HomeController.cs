@@ -2,6 +2,10 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using assignment1.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using ClassLibrary.Models;
+using ClassLibrary.Data;
 
 namespace assignment1.Controllers;
 
@@ -9,15 +13,89 @@ namespace assignment1.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly ApplicationDbContext _context;
+    private readonly UserManager<Member> _userManager;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, UserManager<Member> userManager)
     {
         _logger = logger;
+        _context = context;
+        _userManager = userManager;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> IndexAsync()
     {
-        return View();
+        //Get current Date as DateOnly
+        DateOnly date = DateOnly.FromDateTime(DateTime.Now);
+        // Look in Manifests for Trips the current user is signed up for
+        var userId = _userManager.GetUserId(User);
+        var upcomingTrips = _context.Manifests
+            .Where(m => m.MemberId == userId && m.Trip!.Date >= DateOnly.FromDateTime(DateTime.Today))
+            .Include(m => m.Trip)
+            .ThenInclude(t => t!.Vehicle)
+            .ToList();
+        ViewData["UpcomingTrips"] = upcomingTrips;
+
+        var availableTrips = _context.Trips
+            .Where(t => t.Date >= date && !_context.Manifests.Any(m => m.TripId == t.TripId && m.MemberId == userId))
+            .Include(t => t.Vehicle)
+            .ToList();
+        return View(availableTrips);
+    }
+
+    public IActionResult Search(DateOnly date)
+    {
+        var trips = _context.Trips.Where(t => t.Date == date).Include(t => t.Vehicle).ToList();
+        return PartialView("_SearchResults", trips);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> JoinTrip(int tripId)
+    {
+        // Get the current user
+        var userId = _userManager.GetUserId(User);
+
+        // Find ManifestId with the same TripId
+        var manifest = _context.Manifests.FirstOrDefault(m => m.TripId == tripId);
+        int nextManifestId = _context.Manifests
+            .DefaultIfEmpty()
+            .Max(m => (int?)m.ManifestId) + 1 ?? 1;
+
+        Manifest newManifest = new()
+        {
+            ManifestId = manifest != null ? manifest.ManifestId : nextManifestId,
+            MemberId = userId,
+            TripId = tripId,
+            Created = DateTime.Now,
+            Modified = DateTime.Now,
+            CreatedBy = userId,
+            ModifiedBy = userId
+        };
+
+        _context.Manifests.Add(newManifest);
+
+        // Save changes
+        await _context.SaveChangesAsync();
+
+        // Redirect back to the index page
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CancelTrip(int manifestId)
+    {
+        // Get the current user
+        var userId = _userManager.GetUserId(User);
+
+        //Delete Manifest with the same ManifestId and MemberId
+        var manifest = _context.Manifests.FirstOrDefault(m => m.ManifestId == manifestId && m.MemberId == userId);
+        _context.Manifests.Remove(manifest);
+
+        // Save changes
+        await _context.SaveChangesAsync();
+
+        // Redirect back to the index page
+        return RedirectToAction(nameof(Index));
     }
 
     [Authorize(Roles = "Admin, Owner")]

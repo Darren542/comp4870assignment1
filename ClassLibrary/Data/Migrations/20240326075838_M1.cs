@@ -201,7 +201,8 @@ namespace ClassLibrary.Data.Migrations
                 name: "Trip",
                 columns: table => new
                 {
-                    TripId = table.Column<int>(type: "INTEGER", nullable: false),
+                    TripId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     VehicleId = table.Column<int>(type: "INTEGER", nullable: false),
                     Date = table.Column<DateOnly>(type: "TEXT", nullable: true),
                     Time = table.Column<TimeOnly>(type: "TEXT", nullable: true),
@@ -214,7 +215,7 @@ namespace ClassLibrary.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Trip", x => new { x.TripId, x.VehicleId });
+                    table.PrimaryKey("PK_Trip", x => x.TripId);
                     table.ForeignKey(
                         name: "FK_Trip_Vehicle_VehicleId",
                         column: x => x.VehicleId,
@@ -230,7 +231,6 @@ namespace ClassLibrary.Data.Migrations
                     ManifestId = table.Column<int>(type: "INTEGER", nullable: false),
                     MemberId = table.Column<string>(type: "TEXT", nullable: false),
                     TripId = table.Column<int>(type: "INTEGER", nullable: false),
-                    VehicleId = table.Column<int>(type: "INTEGER", nullable: false),
                     Notes = table.Column<string>(type: "TEXT", nullable: true),
                     Created = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Modified = table.Column<DateTime>(type: "TEXT", nullable: true),
@@ -247,16 +247,10 @@ namespace ClassLibrary.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Manifest_Trip_TripId_VehicleId",
-                        columns: x => new { x.TripId, x.VehicleId },
+                        name: "FK_Manifest_Trip_TripId",
+                        column: x => x.TripId,
                         principalTable: "Trip",
-                        principalColumns: new[] { "TripId", "VehicleId" },
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Manifest_Vehicle_VehicleId",
-                        column: x => x.VehicleId,
-                        principalTable: "Vehicle",
-                        principalColumn: "VehicleId",
+                        principalColumn: "TripId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -265,9 +259,9 @@ namespace ClassLibrary.Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "City", "ConcurrencyStamp", "Country", "Created", "CreatedBy", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "Mobile", "Modified", "ModifiedBy", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "PostalCode", "SecurityStamp", "Street", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "14424a4c-b48c-47ca-99f2-d6c0601dec2c", 0, null, "e2644847-9fc0-4056-af8e-5476c2ecaf75", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "c@c.c", true, "Test", "Owner", false, null, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "C@C.C", "C@C.C", "AQAAAAIAAYagAAAAENLj3GWn3ysyxJnjbLyX+ztaG1ZBR76+8c4QZ1zcBzerEzIWl04TBe/LT8J0+FEycw==", null, false, null, "df080fdf-4789-447d-ac21-8a470e98a7a9", null, false, "c@c.c" },
-                    { "f7f77300-444d-459d-abd5-740ac20c885d", 0, null, "925e47ad-8c1d-4308-b3fd-bff387d564b7", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "b@b.b", true, "Test", "User1", false, null, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "B@B.B", "B@B.B", "AQAAAAIAAYagAAAAEJ4sHiGdiJ7M+ehitwf2V0e6vxtyfkGUYSO7aoM54lZLla7a31Gj/QJkKG6b44lxpw==", null, false, null, "72f74bf2-01f8-476c-b1f2-7e790db8a89a", null, false, "b@b.b" },
-                    { "f9626b59-93cd-42f9-bb65-f3d7e752108b", 0, null, "161a534f-560f-425e-a141-1d9e9011fbaa", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "d@d.d", true, "Test", "Passenger", false, null, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "D@D.D", "D@D.D", "AQAAAAIAAYagAAAAEGhgSNE6nXxJbDJyketY5j4qBLpl45G2q85sF1u6iht8jEQ1bPxpI/hRKyf9Eayheg==", null, false, null, "63116cb3-fa6f-4f44-a044-f758ff17fbd6", null, false, "d@d.d" }
+                    { "6c136e26-2431-4b04-acb7-6d354abe5e8e", 0, null, "14fdb97c-da13-44f8-b752-8b052d5fa4b8", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "d@d.d", true, "Test", "Passenger", false, null, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "D@D.D", "D@D.D", "AQAAAAIAAYagAAAAEMsZZwM1d545OEz6ZweOoSEmLmBpljFa0OXmRLPo42ms10FTQ0dC2bjMmVMPpFeFIQ==", null, false, null, "680e0775-d00e-48d0-9726-042a296ad4ab", null, false, "d@d.d" },
+                    { "b874ec6d-884c-4694-b092-66a03029e8c7", 0, null, "36ce9530-e315-4061-8991-e4d006751d0a", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "c@c.c", true, "Test", "Owner", false, null, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "C@C.C", "C@C.C", "AQAAAAIAAYagAAAAEFTLVHN7e+7yL2jWoRoi7hsqq81Xf2xp1QUqhDzsG4r0NtB48WNwfWLT3xM+7nafQw==", null, false, null, "0c157a1a-3242-4091-8d94-0a57c5cae89f", null, false, "c@c.c" },
+                    { "dbe2cc4b-27c2-44aa-af5d-a4289cefaef3", 0, null, "ab95c4e4-8fb9-499a-ad4e-10425fb3690e", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "b@b.b", true, "Test", "User1", false, null, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "B@B.B", "B@B.B", "AQAAAAIAAYagAAAAEJA76L/+8NIJvQcHVofMRPjUJ+hhM4kUUkJ0btPrjK33PlGDXpQpQSoq+xWrIrSeIQ==", null, false, null, "76f9d4fc-fe84-4b9a-93eb-b1fbd2c271ad", null, false, "b@b.b" }
                 });
 
             migrationBuilder.InsertData(
@@ -275,29 +269,29 @@ namespace ClassLibrary.Data.Migrations
                 columns: new[] { "VehicleId", "Created", "CreatedBy", "Id", "Make", "MemberId", "Model", "Modified", "ModifiedBy", "NumberOfSeats", "VehicleType", "Year" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7190), "14424a4c-b48c-47ca-99f2-d6c0601dec2c", null, "Tesla", "14424a4c-b48c-47ca-99f2-d6c0601dec2c", "Model 3", new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7253), "14424a4c-b48c-47ca-99f2-d6c0601dec2c", 5, "Electric", 2021 },
-                    { 2, new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7258), "14424a4c-b48c-47ca-99f2-d6c0601dec2c", null, "Tesla", "14424a4c-b48c-47ca-99f2-d6c0601dec2c", "Model S", new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7259), "14424a4c-b48c-47ca-99f2-d6c0601dec2c", 5, "Electric", 2021 },
-                    { 3, new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7262), "14424a4c-b48c-47ca-99f2-d6c0601dec2c", null, "Tesla", "14424a4c-b48c-47ca-99f2-d6c0601dec2c", "Model X", new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7263), "14424a4c-b48c-47ca-99f2-d6c0601dec2c", 5, "Electric", 2021 }
+                    { 1, new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(6885), "b874ec6d-884c-4694-b092-66a03029e8c7", null, "Tesla", "b874ec6d-884c-4694-b092-66a03029e8c7", "Model 3", new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(6966), "b874ec6d-884c-4694-b092-66a03029e8c7", 5, "Electric", 2021 },
+                    { 2, new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(6982), "b874ec6d-884c-4694-b092-66a03029e8c7", null, "Tesla", "b874ec6d-884c-4694-b092-66a03029e8c7", "Model S", new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(6985), "b874ec6d-884c-4694-b092-66a03029e8c7", 5, "Electric", 2021 },
+                    { 3, new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(6991), "b874ec6d-884c-4694-b092-66a03029e8c7", null, "Tesla", "b874ec6d-884c-4694-b092-66a03029e8c7", "Model X", new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7000), "b874ec6d-884c-4694-b092-66a03029e8c7", 5, "Electric", 2021 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Trip",
-                columns: new[] { "TripId", "VehicleId", "Created", "CreatedBy", "Date", "DestinationAddress", "MeetingAddress", "Modified", "ModifiedBy", "Time" },
+                columns: new[] { "TripId", "Created", "CreatedBy", "Date", "DestinationAddress", "MeetingAddress", "Modified", "ModifiedBy", "Time", "VehicleId" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7380), "14424a4c-b48c-47ca-99f2-d6c0601dec2c", new DateOnly(2021, 12, 25), "123 Main St, Anytown, USA", "456 Elm St, Anytown, USA", new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7382), "14424a4c-b48c-47ca-99f2-d6c0601dec2c", new TimeOnly(12, 0, 0) },
-                    { 2, 2, new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7387), "14424a4c-b48c-47ca-99f2-d6c0601dec2c", new DateOnly(2022, 1, 12), "321 Knight St, Anytown, USA", "789 Cambie St, Anytown, USA", new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7388), "14424a4c-b48c-47ca-99f2-d6c0601dec2c", new TimeOnly(14, 30, 0) },
-                    { 3, 3, new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7391), "14424a4c-b48c-47ca-99f2-d6c0601dec2c", new DateOnly(2022, 1, 24), "8 Moody St, Anyville, USA", "99 Hastings St, Anytown, USA", new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7392), "14424a4c-b48c-47ca-99f2-d6c0601dec2c", new TimeOnly(8, 0, 0) }
+                    { 1, new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7117), "b874ec6d-884c-4694-b092-66a03029e8c7", new DateOnly(2021, 12, 25), "123 Main St, Anytown, USA", "456 Elm St, Anytown, USA", new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7121), "b874ec6d-884c-4694-b092-66a03029e8c7", new TimeOnly(12, 0, 0), 1 },
+                    { 2, new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7136), "b874ec6d-884c-4694-b092-66a03029e8c7", new DateOnly(2022, 1, 12), "321 Knight St, Anytown, USA", "789 Cambie St, Anytown, USA", new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7139), "b874ec6d-884c-4694-b092-66a03029e8c7", new TimeOnly(14, 30, 0), 2 },
+                    { 3, new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7152), "b874ec6d-884c-4694-b092-66a03029e8c7", new DateOnly(2022, 1, 24), "8 Moody St, Anyville, USA", "99 Hastings St, Anytown, USA", new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7155), "b874ec6d-884c-4694-b092-66a03029e8c7", new TimeOnly(8, 0, 0), 3 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Manifest",
-                columns: new[] { "ManifestId", "MemberId", "Created", "CreatedBy", "Modified", "ModifiedBy", "Notes", "TripId", "VehicleId" },
+                columns: new[] { "ManifestId", "MemberId", "Created", "CreatedBy", "Modified", "ModifiedBy", "Notes", "TripId" },
                 values: new object[,]
                 {
-                    { 1, "f9626b59-93cd-42f9-bb65-f3d7e752108b", new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7428), "14424a4c-b48c-47ca-99f2-d6c0601dec2c", new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7429), "14424a4c-b48c-47ca-99f2-d6c0601dec2c", "I'm driving", 1, 1 },
-                    { 2, "f7f77300-444d-459d-abd5-740ac20c885d", new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7433), "14424a4c-b48c-47ca-99f2-d6c0601dec2c", new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7434), "14424a4c-b48c-47ca-99f2-d6c0601dec2c", "I'm driving", 2, 2 },
-                    { 3, "f9626b59-93cd-42f9-bb65-f3d7e752108b", new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7436), "14424a4c-b48c-47ca-99f2-d6c0601dec2c", new DateTime(2024, 3, 3, 20, 34, 27, 703, DateTimeKind.Local).AddTicks(7438), "14424a4c-b48c-47ca-99f2-d6c0601dec2c", "I'm driving", 3, 3 }
+                    { 1, "6c136e26-2431-4b04-acb7-6d354abe5e8e", new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7235), "b874ec6d-884c-4694-b092-66a03029e8c7", new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7238), "b874ec6d-884c-4694-b092-66a03029e8c7", "I'm driving", 1 },
+                    { 2, "dbe2cc4b-27c2-44aa-af5d-a4289cefaef3", new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7251), "b874ec6d-884c-4694-b092-66a03029e8c7", new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7268), "b874ec6d-884c-4694-b092-66a03029e8c7", "I'm driving", 2 },
+                    { 3, "6c136e26-2431-4b04-acb7-6d354abe5e8e", new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7272), "b874ec6d-884c-4694-b092-66a03029e8c7", new DateTime(2024, 3, 26, 0, 58, 37, 845, DateTimeKind.Local).AddTicks(7275), "b874ec6d-884c-4694-b092-66a03029e8c7", "I'm driving", 3 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -343,15 +337,9 @@ namespace ClassLibrary.Data.Migrations
                 column: "MemberId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Manifest_TripId_VehicleId",
+                name: "IX_Manifest_TripId",
                 table: "Manifest",
-                columns: new[] { "TripId", "VehicleId" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Manifest_VehicleId",
-                table: "Manifest",
-                column: "VehicleId");
+                column: "TripId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Trip_VehicleId",

@@ -8,17 +8,23 @@ using Microsoft.EntityFrameworkCore;
 using ClassLibrary.Data;
 using ClassLibrary.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace assignment1.Controllers;
 
-    [Authorize(Roles = "Admin, Owner, Passenger")]
+    [Authorize(Roles = "Admin, Owner")]
     public class TripsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public TripsController(ApplicationDbContext context)
+        private readonly UserManager<Member> _userManager;
+
+
+        public TripsController(ApplicationDbContext context, UserManager<Member> userManager)
         {
             _context = context;
+            _userManager = userManager;
+
         }
 
         // GET: Trips
@@ -50,7 +56,9 @@ namespace assignment1.Controllers;
         // GET: Trips/Create
         public IActionResult Create()
         {
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "MemberId");
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles
+                .Select(v => new { v.VehicleId, Description ="[" + v.VehicleId + "] " + v.Make + " " + v.Model }), 
+                "VehicleId", "Description");
             return View();
         }
 
@@ -59,32 +67,65 @@ namespace assignment1.Controllers;
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TripId,VehicleId,Date,Time,DestinationAddress,MeetingAddress,Created,Modified,CreatedBy,ModifiedBy")] Trip trip)
+        public async Task<IActionResult> Create([Bind("VehicleId,Date,Time,DestinationAddress,MeetingAddress,ManifestNote")] Trip trip, string manifestNote)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(trip);
+                string? userId = _userManager.GetUserId(User);
+                Trip newTrip = new()
+                {
+                    VehicleId = trip.VehicleId,
+                    Date = trip.Date,
+                    Time = trip.Time,
+                    DestinationAddress = trip.DestinationAddress,
+                    MeetingAddress = trip.MeetingAddress,
+                    Created = DateTime.Now,
+                    Modified = DateTime.Now,
+                    CreatedBy = userId,
+                    ModifiedBy = userId
+                };
+                _context.Add(newTrip);
+                await _context.SaveChangesAsync();
+
+                //Add new Trip to Manifest
+                Manifest newManifest = new()
+                {
+                    ManifestId = _context.Manifests
+                      .DefaultIfEmpty()
+                      .Max(m => (int?)m.ManifestId) + 1 ?? 1,
+                    MemberId = userId,
+                    TripId = newTrip.TripId,
+                    Notes = manifestNote,
+                    Created = DateTime.Now,
+                    Modified = DateTime.Now,
+                    CreatedBy = userId,
+                    ModifiedBy = userId
+                };
+                _context.Add(newManifest);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "MemberId", trip.VehicleId);
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "VehicleId", trip.VehicleId);
             return View(trip);
         }
 
         // GET: Trips/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? tripId, int? vehicleId)
         {
-            if (id == null)
+            if (tripId == null || vehicleId == null)
             {
                 return NotFound();
             }
 
-            var trip = await _context.Trips.FindAsync(id);
+            var trip = await _context.Trips
+                .FirstOrDefaultAsync(m => m.TripId == tripId && m.VehicleId == vehicleId);
             if (trip == null)
             {
                 return NotFound();
             }
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "MemberId", trip.VehicleId);
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles
+                .Select(v => new { v.VehicleId, Description = v.Make + " " + v.Model }), 
+                "VehicleId", "Description");
             return View(trip);
         }
 
@@ -93,9 +134,9 @@ namespace assignment1.Controllers;
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TripId,VehicleId,Date,Time,DestinationAddress,MeetingAddress,Created,Modified,CreatedBy,ModifiedBy")] Trip trip)
+        public async Task<IActionResult> Edit(int tripId, int vehicleId, [Bind("TripId,VehicleId,Date,Time,DestinationAddress,MeetingAddress,Created,Modified,CreatedBy,ModifiedBy")] Trip trip)
         {
-            if (id != trip.TripId)
+            if (tripId != trip.TripId || vehicleId != trip.VehicleId)
             {
                 return NotFound();
             }
@@ -120,21 +161,20 @@ namespace assignment1.Controllers;
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "MemberId", trip.VehicleId);
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "VehicleId", trip.VehicleId);
             return View(trip);
         }
 
         // GET: Trips/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? tripId)
         {
-            if (id == null)
+            if (tripId == null)
             {
                 return NotFound();
             }
 
             var trip = await _context.Trips
-                .Include(t => t.Vehicle)
-                .FirstOrDefaultAsync(m => m.TripId == id);
+                .FirstOrDefaultAsync(m => m.TripId == tripId);
             if (trip == null)
             {
                 return NotFound();
@@ -146,20 +186,21 @@ namespace assignment1.Controllers;
         // POST: Trips/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int tripId)
         {
-            var trip = await _context.Trips.FindAsync(id);
+            var trip = await _context.Trips
+                .FirstOrDefaultAsync(m => m.TripId == tripId);
             if (trip != null)
             {
                 _context.Trips.Remove(trip);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TripExists(int id)
+        private bool TripExists(int tripId)
         {
-            return _context.Trips.Any(e => e.TripId == id);
+            return _context.Trips.Any(e => e.TripId == tripId);
         }
     }
