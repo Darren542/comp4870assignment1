@@ -1,0 +1,29 @@
+@using ClassLibrary
+@model IEnumerable<UserRoleViewModel>
+@{
+    ViewData["Title"] = "Admin Role Change";
+}
+
+@foreach (var userRoleViewModel in Model)
+{
+    <form asp-action="UpdateUserRoles" method="post">
+        <table class="table">
+            <tr>
+                <th>User</th>
+                <th>Roles</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>@userRoleViewModel.UserName</td>
+                <td>
+                    <select name="newRole" asp-for="@userRoleViewModel.CurrentRole" asp-items="userRoleViewModel.Roles">
+                    </select>
+                    <input type="hidden" name="userId" asp-for="@userRoleViewModel.UserId" />
+                </td>
+                <td>
+                    <input type="submit" value="Update" class="btn btn-default" />
+                </td>
+            </tr>
+        </table>
+    </form>
+}
