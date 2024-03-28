@@ -56,11 +56,14 @@ public class HomeController : Controller
         var userId = _userManager.GetUserId(User);
 
         // Find ManifestId with the same TripId
-        var manifest = _context.Manifests.FirstOrDefault(m => m.TripId == tripId)!.ManifestId;
+        var manifest = _context.Manifests.FirstOrDefault(m => m.TripId == tripId);
+        int nextManifestId = _context.Manifests
+            .DefaultIfEmpty()
+            .Max(m => (int?)m.ManifestId) + 1 ?? 1;
 
         Manifest newManifest = new()
         {
-            ManifestId = manifest,
+            ManifestId = manifest != null ? manifest.ManifestId : nextManifestId,
             MemberId = userId,
             TripId = tripId,
             Created = DateTime.Now,
