@@ -1,0 +1,6 @@
+.circle {
+  border-radius: 50%;
+  object-fit: cover;
+  width: 25vw;
+  height: 25vw;
+}
