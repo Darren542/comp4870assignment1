@@ -1,20 +1,23 @@
 @using ClassLibrary
 @model IEnumerable<UserRoleViewModel>
 @{
-    ViewData["Title"] = "Admin Role Change";
+    ViewData["Title"] = "Update Roles";
 }
 
-<h1>Update Roles</h1>
+<h1>@ViewData["Title"]</h1>
 
-    <form asp-action="UpdateUserRoles" method="post">
-        <table class="table ">
-            <tr>
-                <th>User</th>
-                <th>Roles</th>
-                <th></th>
-            </tr>
-            @foreach (var userRoleViewModel in Model)
+<table class="text-white">
+    <tr>
+        <th class="fs-4 fw-normal">User</th>
+        <th class="fs-4 fw-normal">Roles</th>
+        <th></th>
+    </tr>
+</table>
+
+@foreach (var userRoleViewModel in Model)
 {
+    <form asp-action="UpdateUserRoles" method="post">
+        <table class="table">
             <tr>
                 <td>@userRoleViewModel.UserName</td>
                 <td>
@@ -26,7 +29,17 @@
                     <input type="submit" value="Update" class="btn btn-primary" />
                 </td>
             </tr>
-
-}
         </table>
     </form>
+}
+
+<style>
+    table {
+        width: 100%;
+    }
+    th, td {
+        width: 33.33%;
+        text-align: left;
+    }
+
+</style>
