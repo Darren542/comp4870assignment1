@@ -90,6 +90,7 @@ public class TripsController : Controller
     }
 
     // GET: Trips/Create
+    [Authorize(Roles = "Admin, Owner")]
     public IActionResult Create()
     {
         // Is Owner only show your own vehicles
@@ -163,6 +164,7 @@ public class TripsController : Controller
     }
 
     // GET: Trips/Edit/5
+    [Authorize(Roles = "Admin, Owner")]
     public async Task<IActionResult> Edit(int? tripId, int? vehicleId)
     {
         if (tripId == null || vehicleId == null)
@@ -225,6 +227,7 @@ public class TripsController : Controller
     }
 
     // GET: Trips/Delete/5
+    [Authorize(Roles = "Admin, Owner")]
     public async Task<IActionResult> Delete(int? tripId)
     {
         if (tripId == null)
