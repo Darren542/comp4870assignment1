@@ -14,12 +14,16 @@ public class Trip
     [Required]
     public int VehicleId { get; set; }
 
+    [Required]
     public DateOnly? Date { get; set; }
 
+    [Required]
     public TimeOnly? Time { get; set; }
 
+    [Display(Name = "Destination Address")]
     public string? DestinationAddress { get; set; }
 
+    [Display(Name = "Meeting Address")]
     public string? MeetingAddress { get; set; }
 
     public DateTime? Created { get; set; }
