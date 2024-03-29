@@ -5,7 +5,10 @@
 @inject VehicleService _vehicleService
 @inject NavigationManager _navigationManager
 
-<PageTitle>Edit Vehicle</PageTitle>
+<PageTitle>Delete Vehicle</PageTitle>
+
+<h1>Delete Vehicle</h1>
+<hr />
 
 @if (vehicle == null)
 {
@@ -13,12 +16,10 @@
 }
 else
 {
-    <h1>Delete</h1>
 
     <h3>Are you sure you want to delete this?</h3>
+    <br/>
     <div>
-        <h4>Vehicle</h4>
-        <hr />
         <dl class="row">
             <dt class = "col-sm-2">
                 Model

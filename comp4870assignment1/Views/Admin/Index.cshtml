@@ -4,15 +4,17 @@
     ViewData["Title"] = "Admin Role Change";
 }
 
-@foreach (var userRoleViewModel in Model)
-{
+<h1>Update Roles</h1>
+
     <form asp-action="UpdateUserRoles" method="post">
-        <table class="table">
+        <table class="table ">
             <tr>
                 <th>User</th>
                 <th>Roles</th>
                 <th></th>
             </tr>
+            @foreach (var userRoleViewModel in Model)
+{
             <tr>
                 <td>@userRoleViewModel.UserName</td>
                 <td>
@@ -21,9 +23,10 @@
                     <input type="hidden" name="userId" asp-for="@userRoleViewModel.UserId" />
                 </td>
                 <td>
-                    <input type="submit" value="Update" class="btn btn-default" />
+                    <input type="submit" value="Update" class="btn btn-primary" />
                 </td>
             </tr>
+
+}
         </table>
     </form>
-}

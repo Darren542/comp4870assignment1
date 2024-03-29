@@ -24,6 +24,7 @@ public class Vehicle
     public int? Year { get; set; }
 
     [Display(Name = "Number of Seats")]
+    [Required(ErrorMessage = "Number of seats is required")]
     [Range(1, 50, ErrorMessage = "Number of seats must be between 1 and 50")]
     public int? NumberOfSeats { get; set; }
 

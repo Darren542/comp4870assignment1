@@ -3,6 +3,7 @@
 @inject TripService _tripService
 
 <h3>Trip Details</h3>
+<hr />
 
 @if (trip == null)
 {
@@ -11,8 +12,6 @@
 else
 {
     <div>
-        <h4>Trip</h4>
-        <hr />
         <dl class="row">
             <dt class="col-sm-2">Date</dt>
             <dd class="col-sm-10">@trip.Date</dd>

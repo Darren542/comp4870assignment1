@@ -40,18 +40,19 @@
         <label asp-for="MeetingAddress" class="control-label">Meeting Address</label>
         <input asp-for="MeetingAddress" class="form-control" />
     </div>
-
+    <br/>
     <button type="submit" class="btn btn-primary">Save</button>
-</form>
 
-<div>
     @if (roles.Contains("Admin"))
     {
         <a asp-action="Index" class="btn btn-secondary">Back to List</a>
     } else {
         <a asp-action="MyTrips" class="btn btn-secondary">Back to My Trips</a>
     }
-</div>
+
+</form>
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

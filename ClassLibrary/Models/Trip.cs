@@ -14,16 +14,20 @@ public class Trip
     [Required]
     public int VehicleId { get; set; }
 
-    [Required]
+    [Required (ErrorMessage = "Date is required.")]
     public DateOnly? Date { get; set; }
 
-    [Required]
+    [Required (ErrorMessage = "Time is required.")]
     public TimeOnly? Time { get; set; }
 
     [Display(Name = "Destination Address")]
+    [Required (ErrorMessage = "Destination Address is required.")]
+    [StringLength(100, ErrorMessage = "Destination Address must be less than 100 characters.")]
     public string? DestinationAddress { get; set; }
 
     [Display(Name = "Meeting Address")]
+    [Required (ErrorMessage = "Meeting Address is required.")]
+    [StringLength(100, ErrorMessage = "Meeting Address must be less than 100 characters.")]
     public string? MeetingAddress { get; set; }
 
     public DateTime? Created { get; set; }
