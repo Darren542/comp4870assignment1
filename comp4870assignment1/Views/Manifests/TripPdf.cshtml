@@ -1,0 +1,27 @@
+@model IEnumerable<ClassLibrary.Models.Manifest>
+
+<h3>Manifests List</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Manifest ID</th>
+            <th>Member</th>
+            <th>Trip Destination</th>
+            <th>Notes</th>
+            <th>Generate a trip report for this manifest</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var manifest in Model)
+    {
+        <tr>
+            <td>@manifest.ManifestId</td>
+            <td>@manifest.Member?.UserName</td>
+            <td>@manifest.Trip?.DestinationAddress</td>
+            <td>@manifest.Notes</td>
+            <td><a href="@Url.Action("GenerateTripPDFReport", new { manifestId = manifest.ManifestId })">Generate Trip Report</a></td>
+        </tr>
+    }
+    </tbody>
+</table>

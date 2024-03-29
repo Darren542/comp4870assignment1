@@ -15,6 +15,7 @@ using iText.Kernel.Pdf.Canvas.Draw;
 using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
+using System.Security.Claims;
 
 namespace assignment1.Controllers;
 
@@ -99,7 +100,91 @@ public class ManifestsController : Controller
         return table;
     }
 
+    public async Task<IActionResult> TripPdf()
+    {
+        // Retrieve the ID of the current logged-in user
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+        IQueryable<Manifest> query;
+
+        // Check if the current user is an admin
+        if (User.IsInRole("Admin"))
+        {
+            // Admins get to see all manifests
+            query = _context.Manifests.Include(m => m.Member).Include(m => m.Trip);
+        }
+        else
+        {
+            // Regular users see only their manifests
+            query = _context.Manifests
+                .Include(m => m.Member)
+                .Include(m => m.Trip)
+                .Where(m => m.MemberId == userId);
+        }
+
+        var manifests = await query.ToListAsync();
+
+        // Pass the list of manifests to the view
+        return View(manifests);
+    }
+
+
+    public async Task<IActionResult> GenerateTripPDFReport(int manifestId)
+    {
+        var ms = new MemoryStream();
+
+        // Create a PdfWriter instance directing it to write to the MemoryStream.
+        var writer = new PdfWriter(ms);
+        var pdfDoc = new PdfDocument(writer);
+        var document = new Document(pdfDoc, PageSize.A4);
+        writer.SetCloseStream(false);
+
+        // Retrieve the Manifest including its Trip
+        var manifest = await _context.Manifests
+            .Include(m => m.Trip)
+            .ThenInclude(t => t.Vehicle) // Assuming you want vehicle details as well
+            .FirstOrDefaultAsync(m => m.ManifestId == manifestId);
+
+        if (manifest == null)
+        {
+            return NotFound();
+        }
+
+        // Header
+        Paragraph header = new Paragraph("Trip Report")
+            .SetTextAlignment(TextAlignment.CENTER)
+            .SetFontSize(20);
+        document.Add(header);
+
+        // Sub-header
+        Paragraph subheader = new Paragraph($"Generated on: {DateTime.Now.ToShortDateString()}")
+            .SetTextAlignment(TextAlignment.CENTER)
+            .SetFontSize(15);
+        document.Add(subheader);
+
+        document.Add(new LineSeparator(new SolidLine())).Add(new Paragraph("\n"));
+
+        // Adding Trip Details
+        document.Add(new Paragraph($"Trip ID: {manifest.TripId}"));
+        document.Add(new Paragraph($"Destination Address: {manifest.Trip?.DestinationAddress ?? "N/A"}"));
+        document.Add(new Paragraph($"Meeting Address: {manifest.Trip?.MeetingAddress ?? "N/A"}"));
+        document.Add(new Paragraph($"Date: {manifest.Trip?.Date?.ToString("d") ?? "N/A"}"));
+        document.Add(new Paragraph($"Time: {manifest.Trip?.Time?.ToString("t") ?? "N/A"}"));
+
+        // Optionally, add vehicle details and any other relevant information
+
+        // Closing the document
+        document.Close();
+
+        // Reset the MemoryStream position to the beginning.
+        ms.Position = 0;
+
+        // Return the stream as a PDF file
+        return new FileStreamResult(ms, "application/pdf")
+        {
+            FileDownloadName = $"TripReport_{manifest.TripId}.pdf"
+        };
+    }
 
     // GET: Manifests
     public async Task<IActionResult> Index()
@@ -144,7 +229,7 @@ public class ManifestsController : Controller
         }
         ViewData["MemberId"] = new SelectList(_context.Members, "Id", "Id", manifest.MemberId);
         ViewData["TripId"] = new SelectList(_context.Trips
-                .Select(t => new { t.TripId, Description = "[" + t.TripId + "] Destination: " + t.DestinationAddress }), 
+                .Select(t => new { t.TripId, Description = "[" + t.TripId + "] Destination: " + t.DestinationAddress }),
                 "TripId", "Description");
         return View(manifest);
     }
