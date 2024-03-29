@@ -99,7 +99,37 @@ public static class IdentitySeedData {
                 await userManager.AddPasswordAsync(passenger, password4all);
                 await userManager.AddToRoleAsync(passenger, passengerRole);
             }
-        } 
+        }
+
+        var aUser = await userManager.FindByNameAsync("a@a.a");
+        if (aUser != null && aUser.Mobile == null) {
+            aUser.Mobile = "1234567890";
+            aUser.Street = "1234 Main St";
+            aUser.City = "Anytown";
+            aUser.PostalCode = "12345";
+            aUser.Country = "USA";
+            var result = await userManager.UpdateAsync(aUser);
+        }
+
+        var oUser = await userManager.FindByNameAsync("o@o.o");
+        if (oUser != null && oUser.Mobile == null) {
+            oUser.Mobile = "1234567890";
+            oUser.Street = "1234 Main St";
+            oUser.City = "Anytown";
+            oUser.PostalCode = "12345";
+            oUser.Country = "USA";
+            var result = await userManager.UpdateAsync(oUser);
+        }
+
+        var pUser = await userManager.FindByNameAsync("p@p.p");
+        if (pUser != null && pUser.Mobile == null) {
+            pUser.Mobile = "1234567890";
+            pUser.Street = "1234 Main St";
+            pUser.City = "Anytown";
+            pUser.PostalCode = "12345";
+            pUser.Country = "USA";
+            var result = await userManager.UpdateAsync(pUser);
+        }
 
         var adminUser = await userManager.FindByNameAsync("b@b.b");
         if (adminUser != null && adminUser.Mobile == null) {
