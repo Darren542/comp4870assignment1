@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ClassLibrary.Data;
 using ClassLibrary.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace assignment1.Controllers;
 
@@ -16,15 +17,24 @@ namespace assignment1.Controllers;
     {
         private readonly ApplicationDbContext _context;
 
-        public VehiclesController(ApplicationDbContext context)
+        private readonly UserManager<Member> _userManager;
+
+        public VehiclesController(ApplicationDbContext context, UserManager<Member> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Vehicles
         public async Task<IActionResult> Index()
         {
             return View(await _context.Vehicles.ToListAsync());
+        }
+
+        public async Task<IActionResult> MyVehicles()
+        {
+            var userId = _context.Members.FirstOrDefault(m => m.Email == User.Identity!.Name)?.Id;
+            return View(await _context.Vehicles.Where(v => v.MemberId == userId).ToListAsync());
         }
 
         // GET: Vehicles/Details/5
@@ -80,9 +90,14 @@ namespace assignment1.Controllers;
             {
                 return NotFound();
             }
-            ViewData["MemberId"] = new SelectList(_context.Members
-            .Select(m => new { m.Id, Description = m.FirstName + " " + m.LastName + " [" + m.Email + "]" }), 
-            "Id", "Description"); 
+            var adminUsers = await _userManager.GetUsersInRoleAsync("Admin");
+            var ownerUsers = await _userManager.GetUsersInRoleAsync("Owner");
+
+            var adminAndOwnerUsers = adminUsers.Concat(ownerUsers).Distinct();
+
+            ViewData["MemberId"] = new SelectList(adminAndOwnerUsers
+                .Select(m => new { m.Id, Description = m.FirstName + " " + m.LastName + " [" + m.Email + "]" }), 
+                "Id", "Description");
             return View(vehicle);
         }
 

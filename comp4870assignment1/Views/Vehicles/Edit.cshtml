@@ -1,10 +1,16 @@
 @model ClassLibrary.Models.Vehicle
+@inject Microsoft.AspNetCore.Authorization.IAuthorizationService AuthorizationService
+@inject Microsoft.AspNetCore.Identity.UserManager<Member> UserManager
+
 
 @{
     ViewData["Title"] = "Edit Vehicle";
 }
 
-@* <component type="typeof(EditVehicle)" render-mode="ServerPrerendered" param-VehicleId="@Model.VehicleId" /> *@
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var roles = await UserManager.GetRolesAsync(user!);
+}
 
 <h1>@ViewData["Title"]</h1>
 
@@ -38,12 +44,13 @@
                 <input asp-for="VehicleType" class="form-control" />
                 <span asp-validation-for="VehicleType" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="MemberId" class="control-label">Owner</label>
-                <select asp-for="MemberId" class="form-control" asp-items="ViewBag.MemberId"></select>
-            </div>
-
-            
+            @if (!roles.Contains("Owner"))
+            {
+                <div class="form-group">
+                    <label asp-for="MemberId" class="control-label">Owner</label>
+                    <select asp-for="MemberId" class="form-control" asp-items="ViewBag.MemberId"></select>
+                </div>
+            }
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
