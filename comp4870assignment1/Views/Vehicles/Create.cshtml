@@ -1,7 +1,69 @@
 @model ClassLibrary.Models.Vehicle
+@inject Microsoft.AspNetCore.Authorization.IAuthorizationService AuthorizationService
+@inject Microsoft.AspNetCore.Identity.UserManager<Member> UserManager
+
 
 @{
     ViewData["Title"] = "Create Vehicle";
 }
 
-<component type="typeof(CreateVehicle)" render-mode="ServerPrerendered" />
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var roles = await UserManager.GetRolesAsync(user!);
+}
+
+@* <component type="typeof(CreateVehicle)" render-mode="ServerPrerendered" param-member=@user param-isAdmin="@roles.Contains("Admin")" /> *@
+
+<h1>Create Vehicle</h1>
+
+<form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="Model" class="control-label">Model</label>
+        <input asp-for="Model" type="text" class="form-control" />
+        <span asp-validation-for="Model" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Make" class="control-label">Make</label>
+        <input asp-for="Make" type="text" class="form-control" />
+        <span asp-validation-for="Make" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Year" class="control-label">Year</label>
+        <input asp-for="Year" type="number" class="form-control" />
+        <span asp-validation-for="Year" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="NumberOfSeats" class="control-label">Number Of Seats</label>
+        <input asp-for="NumberOfSeats" type="number" class="form-control" />
+        <span asp-validation-for="NumberOfSeats" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="VehicleType" class="control-label">Vehicle Type</label>
+        <input asp-for="VehicleType" class="form-control" />
+        <span asp-validation-for="VehicleType" class="text-danger"></span>
+    </div>
+    
+    @if (roles.Contains("Admin"))
+    {
+        <div class="form-group">
+            <label asp-for="MemberId" class="control-label">Owner</label>
+            <select asp-for="MemberId" class ="form-control" asp-items="ViewBag.MemberId"></select>
+            <span asp-validation-for="MemberId" class="text-danger"></span>
+        </div>
+    }
+    else
+    {
+        <input type="hidden" asp-for="MemberId" value="@user!.Id" />
+    }
+
+    <br/>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
+<br/>
+<div>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

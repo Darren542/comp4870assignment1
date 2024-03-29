@@ -31,12 +31,6 @@ namespace assignment1.Controllers;
             return View(await _context.Vehicles.ToListAsync());
         }
 
-        public async Task<IActionResult> MyVehicles()
-        {
-            var userId = _context.Members.FirstOrDefault(m => m.Email == User.Identity!.Name)?.Id;
-            return View(await _context.Vehicles.Where(v => v.MemberId == userId).ToListAsync());
-        }
-
         // GET: Vehicles/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -58,6 +52,15 @@ namespace assignment1.Controllers;
         // GET: Vehicles/Create
         public IActionResult Create()
         {
+            // Make a viewbag of the users that are Admin or Owner
+            var adminUsers = _userManager.GetUsersInRoleAsync("Admin").Result;
+            var ownerUsers = _userManager.GetUsersInRoleAsync("Owner").Result;
+
+            var adminAndOwnerUsers = adminUsers.Concat(ownerUsers).Distinct();
+
+            ViewData["MemberId"] = new SelectList(adminAndOwnerUsers
+                .Select(m => new { m.Id, Description = m.FirstName + " " + m.LastName + " [" + m.Email + "]" }), 
+                "Id", "Description");
             return View();
         }
 

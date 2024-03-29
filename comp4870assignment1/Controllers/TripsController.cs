@@ -59,7 +59,7 @@ public class TripsController : Controller
     }
 
     // GET: Trips
-    [Authorize(Roles = "Admin, Owner")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Index()
     {
         string? userId = _userManager.GetUserId(User);
@@ -92,9 +92,20 @@ public class TripsController : Controller
     // GET: Trips/Create
     public IActionResult Create()
     {
-        ViewData["VehicleId"] = new SelectList(_context.Vehicles
-            .Select(v => new { v.VehicleId, Description = "[" + v.VehicleId + "] " + v.Make + " " + v.Model }),
-            "VehicleId", "Description");
+        // Is Owner only show your own vehicles
+        if (User.IsInRole("Owner"))
+        {
+            string? userId = _userManager.GetUserId(User);
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles
+                .Where(v => v.MemberId == userId)
+                .Select(v => new { v.VehicleId, Description = "[" + v.VehicleId + "] " + v.Make + " " + v.Model }),
+                "VehicleId", "Description");
+            return View();
+        } else {
+            ViewData["VehicleId"] = new SelectList(_context.Vehicles
+                .Select(v => new { v.VehicleId, Description = "[" + v.VehicleId + "] " + v.Make + " " + v.Model }),
+                "VehicleId", "Description");
+        }
         return View();
     }
 
@@ -139,7 +150,13 @@ public class TripsController : Controller
             };
             _context.Add(newManifest);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            // If they are owners send to MyTrips, otherwise send to Index
+            if (User.IsInRole("Owner"))
+            {
+                return RedirectToAction(nameof(MyTrips));
+            } else {
+                return RedirectToAction(nameof(Index));
+            }
         }
         ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "VehicleId", trip.VehicleId);
         return View(trip);
@@ -195,7 +212,13 @@ public class TripsController : Controller
                     throw;
                 }
             }
-            return RedirectToAction(nameof(Index));
+            // If they are owners send to MyTrips, otherwise send to Index
+            if (User.IsInRole("Owner"))
+            {
+                return RedirectToAction(nameof(MyTrips));
+            } else {
+                return RedirectToAction(nameof(Index));
+            }
         }
         ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "VehicleId", trip.VehicleId);
         return View(trip);
@@ -231,8 +254,13 @@ public class TripsController : Controller
             _context.Trips.Remove(trip);
             await _context.SaveChangesAsync();
         }
-
-        return RedirectToAction(nameof(Index));
+        // If they are owners send to MyTrips, otherwise send to Index
+        if (User.IsInRole("Owner"))
+        {
+            return RedirectToAction(nameof(MyTrips));
+        } else {
+            return RedirectToAction(nameof(Index));
+        }
     }
 
     private bool TripExists(int tripId)

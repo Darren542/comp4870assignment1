@@ -1,11 +1,15 @@
 @model ClassLibrary.Models.Trip
+@inject Microsoft.AspNetCore.Authorization.IAuthorizationService AuthorizationService
+@inject Microsoft.AspNetCore.Identity.UserManager<Member> UserManager
 
 @{
     ViewData["Title"] = "Edit Trip";
 }
 
-@* <component type="typeof(EditTrip)" render-mode="ServerPrerendered" param-TripId="@Model.TripId" param-VehicleId="@Model.VehicleId" /> *@
-
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var roles = await UserManager.GetRolesAsync(user!);
+}
 
 <h1>Edit Trip</h1>
 
@@ -41,7 +45,12 @@
 </form>
 
 <div>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    @if (roles.Contains("Admin"))
+    {
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    } else {
+        <a asp-action="MyTrips" class="btn btn-secondary">Back to My Trips</a>
+    }
 </div>
 
 @section Scripts {

@@ -1,7 +1,12 @@
 @model ClassLibrary.Models.Trip
+@inject Microsoft.AspNetCore.Authorization.IAuthorizationService AuthorizationService
+@inject Microsoft.AspNetCore.Identity.UserManager<Member> UserManager
 
 @{
     ViewData["Title"] = "Delete Trip";
 }
-
-<component type="typeof(DeleteTrip)" render-mode="ServerPrerendered" param-TripId="@Model.TripId" />
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var roles = await UserManager.GetRolesAsync(user!);
+}
+<component type="typeof(DeleteTrip)" render-mode="ServerPrerendered" param-TripId="@Model.TripId" param-isAdmin="@roles.Contains("Admin")" />

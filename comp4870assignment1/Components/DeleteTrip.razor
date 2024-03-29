@@ -47,7 +47,13 @@ else
         <EditForm Model="@trip" OnValidSubmit="HandleValidSubmit">
             <input type="hidden" @bind="trip.TripId" />
             <button type="submit" class="btn btn-danger">Delete</button>
-            <a href="/Trips" class="btn btn-secondary">Back to List</a>
+            @if (isAdmin)
+            {
+                <a href="/Trips" class="btn btn-secondary">Back to List</a>
+            } else {
+                <a href="/Trips/MyTrips" class="btn btn-secondary">Back to List</a>
+            }
+        
         </EditForm>
     </div>
 }
@@ -57,6 +63,9 @@ else
     public int TripId { get; set; }
     [Parameter]
     public int VehicleId { get; set; }
+
+    [Parameter]
+    public bool isAdmin { get; set;} = false;
 
     private Trip trip = new Trip();
 
@@ -72,11 +81,25 @@ else
     private async Task HandleValidSubmit()
     {
         await _tripService.DeleteTripAsync(TripId);
-        _navigationManager.NavigateTo("/trips");
+        if (isAdmin)
+        {
+            _navigationManager.NavigateTo("/trips");
+        }
+        else
+        {
+            _navigationManager.NavigateTo("/trips/mytrips");
+        }
     }
 
     private void Cancel()
     {
-        _navigationManager.NavigateTo("/trips");
+        if (isAdmin)
+        {
+            _navigationManager.NavigateTo("/trips");
+        }
+        else
+        {
+            _navigationManager.NavigateTo("/trips/mytrips");
+        }
     }
 }

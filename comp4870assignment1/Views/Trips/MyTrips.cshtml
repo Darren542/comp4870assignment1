@@ -1,7 +1,14 @@
 @model IEnumerable<ClassLibrary.Models.Manifest>
+@inject Microsoft.AspNetCore.Authorization.IAuthorizationService AuthorizationService
+@inject Microsoft.AspNetCore.Identity.UserManager<Member> UserManager
 
 @{
     ViewData["Title"] = "My Scheduled Trips";
+}
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var roles = await UserManager.GetRolesAsync(user!);
 }
 
 @section Styles {
@@ -10,10 +17,20 @@
 }
 
 <h1>My Trips</h1>
+@if (roles.Contains("Owner"))
+{
+    <a class="btn btn-primary" href="/Trips/Create">Create</a>
+}
 
 <table class="table">
     <thead>
         <tr>
+            @if (roles.Contains("Owner"))
+            {
+                <th>
+                    Driving
+                </th>
+            }
             <th>
                 @Html.DisplayNameFor(model => model.Trip!.Date)
             </th>
@@ -35,8 +52,21 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
         <tr>
+            @if (roles.Contains("Owner"))
+            {
+                <th>
+                    @if (user!.Id == item!.Trip!.Vehicle!.MemberId)
+                    {
+                        @:Yes
+                    }
+                    else
+                    {
+                        @:No
+                    }
+                </th>
+            }
             <td>
                 @Html.DisplayFor(modelItem => item.Trip!.Date)
             </td>
@@ -55,10 +85,19 @@
             <td>
                 @if (item.Trip!.Date > DateOnly.FromDateTime(DateTime.Now))
                 {
-                    <form method="post" asp-action="CancelTrip" asp-controller="Home">
+                    @if (roles.Contains("Owner"))
+                    {
+                        <a class="btn btn-primary" href="/Trips/Edit/@item.TripId/@item.Trip.VehicleId">Edit</a>
+                        <a class="btn btn-primary" href="/Trips/Details/@item.TripId">Details</a>
+                        <a class="btn btn-danger" href="/Trips/Delete/@item.TripId/@item.Trip.VehicleId">Delete</a>
+                    }
+                    else
+                    {
+                        <form method="post" asp-action="CancelTrip" asp-controller="Home">
                             <input type="hidden" name="manifestId" value="@item.ManifestId" />
                             <input type="submit" class="btn btn-warning" value="Cancel Trip" />
-                    </form>
+                        </form>
+                    }
                 } else if (item.Rating != null)
                 {
                     <div>

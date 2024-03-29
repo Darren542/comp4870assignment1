@@ -18,27 +18,45 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Vehicle ID</th>
-                <th>Model</th>
-                <th>Make</th>
-                <th>Year</th>
-                <th>Number of Seats</th>
-                <th>Vehicle Type</th>
-                <th>Vehicle Owner</th>
-                <th>Actions</th>
+                @if (isAdmin)
+                {
+                    <th>Vehicle ID</th>
+                    <th>Model</th>
+                    <th>Make</th>
+                    <th>Year</th>
+                    <th>Number of Seats</th>
+                    <th>Vehicle Type</th>
+                    <th>Vehicle Owner</th>
+                    <th>Actions</th>
+                }
+                else
+                {
+                    <th>Model</th>
+                    <th>Make</th>
+                    <th>Year</th>
+                    <th>Number of Seats</th>
+                    <th>Vehicle Type</th>
+                    <th>Actions</th>
+                }
             </tr>
         </thead>
         <tbody>
         @foreach (var item in vehicles)
         {
             <tr>
-                <td>@item.VehicleId</td>
+                @if (isAdmin)
+                {
+                    <td>@item.VehicleId</td>
+                }
                 <td>@item.Model</td>
                 <td>@item.Make</td>
                 <td>@item.Year</td>
                 <td>@item.NumberOfSeats</td>
                 <td>@item.VehicleType</td>
-                <td>@item.Member?.FirstName @item.Member?.LastName [@item.Member?.Email]</td>
+                @if (isAdmin)
+                {
+                    <td>@item.Member?.FirstName @item.Member?.LastName [@item.Member?.Email]</td>
+                }
                 <td>
                     <a class="btn btn-primary" href="Vehicles/Edit/@item.VehicleId">Edit</a>
                     <a class="btn btn-primary" href="Vehicles/Details/@item.VehicleId">Details</a>
@@ -51,10 +69,23 @@ else
 }
 
 @code {
+    [Parameter]
+    public bool isAdmin { get; set; } = false;
+
+    [Parameter]
+    public Member? member { get; set; }
+
     private List<Vehicle>? vehicles;
 
     protected override async Task OnInitializedAsync()
     {
-        vehicles = await _context.Vehicles.Include(v => v.Member).ToListAsync();
+        if (isAdmin)
+        {
+            vehicles = await _context.Vehicles.Include(v => v.Member).ToListAsync();
+        }
+        else
+        {
+            vehicles = await _context.Vehicles.Include(v => v.Member).Where(v => v.MemberId == member!.Id).ToListAsync();
+        }
     }
 }

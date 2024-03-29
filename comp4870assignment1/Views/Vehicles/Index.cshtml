@@ -1,8 +1,16 @@
 @model IEnumerable<ClassLibrary.Models.Vehicle>
+@inject Microsoft.AspNetCore.Authorization.IAuthorizationService AuthorizationService
+@inject Microsoft.AspNetCore.Identity.UserManager<Member> UserManager
+
 @using assignment1.Components
 
 @{
     ViewData["Title"] = "All Vehicles";
 }
 
-<component type="typeof(Vehicles)" render-mode="ServerPrerendered" />
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var roles = await UserManager.GetRolesAsync(user!);
+}
+
+<component type="typeof(Vehicles)" render-mode="ServerPrerendered" param-Member=@user param-isAdmin="@roles.Contains("Admin")" />
