@@ -51,9 +51,9 @@ else
     protected override async Task OnInitializedAsync()
     {
         manifests = await _context.Manifests
-                                   .Include(m => m.Member)
-                                   .Include(m => m.Trip)
-                                   .OrderBy(m => m.ManifestId)
-                                   .ToListAsync();
+                            .Include(m => m.Member)
+                            .Include(m => m.Trip)
+                            .OrderBy(m => m.ManifestId)
+                            .ToListAsync();
     }
 }

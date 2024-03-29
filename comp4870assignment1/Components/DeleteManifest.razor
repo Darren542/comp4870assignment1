@@ -78,13 +78,13 @@ else
     public int ManifestId { get; set; }
 
     [Parameter]
-    public string MemberId { get; set; }
+    public string MemberId { get; set; } = "";
 
     private Manifest manifest = new Manifest();
 
     private async Task HandleValidSubmit()
     {
-        await _manifestService.DeleteManifestAsync(manifest.ManifestId, manifest.MemberId);
+        await _manifestService.DeleteManifestAsync(manifest.ManifestId, manifest.MemberId!);
         _navigationManager.NavigateTo("/Manifests");
     }
 

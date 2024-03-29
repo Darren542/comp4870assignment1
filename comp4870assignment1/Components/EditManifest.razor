@@ -55,9 +55,9 @@ else
     public int ManifestId { get; set; }
 
     [Parameter]
-    public string MemberId { get; set; }
+    public string MemberId { get; set; } = "";
 
-    private Manifest manifest;
+    private Manifest manifest = new Manifest();
     private List<Member> members = new List<Member>();
     private List<Trip> trips = new List<Trip>();
 
@@ -70,7 +70,7 @@ else
 
     private async Task HandleValidSubmit()
     {
-        await _manifestService.UpdateManifestAsync(manifest.ManifestId, manifest.MemberId, manifest);
+        await _manifestService.UpdateManifestAsync(manifest.ManifestId, manifest.MemberId!, manifest);
         _navigationManager.NavigateTo("/Manifests");
     }
 }

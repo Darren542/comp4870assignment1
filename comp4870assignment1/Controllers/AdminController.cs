@@ -32,13 +32,13 @@ public class AdminController : Controller
         {
             var thisViewModel = new UserRoleViewModel();
             thisViewModel.UserId = user.Id;
-            thisViewModel.UserName = user.UserName;
+            thisViewModel.UserName = user.UserName ?? "";
             thisViewModel.Roles = _roleManager.Roles.Select(r => new SelectListItem
             {
                 Text = r.Name,
                 Value = r.Name
             });
-            thisViewModel.CurrentRole = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+            thisViewModel.CurrentRole = ((await _userManager.GetRolesAsync(user)).FirstOrDefault())!;
 
             userRolesViewModel.Add(thisViewModel);
         }

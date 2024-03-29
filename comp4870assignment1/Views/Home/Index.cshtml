@@ -19,11 +19,11 @@
             @foreach (var manifest in upcomingTrips)
             {
                 <tr>
-                    <td>@manifest.Trip.Date</td>
-                    <td>@manifest.Trip.Time</td>
-                    <td>@manifest.Trip.DestinationAddress</td>
-                    <td>@manifest.Trip.MeetingAddress</td>
-                    <td>@manifest.Trip.Vehicle?.Make @manifest.Trip.Vehicle?.Model</td>
+                    <td>@manifest.Trip?.Date</td>
+                    <td>@manifest.Trip?.Time</td>
+                    <td>@manifest.Trip?.DestinationAddress</td>
+                    <td>@manifest.Trip?.MeetingAddress</td>
+                    <td>@manifest.Trip?.Vehicle?.Make @manifest.Trip?.Vehicle?.Model</td>
                     <td>
                         <form method="post" asp-action="CancelTrip" asp-controller="Home">
                             <input type="hidden" name="manifestId" value="@manifest.ManifestId" />

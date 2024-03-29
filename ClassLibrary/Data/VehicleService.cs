@@ -18,7 +18,7 @@ public class VehicleService
      {
           return await _context.Vehicles.ToListAsync();
      }
-     public async Task<Vehicle> GetVehicleAsync(int id)
+     public async Task<Vehicle?> GetVehicleAsync(int id)
      {
           return await _context.Vehicles.FindAsync(id);
      }
@@ -28,7 +28,7 @@ public class VehicleService
           await _context.SaveChangesAsync();
           return vehicle;
      }
-     public async Task<Vehicle> UpdateVehicleAsync(int id, Vehicle vehicle)
+     public async Task<Vehicle?> UpdateVehicleAsync(int id, Vehicle vehicle)
      {
           var Vehicle = await _context.Vehicles.FindAsync(id);
 
@@ -48,9 +48,13 @@ public class VehicleService
           await _context.SaveChangesAsync();
           return vehicle;
      }
-     public async Task<Vehicle> DeleteVehicleAsync(int id)
+     public async Task<Vehicle?> DeleteVehicleAsync(int id)
      {
           var vehicle = _context.Vehicles.FirstOrDefault(x => x.VehicleId == id);
+          if (vehicle == null)
+          {
+               return null;
+          }
           _context.Vehicles.Remove(vehicle);
           await _context.SaveChangesAsync();
           return vehicle;

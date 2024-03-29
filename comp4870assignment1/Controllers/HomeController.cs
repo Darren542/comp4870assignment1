@@ -40,7 +40,7 @@ public class HomeController : Controller
             .Where(t => t.Date >= date && !_context.Manifests.Any(m => m.TripId == t.TripId && m.MemberId == userId))
             .Include(t => t.Vehicle)
             .ToList();
-        return View(availableTrips);
+        return await Task.FromResult(View(availableTrips));
     }
 
     public IActionResult Search(DateOnly date)
@@ -59,7 +59,7 @@ public class HomeController : Controller
         var manifest = _context.Manifests.FirstOrDefault(m => m.TripId == tripId);
         int nextManifestId = _context.Manifests
             .DefaultIfEmpty()
-            .Max(m => (int?)m.ManifestId) + 1 ?? 1;
+            .Max(m => (int?)m!.ManifestId) + 1 ?? 1;
 
         Manifest newManifest = new()
         {
@@ -89,7 +89,7 @@ public class HomeController : Controller
 
         //Delete Manifest with the same ManifestId and MemberId
         var manifest = _context.Manifests.FirstOrDefault(m => m.ManifestId == manifestId && m.MemberId == userId);
-        _context.Manifests.Remove(manifest);
+        _context.Manifests.Remove(manifest!);
 
         // Save changes
         await _context.SaveChangesAsync();

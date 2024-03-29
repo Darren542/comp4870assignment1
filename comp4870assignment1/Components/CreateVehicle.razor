@@ -60,7 +60,7 @@
 
 @code {
     private Vehicle vehicle = new Vehicle();
-    private List<Member> members;
+    private List<Member> members = new List<Member>();
     protected override async Task OnInitializedAsync()
     {
         members = await _context.Members.ToListAsync();

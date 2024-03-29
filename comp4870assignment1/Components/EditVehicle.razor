@@ -75,7 +75,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        vehicle = await _vehicleService.GetVehicleAsync(vehicleId);
+        vehicle = (await _vehicleService.GetVehicleAsync(vehicleId))!;
         if(vehicle == null)
         {
             vehicle = new Vehicle();

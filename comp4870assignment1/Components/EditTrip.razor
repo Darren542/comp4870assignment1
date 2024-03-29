@@ -62,7 +62,7 @@ else
     [Parameter]
     public int VehicleId { get; set; }
 
-    private Trip trip;
+    private Trip trip = new Trip();
     private List<Vehicle> vehicles = new List<Vehicle>();
     private string timeString
     {
@@ -82,7 +82,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        trip = await _tripService.GetTripAsync(TripId);
+        trip = (await _tripService.GetTripAsync(TripId))!;
         vehicles = await _vehicleService.GetVehiclesAsync();
         if (trip == null)
         {

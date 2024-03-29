@@ -58,11 +58,15 @@ else
     [Parameter]
     public int VehicleId { get; set; }
 
-    private Trip trip;
+    private Trip trip = new Trip();
 
     protected override async Task OnInitializedAsync()
     {
-        trip = await _tripService.GetTripAsync(TripId);
+        var foundTrip = await _tripService.GetTripAsync(TripId);
+        if (foundTrip != null)
+        {
+            trip = foundTrip;
+        }
     }
 
     private async Task HandleValidSubmit()

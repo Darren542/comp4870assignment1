@@ -91,8 +91,8 @@ namespace assignment1.Controllers;
                 Manifest newManifest = new()
                 {
                     ManifestId = _context.Manifests
-                      .DefaultIfEmpty()
-                      .Max(m => (int?)m.ManifestId) + 1 ?? 1,
+                        .DefaultIfEmpty()
+                        .Max(m => (int?)m!.ManifestId) + 1 ?? 1,
                     MemberId = userId,
                     TripId = newTrip.TripId,
                     Notes = manifestNote,

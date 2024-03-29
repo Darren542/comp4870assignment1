@@ -94,11 +94,11 @@ else
     [Parameter]
     public int vehicleId { get; set; }
 
-    private Vehicle vehicle = new Vehicle();
+    private Vehicle? vehicle = new Vehicle();
 
     private async Task HandleValidSubmit()
     {
-        await _vehicleService.DeleteVehicleAsync(vehicle.VehicleId);
+        await _vehicleService.DeleteVehicleAsync(vehicle!.VehicleId);
         _navigationManager.NavigateTo("/Vehicles");
     }
 

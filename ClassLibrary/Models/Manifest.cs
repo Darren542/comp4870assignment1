@@ -12,18 +12,27 @@ public class Manifest
 {
     [Key]
     public int ManifestId { get; set; }
+
     [Required]
     public string? MemberId { get; set; }
+
     [ForeignKey("MemberId")]
     public Member? Member { get; set; }
+
     [Required]
     public int TripId { get; set; }
+
     [ForeignKey("TripId")]
     public Trip? Trip { get; set; }
+
     public string? Notes { get; set; }
+
     public DateTime? Created { get; set; }
+
     public DateTime? Modified { get; set; }
+
     public string? CreatedBy { get; set; }
+    
     public string? ModifiedBy { get; set; }
 }
 

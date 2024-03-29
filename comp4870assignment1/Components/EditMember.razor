@@ -77,9 +77,9 @@ else
 
 @code {
     [Parameter]
-    public string Id { get; set; }
+    public string Id { get; set; } = "";
 
-    private Member member;
+    private Member member = new Member();
 
     protected override async Task OnInitializedAsync()
     {
