@@ -40,4 +40,6 @@ public class Trip
 
     [ForeignKey("VehicleId")]
     public Vehicle? Vehicle { get; set; }
+
+    public ICollection<Manifest>? Manifests { get; set; }
 }

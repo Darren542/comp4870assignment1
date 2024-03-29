@@ -33,12 +33,15 @@ public class HomeController : Controller
             .Where(m => m.MemberId == userId && m.Trip!.Date >= DateOnly.FromDateTime(DateTime.Today))
             .Include(m => m.Trip)
             .ThenInclude(t => t!.Vehicle)
+            .Include(m => m.Trip)
+            .ThenInclude(t => t!.Manifests)
             .ToList();
         ViewData["UpcomingTrips"] = upcomingTrips;
 
         var availableTrips = _context.Trips
             .Where(t => t.Date >= date && !_context.Manifests.Any(m => m.TripId == t.TripId && m.MemberId == userId))
             .Include(t => t.Vehicle)
+            .Include(t => t.Manifests)
             .ToList();
         return await Task.FromResult(View(availableTrips));
     }

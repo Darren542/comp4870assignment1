@@ -221,6 +221,46 @@ public static class ModelBuilderExtension
                 Modified = DateTime.Now,
                 CreatedBy = ownerId,
                 ModifiedBy = ownerId
+            },
+            new Manifest {
+                ManifestId = 5,
+                MemberId = ownerId,
+                TripId = 1,
+                Notes = "I'm driving",
+                Created = DateTime.Now,
+                Modified = DateTime.Now,
+                CreatedBy = ownerId,
+                ModifiedBy = ownerId
+            },
+            new Manifest {
+                ManifestId = 6,
+                MemberId = ownerId,
+                TripId = 2,
+                Notes = "I'm driving",
+                Created = DateTime.Now,
+                Modified = DateTime.Now,
+                CreatedBy = ownerId,
+                ModifiedBy = ownerId
+            },
+            new Manifest {
+                ManifestId = 7,
+                MemberId = ownerId,
+                TripId = 3,
+                Notes = "I'm driving",
+                Created = DateTime.Now,
+                Modified = DateTime.Now,
+                CreatedBy = ownerId,
+                ModifiedBy = ownerId
+            },
+            new Manifest {
+                ManifestId = 8,
+                MemberId = ownerId,
+                TripId = 4,
+                Notes = "I'm driving",
+                Created = DateTime.Now,
+                Modified = DateTime.Now,
+                CreatedBy = ownerId,
+                ModifiedBy = ownerId
             }
         };
 
