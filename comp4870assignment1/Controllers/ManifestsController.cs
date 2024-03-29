@@ -76,7 +76,7 @@ public class ManifestsController : Controller
         Table table = new Table(UnitValue.CreatePercentArray(new float[] { 3, 3, 3, 3, 4 })).UseAllAvailableWidth();
 
         // Adding column headers
-        string[] headers = { "Manifest ID", "Member", "Trip", "Notes" };
+        string[] headers = { "Manifest ID", "Member", "Destination Address", "Meeting Address", "Notes" };
         foreach (var header in headers)
         {
             table.AddHeaderCell(new Cell().Add(new Paragraph(header).SetBold()));
@@ -94,6 +94,7 @@ public class ManifestsController : Controller
             table.AddCell(new Cell().Add(new Paragraph(manifest.ManifestId.ToString())));
             table.AddCell(new Cell().Add(new Paragraph(manifest.Member?.UserName ?? "N/A")));
             table.AddCell(new Cell().Add(new Paragraph(manifest.Trip?.DestinationAddress ?? "N/A")));
+            table.AddCell(new Cell().Add(new Paragraph(manifest.Trip?.MeetingAddress ?? "N/A")));
             table.AddCell(new Cell().Add(new Paragraph(manifest.Notes ?? "No notes")));
         }
 
