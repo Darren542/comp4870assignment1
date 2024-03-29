@@ -128,7 +128,7 @@ public static class ModelBuilderExtension
             new Trip {
                 TripId = 1,
                 VehicleId = 1,
-                Date = new DateOnly(2021, 12, 25),
+                Date = new DateOnly(2024, 3, 10),
                 Time = new TimeOnly(12, 0, 0),
                 DestinationAddress = "123 Main St, Anytown, USA",
                 MeetingAddress = "456 Elm St, Anytown, USA",
@@ -140,7 +140,7 @@ public static class ModelBuilderExtension
             new Trip {
                 TripId = 2,
                 VehicleId = 2,
-                Date = new DateOnly(2022, 1, 12),
+                Date = new DateOnly(2024, 4, 12),
                 Time = new TimeOnly(14, 30, 0),
                 DestinationAddress = "321 Knight St, Anytown, USA",
                 MeetingAddress = "789 Cambie St, Anytown, USA",
@@ -152,7 +152,19 @@ public static class ModelBuilderExtension
             new Trip {
                 TripId = 3,
                 VehicleId = 3,
-                Date = new DateOnly(2022, 1, 24),
+                Date = new DateOnly(2024, 4, 13),
+                Time = new TimeOnly(8, 0, 0),
+                DestinationAddress = "8 Moody St, Anyville, USA",
+                MeetingAddress = "99 Hastings St, Anytown, USA",
+                Created = DateTime.Now,
+                Modified = DateTime.Now,
+                CreatedBy = ownerId,
+                ModifiedBy = ownerId
+            },
+            new Trip {
+                TripId = 4,
+                VehicleId = 3,
+                Date = new DateOnly(2022, 4, 13),
                 Time = new TimeOnly(8, 0, 0),
                 DestinationAddress = "8 Moody St, Anyville, USA",
                 MeetingAddress = "99 Hastings St, Anytown, USA",
@@ -194,6 +206,16 @@ public static class ModelBuilderExtension
                 ManifestId = 3,
                 MemberId = userIds[2],
                 TripId = 3,
+                Notes = "I'm driving",
+                Created = DateTime.Now,
+                Modified = DateTime.Now,
+                CreatedBy = ownerId,
+                ModifiedBy = ownerId
+            },
+            new Manifest {
+                ManifestId = 4,
+                MemberId = userIds[2],
+                TripId = 4,
                 Notes = "I'm driving",
                 Created = DateTime.Now,
                 Modified = DateTime.Now,

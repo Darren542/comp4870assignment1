@@ -32,7 +32,9 @@ public class Manifest
     public DateTime? Modified { get; set; }
 
     public string? CreatedBy { get; set; }
-    
+
     public string? ModifiedBy { get; set; }
+
+    public int? Rating { get; set; }
 }
 

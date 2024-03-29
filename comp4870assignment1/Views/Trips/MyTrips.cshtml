@@ -1,0 +1,112 @@
+@model IEnumerable<ClassLibrary.Models.Manifest>
+
+@{
+    ViewData["Title"] = "My Scheduled Trips";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/myTrips.css" />
+}
+
+<h1>My Trips</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Trip!.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Trip!.Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Trip!.DestinationAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Trip!.MeetingAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Trip!.Vehicle)
+            </th>
+            <th>
+                Actions | Rating
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Trip!.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Trip!.Time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Trip!.DestinationAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Trip!.MeetingAddress)
+            </td>
+            <td>
+                @item.Trip!.Vehicle
+            </td>
+            <td>
+                @if (item.Trip!.Date > DateOnly.FromDateTime(DateTime.Now))
+                {
+                    <form method="post" asp-action="CancelTrip" asp-controller="Home">
+                            <input type="hidden" name="manifestId" value="@item.ManifestId" />
+                            <input type="submit" class="btn btn-warning" value="Cancel Trip" />
+                    </form>
+                } else if (item.Rating != null)
+                {
+                    <div>
+                        @for (int i = 1; i <= 5; i++) {
+                            <span 
+                                class="star-rating-icon @((i <= item.Rating) ? "fas" : "far") fa-star"
+                                style="color: @((i <= item.Rating) ? "gold" : ""); cursor: default;"
+                            >
+                            </span>
+                        }
+                    </div>
+                } else
+                {
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ratingModal-@item.ManifestId">
+                        Rate Trip
+                    </button>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@foreach (var item in Model) {
+    <div class="modal fade" id="ratingModal-@item.ManifestId" tabindex="-1" role="dialog" aria-labelledby="ratingModalLabel-@item.ManifestId" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ratingModalLabel-@item.ManifestId">Rate Trip</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" asp-action="MyTrips" asp-controller="Trips">
+                        <input type="hidden" name="manifestId" value="@item.ManifestId" />
+                        <!-- Star rating input -->
+                        <div class="star-rating">
+                            @for (int i = 5; i >= 1; i--) {
+                                <input id="star-@i-@item.ManifestId" name="rating" type="radio" value="@i" class="star-rating-input"/>
+                                <label for="star-@i-@item.ManifestId" class="star-rating-icon fas fa-star"></label>
+                            }
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="Submit Rating" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

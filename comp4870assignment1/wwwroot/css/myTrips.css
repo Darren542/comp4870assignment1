@@ -1,0 +1,29 @@
+.star-rating-input {
+  display: none;
+}
+
+.star-rating-icon {
+  color: #ccc; /* Default star color */
+  cursor: pointer;
+}
+
+.star-rating-input:checked ~ .star-rating-icon {
+  color: #f5a623; /* Highlighted star color */
+}
+
+.star-rating-input:hover ~ .star-rating-icon,
+.star-rating-input:hover ~ .star-rating-icon ~ .star-rating-icon {
+    color: #f5a623; /* Hover star color */
+}
+
+/* Optional: Reverse the order of the stars visually */
+.star-rating {
+  width: 120px;
+  direction: rtl;
+  margin: 0px;
+  padding: 0px 0px 15px 0px;
+}
+
+.star-rating-icon {
+  direction: ltr;
+}

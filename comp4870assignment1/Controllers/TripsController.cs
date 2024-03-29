@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace assignment1.Controllers;
 
-[Authorize(Roles = "Admin, Owner")]
+[Authorize(Roles = "Admin, Owner, Passenger")]
 public class TripsController : Controller
 {
     private readonly ApplicationDbContext _context;
@@ -27,7 +27,39 @@ public class TripsController : Controller
 
     }
 
+    public async Task<IActionResult> MyTrips()
+    {
+        string? userId = _userManager.GetUserId(User);
+        var manifests = _context.Manifests
+            .Where(m => m.MemberId == userId)
+            .Include(m => m.Trip)
+            .ThenInclude(t => t!.Vehicle)
+            .OrderByDescending(m => m.Trip!.Date)
+            .ToList();
+
+        return await Task.FromResult(View(manifests));
+    }
+    
+    // POST: Leave a Trip
+    [HttpPost]
+    public async Task<IActionResult> LeaveTrip(int tripId)
+    {
+        // Get the current user
+        var userId = _userManager.GetUserId(User);
+
+        // Find ManifestId with the same TripId
+        var manifest = _context.Manifests.FirstOrDefault(m => m.TripId == tripId && m.MemberId == userId);
+        if (manifest != null)
+        {
+            _context.Manifests.Remove(manifest);
+            await _context.SaveChangesAsync();
+        }
+
+        return RedirectToAction(nameof(MyTrips));
+    }
+
     // GET: Trips
+    [Authorize(Roles = "Admin, Owner")]
     public async Task<IActionResult> Index()
     {
         string? userId = _userManager.GetUserId(User);
@@ -206,5 +238,28 @@ public class TripsController : Controller
     private bool TripExists(int tripId)
     {
         return _context.Trips.Any(e => e.TripId == tripId);
+    }
+
+    // POST: Trips/RateTrip
+    [HttpPost]
+    public async Task<IActionResult> MyTrips(int manifestId, int rating)
+    {
+        // Get the current user
+        var userId = _userManager.GetUserId(User);
+
+        // Print out the userId, manifestId, and rating
+        Console.WriteLine("userId: " + userId);
+        Console.WriteLine("manifestId: " + manifestId);
+        Console.WriteLine("rating: " + rating);
+
+        // Find ManifestId with the same TripId
+        var manifest = _context.Manifests.FirstOrDefault(m => m.ManifestId == manifestId && m.MemberId == userId);
+        if (manifest != null)
+        {
+            manifest.Rating = rating;
+            await _context.SaveChangesAsync();
+        }
+
+        return RedirectToAction(nameof(MyTrips));
     }
 }

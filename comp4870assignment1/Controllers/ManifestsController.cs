@@ -142,7 +142,7 @@ public class ManifestsController : Controller
         // Retrieve the Manifest including its Trip
         var manifest = await _context.Manifests
             .Include(m => m.Trip)
-            .ThenInclude(t => t.Vehicle) // Assuming you want vehicle details as well
+            .ThenInclude(t => t!.Vehicle) // Assuming you want vehicle details as well
             .FirstOrDefaultAsync(m => m.ManifestId == manifestId);
 
         if (manifest == null)

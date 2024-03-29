@@ -43,6 +43,11 @@ public class Vehicle
     public DateTime? Modified { get; set; }
 
     public string? CreatedBy { get; set; }
-    
+
     public string? ModifiedBy { get; set; }
+
+    override public string ToString()
+    {
+        return $"{Year} {Make} {Model}";
+    }
 }

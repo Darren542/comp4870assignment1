@@ -63,7 +63,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        manifest = await _manifestService.GetManifestAsync(ManifestId, MemberId);
+        manifest = (await _manifestService.GetManifestAsync(ManifestId, MemberId))!;
         members = await _memberService.GetMembersAsync();
         trips = await _tripService.GetTripsAsync();
     }
