@@ -117,7 +117,7 @@ public class TripsController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("VehicleId,Date,Time,DestinationAddress,MeetingAddress,ManifestNote")] Trip trip, string manifestNote)
+    public async Task<IActionResult> Create([Bind("VehicleId,Date,Time,DestinationAddress,MeetingAddress,ManifestNote")] Trip trip, string? manifestNote)
     {
         if (ModelState.IsValid)
         {
