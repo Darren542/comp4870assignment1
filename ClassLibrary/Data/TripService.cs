@@ -21,7 +21,11 @@ public class TripService
 
     public async Task<Trip?> GetTripAsync(int id)
     {
-        return await _context.Trips.FindAsync(id);
+        return await _context.Trips
+            .Include(t => t.CreatedByMember)
+            .Include(t => t.ModifiedByMember)
+            .Where(t => t.TripId == id)
+            .FirstAsync();
     }
 
     public async Task<Trip> AddTripAsync(Trip trip)
