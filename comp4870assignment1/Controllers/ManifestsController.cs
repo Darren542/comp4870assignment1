@@ -16,6 +16,7 @@ using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
 using System.Security.Claims;
+using iText.IO.Image;
 
 namespace assignment1.Controllers;
 
@@ -23,10 +24,12 @@ namespace assignment1.Controllers;
 public class ManifestsController : Controller
 {
     private readonly ApplicationDbContext _context;
+    private readonly IWebHostEnvironment _env;
 
-    public ManifestsController(ApplicationDbContext context)
+    public ManifestsController(ApplicationDbContext context, IWebHostEnvironment env)
     {
         _context = context;
+        _env = env;
     }
 
     public async Task<IActionResult> GeneratePDFReport()
@@ -38,6 +41,12 @@ public class ManifestsController : Controller
         var pdfDoc = new PdfDocument(writer);
         var document = new Document(pdfDoc, PageSize.A4);
         writer.SetCloseStream(false);
+
+        // Add logo
+        string logoPath = System.IO.Path.Combine(_env.WebRootPath, "images/logo.png");
+        ImageData logoData = ImageDataFactory.Create(logoPath);
+        Image logo = new Image(logoData).SetWidth(100).SetHeight(100);
+        document.Add(logo);
 
         // Header
         Paragraph header = new Paragraph("Manifest Report")
@@ -144,12 +153,20 @@ public class ManifestsController : Controller
         var manifest = await _context.Manifests
             .Include(m => m.Trip)
             .ThenInclude(t => t!.Vehicle) // Assuming you want vehicle details as well
-            .FirstOrDefaultAsync(m => m.ManifestId == manifestId);
+            .Include(m => m!.Member)
+            .Where(m => m.ManifestId == manifestId)
+            .ToListAsync();
 
         if (manifest == null)
         {
             return NotFound();
         }
+
+        // Add logo
+        string logoPath = System.IO.Path.Combine(_env.WebRootPath, "images/logo.png");
+        ImageData logoData = ImageDataFactory.Create(logoPath);
+        Image logo = new Image(logoData).SetWidth(100).SetHeight(100);
+        document.Add(logo);
 
         // Header
         Paragraph header = new Paragraph("Trip Report")
@@ -166,13 +183,23 @@ public class ManifestsController : Controller
         document.Add(new LineSeparator(new SolidLine())).Add(new Paragraph("\n"));
 
         // Adding Trip Details
-        document.Add(new Paragraph($"Trip ID: {manifest.TripId}"));
-        document.Add(new Paragraph($"Destination Address: {manifest.Trip?.DestinationAddress ?? "N/A"}"));
-        document.Add(new Paragraph($"Meeting Address: {manifest.Trip?.MeetingAddress ?? "N/A"}"));
-        document.Add(new Paragraph($"Date: {manifest.Trip?.Date?.ToString("d") ?? "N/A"}"));
-        document.Add(new Paragraph($"Time: {manifest.Trip?.Time?.ToString("t") ?? "N/A"}"));
+        document.Add(new Paragraph($"Trip ID: {manifest[0].TripId}"));
+        document.Add(new Paragraph($"Destination Address: {manifest[0].Trip?.DestinationAddress ?? "N/A"}"));
+        document.Add(new Paragraph($"Meeting Address: {manifest[0].Trip?.MeetingAddress ?? "N/A"}"));
+        document.Add(new Paragraph($"Date: {manifest[0].Trip?.Date?.ToString("d") ?? "N/A"}"));
+        document.Add(new Paragraph($"Time: {manifest[0].Trip?.Time?.ToString("t") ?? "N/A"}"));
 
         // Optionally, add vehicle details and any other relevant information
+        document.Add(new LineSeparator(new SolidLine())).Add(new Paragraph("\n"));
+        document.Add(new Paragraph("Passengers")
+            .SetTextAlignment(TextAlignment.CENTER)
+            .SetFontSize(15));
+        for (int i = 0; i < manifest.Count; i++)
+        {
+            document.Add(new Paragraph($"Name: {manifest[i].Member?.FirstName} {manifest[i].Member?.LastName ?? "N/A"}")).SetFontSize(10);
+            document.Add(new Paragraph($"Email: {manifest[i].Member?.Email ?? "N/A"}")).SetFontSize(10);
+            document.Add(new LineSeparator(new DashedLine())).Add(new Paragraph("\n"));
+        }
 
         // Closing the document
         document.Close();
@@ -183,7 +210,7 @@ public class ManifestsController : Controller
         // Return the stream as a PDF file
         return new FileStreamResult(ms, "application/pdf")
         {
-            FileDownloadName = $"TripReport_{manifest.TripId}.pdf"
+            FileDownloadName = $"TripReport_{manifest[0].TripId}.pdf"
         };
     }
 
