@@ -40,7 +40,8 @@ namespace assignment1.Controllers;
             }
 
             var vehicle = await _context.Vehicles
-                .FirstOrDefaultAsync(m => m.VehicleId == id);
+               .Include(v => v.Member)
+               .FirstOrDefaultAsync(v => v.VehicleId == id);
             if (vehicle == null)
             {
                 return NotFound();
