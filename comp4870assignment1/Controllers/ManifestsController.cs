@@ -188,6 +188,7 @@ public class ManifestsController : Controller
     }
 
     // GET: Manifests
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Index()
     {
         var applicationDbContext = _context.Manifests.Include(m => m.Member).Include(m => m.Trip);
