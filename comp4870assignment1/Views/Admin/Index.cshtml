@@ -16,7 +16,7 @@
 
 @foreach (var userRoleViewModel in Model)
 {
-    <form asp-action="UpdateUserRoles" method="post">
+    <form asp-action="UpdateUserRoles" method="post" onsubmit="showSuccessModal()">
         <table class="table">
             <tr>
                 <td>@userRoleViewModel.UserName</td>
@@ -43,3 +43,11 @@
     }
 
 </style>
+
+@section Scripts {
+    <script>
+        function showSuccessModal() {
+            alert('Role updated successfully.');
+        }
+    </script>
+}
