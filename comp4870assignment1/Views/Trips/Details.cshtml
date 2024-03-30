@@ -21,9 +21,9 @@
     <dt class="col-sm-2">Modified</dt>
     <dd class="col-sm-10">@Model.Modified</dd>
     <dt class="col-sm-2">Created By</dt>
-    <dd class="col-sm-10">@Model.CreatedBy</dd>
+    <dd class="col-sm-10">@Model.CreatedByMember!.Email</dd>
     <dt class="col-sm-2">Modified By</dt>
-    <dd class="col-sm-10">@Model.ModifiedBy</dd>
+    <dd class="col-sm-10">@Model.ModifiedByMember!.Email</dd>
 </dl>
 <div>
     @if (roles.Contains("Admin"))

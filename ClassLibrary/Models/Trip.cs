@@ -35,8 +35,14 @@ public class Trip
     public DateTime? Modified { get; set; }
 
     public string? CreatedBy { get; set; }
+
+    [ForeignKey("CreatedBy")]
+    public Member? CreatedByMember { get; set; }
     
     public string? ModifiedBy { get; set; }
+
+    [ForeignKey("ModifiedBy")]
+    public Member? ModifiedByMember { get; set; }
 
     [ForeignKey("VehicleId")]
     public Vehicle? Vehicle { get; set; }

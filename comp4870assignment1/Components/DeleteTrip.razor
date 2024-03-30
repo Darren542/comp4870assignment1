@@ -36,10 +36,10 @@ else
             <dd class="col-sm-10">@trip.Modified?.ToString("g")</dd>
 
             <dt class="col-sm-2">Created By</dt>
-            <dd class="col-sm-10">@trip.CreatedBy</dd>
+            <dd class="col-sm-10">@(trip.CreatedByMember?.Email ?? "")</dd>
 
             <dt class="col-sm-2">Modified By</dt>
-            <dd class="col-sm-10">@trip.ModifiedBy</dd>
+            <dd class="col-sm-10">@(trip.ModifiedByMember?.Email ?? "")</dd>
 
             <dt class="col-sm-2">Vehicle</dt>
             <dd class="col-sm-10">@trip.VehicleId</dd>

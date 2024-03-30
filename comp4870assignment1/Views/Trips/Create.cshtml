@@ -1,10 +1,16 @@
 @model ClassLibrary.Models.Trip
+@inject Microsoft.AspNetCore.Authorization.IAuthorizationService AuthorizationService
+@inject Microsoft.AspNetCore.Identity.UserManager<Member> UserManager
 
 @{
     ViewData["Title"] = "Create Trip";
 }
 
-@* <component type="typeof(CreateTrip)" render-mode="ServerPrerendered" /> *@
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var roles = await UserManager.GetRolesAsync(user!);
+}
+
 
 <h1>Create Trip</h1>
 
@@ -39,7 +45,14 @@
     </div>
     <br/>
     <button type="submit" class="btn btn-primary">Create</button>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    @if (roles.Contains("Admin"))
+    {
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    }
+    else
+    {
+        <a asp-action="MyTrips" class="btn btn-secondary">Back to List</a>
+    }
 </form>
 <br/>
 
