@@ -52,10 +52,10 @@ else
                 @vehicle.VehicleType
             </dd>
             <dt class = "col-sm-2">
-                Member ID
+                Owner
             </dt>
             <dd class = "col-sm-10">
-                @vehicle.MemberId
+                @vehicle.Member!.Email
             </dd>
             <dt class = "col-sm-2">
                 Date Created
@@ -73,13 +73,13 @@ else
                 Created By
             </dt>
             <dd class = "col-sm-10">
-                @vehicle.CreatedBy
+                @vehicle.CreatedByMember!.Email
             </dd>
             <dt class = "col-sm-2">
                 Modified By
             </dt>
             <dd class = "col-sm-10">
-                @vehicle.ModifiedBy
+                @vehicle.ModifiedByMember!.Email
             </dd>
         </dl>
     

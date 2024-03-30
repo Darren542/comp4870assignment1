@@ -9,6 +9,7 @@ using ClassLibrary.Data;
 using ClassLibrary.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace assignment1.Controllers;
 
@@ -40,6 +41,9 @@ namespace assignment1.Controllers;
             }
 
             var vehicle = await _context.Vehicles
+                .Include(v => v.Member)
+                .Include(v => v.CreatedByMember)
+                .Include(v => v.ModifiedByMember)
                 .FirstOrDefaultAsync(m => m.VehicleId == id);
             if (vehicle == null)
             {
@@ -116,11 +120,29 @@ namespace assignment1.Controllers;
                 return NotFound();
             }
 
+            var existingVehicle = await _context.Vehicles.FindAsync(id);
+            if (existingVehicle == null)
+            {
+                return NotFound();
+            }
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(vehicle);
+                    // Update the fields manually
+                    existingVehicle.Model = vehicle.Model;
+                    existingVehicle.Make = vehicle.Make;
+                    existingVehicle.Year = vehicle.Year;
+                    existingVehicle.NumberOfSeats = vehicle.NumberOfSeats;
+                    existingVehicle.VehicleType = vehicle.VehicleType;
+                    existingVehicle.MemberId = vehicle.MemberId;
+
+                    // Update the Modified and ModifiedBy fields
+                    existingVehicle.Modified = DateTime.Now;
+                    existingVehicle.ModifiedBy = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                    _context.Update(existingVehicle);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -151,6 +173,9 @@ namespace assignment1.Controllers;
             }
 
             var vehicle = await _context.Vehicles
+                .Include(v => v.Member)
+                .Include(v => v.CreatedByMember)
+                .Include(v => v.ModifiedByMember)
                 .FirstOrDefaultAsync(m => m.VehicleId == id);
             if (vehicle == null)
             {

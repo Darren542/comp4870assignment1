@@ -50,6 +50,8 @@
                     <label asp-for="MemberId" class="control-label">Owner</label>
                     <select asp-for="MemberId" class="form-control" asp-items="ViewBag.MemberId"></select>
                 </div>
+            } else {
+                <input type="hidden" asp-for="MemberId" value=@user.Id />
             }
             <br/>
             <div class="form-group">

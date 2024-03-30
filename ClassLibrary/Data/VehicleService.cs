@@ -20,7 +20,12 @@ public class VehicleService
      }
      public async Task<Vehicle?> GetVehicleAsync(int id)
      {
-          return await _context.Vehicles.FindAsync(id);
+          return await _context.Vehicles
+               .Include(v => v.Member)
+               .Include(v => v.CreatedByMember)
+               .Include(v => v.ModifiedByMember)
+               .Where(v => v.VehicleId == id)
+               .FirstAsync();
      }
      public async Task<Vehicle> AddVehicleAsync(Vehicle vehicle)
      {

@@ -34,6 +34,8 @@ public class TripsController : Controller
             .Where(m => m.MemberId == userId)
             .Include(m => m.Trip)
             .ThenInclude(t => t!.Vehicle)
+            .Include(m => m.Trip)
+            .ThenInclude(t => t!.Manifests)
             .OrderByDescending(m => m.Trip!.Date)
             .ToList();
 

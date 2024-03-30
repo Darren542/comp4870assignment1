@@ -21,7 +21,8 @@
 {
     <a class="btn btn-primary" href="/Trips/Create">Create</a>
 }
-
+<br />
+<br />
 <table class="table">
     <thead>
         <tr>
@@ -46,6 +47,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Trip!.Vehicle)
             </th>
+            <th>Passengers</th>
             <th>
                 Actions | Rating
             </th>
@@ -81,6 +83,9 @@
             </td>
             <td>
                 @item.Trip!.Vehicle
+            </td>
+            <td>
+                @item.Trip?.Manifests?.Count / @item.Trip!.Vehicle?.NumberOfSeats
             </td>
             <td>
                 @if (item.Trip!.Date > DateOnly.FromDateTime(DateTime.Now))
