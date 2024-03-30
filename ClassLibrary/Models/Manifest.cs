@@ -33,7 +33,13 @@ public class Manifest
 
     public string? CreatedBy { get; set; }
 
+    [ForeignKey("CreatedBy")]
+    public Member? CreatedByMember { get; set; }
+
     public string? ModifiedBy { get; set; }
+
+    [ForeignKey("ModifiedBy")]
+    public Member? ModifiedByMember { get; set; }
 
     public int? Rating { get; set; }
 }

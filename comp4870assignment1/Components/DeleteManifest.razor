@@ -20,10 +20,10 @@ else
     <div>
         <dl class="row">
             <dt class = "col-sm-2">
-                Member ID
+                Member
             </dt>
             <dd class = "col-sm-10">
-                @manifest.MemberId
+                @(manifest.Member?.Email ?? "")
             </dd>
             <dt class = "col-sm-2">
                 Trip ID
@@ -53,13 +53,13 @@ else
                 Created By
             </dt>
             <dd class = "col-sm-10">
-                @manifest.CreatedBy
+                @(manifest.CreatedByMember?.Email ?? "")
             </dd>
             <dt class = "col-sm-2">
                 Modified By
             </dt>
             <dd class = "col-sm-10">
-                @manifest.ModifiedBy
+                @(manifest.ModifiedByMember?.Email ?? "")
             </dd>
         </dl>
     

@@ -229,7 +229,9 @@ public class ManifestsController : Controller
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Index()
     {
-        var applicationDbContext = _context.Manifests.Include(m => m.Member).Include(m => m.Trip);
+        var applicationDbContext = _context.Manifests
+            .Include(m => m.Member)
+            .Include(m => m.Trip);
         return View(await applicationDbContext.ToListAsync());
     }
 
@@ -242,6 +244,8 @@ public class ManifestsController : Controller
         }
 
         var manifest = await _context.Manifests
+            .Include(m => m.CreatedByMember)
+            .Include(m => m.ModifiedByMember)
             .Include(m => m.Member)
             .Include(m => m.Trip)
             .FirstOrDefaultAsync(m => m.ManifestId == id);

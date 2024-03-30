@@ -62,13 +62,13 @@
             @Html.DisplayNameFor(model => model.CreatedBy)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedBy)
+            @Html.DisplayFor(model => model.CreatedByMember!.Email)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ModifiedBy)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ModifiedBy)
+            @Html.DisplayFor(model => model.ModifiedByMember!.Email)
         </dd>
     </dl>
 </div>

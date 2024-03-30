@@ -23,7 +23,12 @@ public class ManifestService
 
     public async Task<Manifest?> GetManifestAsync(int manifestId, string memberId)
     {
-        return await _context.Manifests.FindAsync(manifestId, memberId);
+        return await _context.Manifests
+            .Include(m => m.Member)
+            .Include(m => m.CreatedByMember)
+            .Include(m => m.ModifiedByMember)
+            .Where(m => m.ManifestId == manifestId && m.MemberId == memberId)
+            .FirstOrDefaultAsync();
     }
 
     public async Task<Manifest> AddManifestAsync(Manifest manifest)
