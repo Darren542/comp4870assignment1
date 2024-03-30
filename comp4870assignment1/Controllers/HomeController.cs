@@ -35,6 +35,7 @@ public class HomeController : Controller
             .ThenInclude(t => t!.Vehicle)
             .Include(m => m.Trip)
             .ThenInclude(t => t!.Manifests)
+            .OrderBy(m => m.Trip!.Date)
             .ToList();
         ViewData["UpcomingTrips"] = upcomingTrips;
 
