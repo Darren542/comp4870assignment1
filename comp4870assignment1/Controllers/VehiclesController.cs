@@ -78,6 +78,10 @@ namespace assignment1.Controllers;
         {
             if (ModelState.IsValid)
             {
+                vehicle.Created = DateTime.Now;
+                vehicle.Modified = DateTime.Now;
+                vehicle.CreatedBy = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                vehicle.ModifiedBy = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 _context.Add(vehicle);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
