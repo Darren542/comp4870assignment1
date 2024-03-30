@@ -92,12 +92,16 @@
                         <td>@trip.DestinationAddress</td>
                         <td>@trip.MeetingAddress</td>
                         <td>@trip.Vehicle?.Make @trip.Vehicle?.Model</td>
-                        <td>@trip.Manifests?.Count / @trip.Vehicle.NumberOfSeats</td>
+                        <td>@trip.Manifests?.Count / @trip.Vehicle?.NumberOfSeats</td>
                         <td>
-                            <form method="post" asp-action="JoinTrip" asp-controller="Home">
-                                <input type="hidden" name="tripId" value="@trip.TripId" />
-                                <input type="submit" class="btn btn-primary" value="Join Trip" />
-                            </form>
+                            @if (trip.Manifests?.Count >= trip.Vehicle?.NumberOfSeats) {
+                                <span>Full</span>
+                            } else {
+                                <form method="post" asp-action="JoinTrip" asp-controller="Home">
+                                    <input type="hidden" name="tripId" value="@trip.TripId" />
+                                    <input type="submit" class="btn btn-primary" value="Join Trip" />
+                                </form>
+                            }
                         </td>
                     </tr>
                 }
