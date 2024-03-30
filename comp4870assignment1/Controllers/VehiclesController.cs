@@ -45,6 +45,7 @@ namespace assignment1.Controllers;
                 .Include(v => v.CreatedByMember)
                 .Include(v => v.ModifiedByMember)
                 .FirstOrDefaultAsync(m => m.VehicleId == id);
+
             if (vehicle == null)
             {
                 return NotFound();
