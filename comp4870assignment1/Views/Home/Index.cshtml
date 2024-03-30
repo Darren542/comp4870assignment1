@@ -1,4 +1,6 @@
 ﻿@using ClassLibrary.Models
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Identity
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -28,10 +30,15 @@
                     <td>@manifest.Trip?.Vehicle?.Make @manifest.Trip?.Vehicle?.Model</td>
                     <td>@manifest.Trip?.Manifests?.Count / @manifest.Trip?.Vehicle?.NumberOfSeats</td>
                     <td>
-                        <form method="post" asp-action="CancelTrip" asp-controller="Home">
-                            <input type="hidden" name="manifestId" value="@manifest.ManifestId" />
-                            <input type="submit" class="btn btn-warning" value="Cancel Trip" />
-                        </form>
+                        @if (manifest.Trip?.Vehicle?.MemberId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                        {
+                            <a class="btn btn-danger" href="/Trips/Delete/@manifest.Trip!.TripId/@manifest.Trip!.VehicleId">Delete Trip</a>
+                        } else {
+                            <form method="post" asp-action="CancelTrip" asp-controller="Home">
+                                <input type="hidden" name="manifestId" value="@manifest.ManifestId" />
+                                <input type="submit" class="btn btn-warning" value="Cancel Trip" />
+                            </form>
+                        }
                     </td>
                 </tr>
             }
