@@ -9,8 +9,10 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Manifest ID</th>
-            <th>Member</th>
+            <th>Driver</th>
+            <th>Passengers</th>
+            <th>Date</th>
+            <th>Meeting Address</th>
             <th>Trip Destination</th>
             <th>Notes</th>
             <th>Generate a trip report for this manifest</th>
@@ -20,8 +22,10 @@
     @foreach (var manifest in Model)
     {
         <tr>
-            <td>@manifest.ManifestId</td>
-            <td>@manifest.Member?.UserName</td>
+            <td>@manifest.Member?.Email</td>
+            <td>@manifest.Trip?.Manifests?.Count / @manifest.Trip?.Vehicle?.NumberOfSeats</td>
+            <td>@manifest.Trip?.Date @manifest.Trip?.Time</td>
+            <td>@manifest.Trip?.MeetingAddress</td>
             <td>@manifest.Trip?.DestinationAddress</td>
             <td>@manifest.Notes</td>
             <td><a href="@Url.Action("GenerateTripPDFReport", new { manifestId = manifest.ManifestId })">Generate Trip Report</a></td>

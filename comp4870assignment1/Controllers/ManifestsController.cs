@@ -120,7 +120,11 @@ public class ManifestsController : Controller
             query = _context.Manifests
                 .Include(m => m.Member)
                 .Include(m => m.Trip)
-                .Where(m => m.MemberId == userId);
+                .ThenInclude(t => t!.Vehicle)
+                .Include(m => m.Trip)
+                .ThenInclude(t => t!.Manifests)
+                .Where(m => m.MemberId == userId)
+                .OrderByDescending(m => m.Trip!.Date);
         }
 
         var manifests = await query.ToListAsync();
