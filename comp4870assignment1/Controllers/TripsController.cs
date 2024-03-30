@@ -82,6 +82,8 @@ public class TripsController : Controller
 
         var trip = await _context.Trips
             .Include(t => t.Vehicle)
+            .Include(t => t.CreatedByMember)
+            .Include(t => t.ModifiedByMember)
             .FirstOrDefaultAsync(m => m.TripId == id);
         if (trip == null)
         {
